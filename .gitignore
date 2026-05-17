@@ -29,3 +29,10 @@ next-env.d.ts
 
 # VS Code
 .vscode
+
+# =========================================
+# Figma MCP / AI Tools
+# =========================================
+.agents/cache/
+.agents/tmp/
+.agents/logs/
