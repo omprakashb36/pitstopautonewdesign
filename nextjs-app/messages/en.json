@@ -1,0 +1,33 @@
+{
+  "Error": {
+    "description": "<p>We've unfortunately encountered an error.</p><p>You can try to <retry>reload the page</retry> you were visiting.</p>",
+    "title": "Something went wrong!"
+  },
+    "popupForm" : {
+    "firstNameRequired": "First name is required",
+    "lastNameMaxLength": "Last name cannot exceed 20 characters",
+    "lastNameRequired": "Last name is required",
+    "invalidEmail": "Invalid email address",
+    "emailRequired": "Email is required",
+    "confirmEmailRequired": "Confirm email is required",
+    "emailsMustMatch": "Emails must match",
+    "mobileNumberDigits": "Mobile number must be only digits",
+    "mobileNumberMin": "Must be at least 9 digits",
+    "mobileNumberMax": "Must be 15 digits or less",
+    "mobileNumberRequired": "Mobile number is required",
+    "countryMobileCodeRequired": "Country mobile code is required",
+    "address1" : "Address required",
+    "city" : "Please enter city name",
+    "countryCode" : "Please select country",
+    "chooseYourProgramme" : "Find or choose your programme",
+    "membershipNumber" : "Membership number",
+    "pleaseSelect" : "Please select"
+},
+"ServiceDetailPage" : {
+  "serviceBreadcrumbs" : "Services",
+  "view" : "View",
+  "more" : "more",
+  "serviceInfo" : "Service Info",
+  "viewInfo" : "View details"
+}
+}

@@ -1,0 +1,33 @@
+{
+  "Error": {
+    "description": "<p>Es ist leider ein Problem aufgetreten.</p><p>Du kannst versuchen <retry>diese Seite neu zu laden</retry>.</p>",
+    "title": "Etwas ist schief gelaufen!"
+  },
+  "popupForm": {
+    "firstNameRequired": "الاسم الأول مطلوب",
+    "lastNameMaxLength": "يجب ألا يتجاوز اسم العائلة 20 حرفًا",
+    "lastNameRequired": "اسم العائلة مطلوب",
+    "invalidEmail": "عنوان البريد الإلكتروني غير صالح",
+    "emailRequired": "البريد الإلكتروني مطلوب",
+    "confirmEmailRequired": "تأكيد البريد الإلكتروني مطلوب",
+    "emailsMustMatch": "يجب أن تتطابق عناوين البريد الإلكتروني",
+    "mobileNumberDigits": "يجب أن يتكون رقم الهاتف المحمول من أرقام فقط",
+    "mobileNumberMin": "يجب أن يكون 9 أرقام على الأقل",
+    "mobileNumberMax": "يجب أن يكون 15 رقمًا أو أقل",
+    "mobileNumberRequired": "رقم الهاتف المحمول مطلوب",
+    "countryMobileCodeRequired": "كود الهاتف المحمول للدولة مطلوب",
+    "address1" : "العنوان مطلوب",
+    "city" : "المدينة حقل مطلوب",
+    "countryCode" : "الرجاء اختيار البلد",
+    "chooseYourProgramme" : "ابحث عن برنامجك أو اختره",
+    "membershipNumber" : "رقم العضوية",
+    "pleaseSelect" : "الرجاء التحديد"
+},
+"ServiceDetailPage" : {
+  "serviceBreadcrumbs" : "خدمات",
+  "view" : "منظر",
+  "more" : "أكثر",
+  "serviceInfo" : "معلومات الخدمة",
+  "viewInfo" : "عرض التفاصيل"
+}
+}

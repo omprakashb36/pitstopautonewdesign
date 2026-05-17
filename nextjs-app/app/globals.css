@@ -1,0 +1,912 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body{
+    @apply dark:bg-black bg-[#FFFFFF]
+}
+.container{
+    max-width: 1358px;
+}
+.backdropBlur-40{
+    backdrop-filter: blur(40px)
+}
+.gradientBGTrans.gradientBG{
+    border: 0.83px solid #C00034;
+    background: transparent;color: #C00034;
+}
+.gradientBG,.gradientBGTrans.gradientBG:hover{
+    background: radial-gradient(46.31% 100% at 48.95% 0%, #C00034 0%, #810627 100%);
+    color: #FAEADC;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 12px!important;
+}
+.gradientBGTrans.gradientBG:hover{
+    border-color: transparent;
+}
+.letterSpacing{
+    letter-spacing: 0.8px;
+}
+
+.pageBg:before{
+     /* position:absolute;
+    top:-150px;
+    left:0;
+    content:'';
+    background:url(/images/topBg.svg) no-repeat;
+    width:585px;
+    height:735px;
+    z-index: -1;     */
+    @apply absolute top-[-150px] content-[''] left-0 w-[585px] h-[735px] dark:bg-[url('/images/topBg.svg')] bg-no-repeat -z-10    
+}
+
+.pageBg h1{
+    font-weight: 600!important;
+}
+footer:before{
+    position:absolute;
+    top:0;
+    right:0;
+    content:'';
+    background:url(/images/footer-bg.svg) no-repeat;
+    width:266px;
+    height:490px;
+}
+.sandDrift{
+    @apply dark:text-[#FAEADC] text-black
+    /* color: #FAEADC; */
+}
+.formLabel div,.formLabel input{
+    border:0!important;
+    min-height: auto!important;
+    margin-top: 0!important;
+}
+.formLabel input{
+    background: transparent!important;
+    background-color: transparent!important;
+    box-shadow: none!important;
+    margin-left: 0px!important;
+    padding-left: 0;
+    padding-bottom: 0;
+    padding-top: 0;
+}
+.formLabel input.bg-transparent{
+margin-top: 1px !important;
+    margin-bottom: 7px !important;
+}
+.formLabel{
+    padding: 14px 20px 9px 16px;
+}
+.formLabel label{
+    padding-left: 4px;
+    font-size: 10px;
+}
+.formLabel .font-urbanist{
+    margin-top: -2px!important;
+    padding-left: 4px!important;
+}
+.selectReact svg{
+    background: url(/images/dropIcon.svg) no-repeat;
+    width: 14px;
+    fill: none;
+    margin-top: -10px;
+    height: 9px;
+    background-size: 100%!important;
+}
+.light .selectReact svg{
+    background: url(/images/dropIconLight.svg) no-repeat;
+}
+#countryCode svg{
+        margin-top: 0px;
+    padding-right: 14px;
+}
+
+.phoneNoCol input{
+    margin-top: -6px!important;
+}
+
+.formLabel .selectReactInn{
+    min-height: 34px!important;
+}
+
+.richTextTitle h1{
+    @apply mb-8 text-5xl xl:text-[100px] md:mb-5 font-shoulders font-normal dark:text-white text-black
+}
+
+.richTextTitle h1{
+    letter-spacing: -0.02em;
+}
+
+.pageBg .richTextTitle h1 strong{
+    @apply text-[#C00034]
+}
+
+.offersPage .richTextTitle h2{
+   @apply dark:text-[#FAEADC] text-black font-urbanist font-extrabold md:text-[33px] text-[20px] tracking-[0px] leading-[100%]
+}
+.offersPage .richTextTitle p{
+    @apply font-urbanist font-normal dark:text-[#FAEADC] text-black opacity-80 md:text-[18px] text-[15px] leading-[130%] tracking-[0%]
+}
+
+.offersPage .richTextTitle li{
+    @apply font-urbanist font-normal md:text-[18px] text-[15px] dark:text-[#FAEADC] text-black opacity-80 leading-[130%] tracking-[0%] 
+}
+.offersPage .richTextTitle li strong{
+    @apply font-bold dark:text-[#FAEADC] text-black 
+}
+
+.offersPage .richTextTitle h3{
+    @apply text-[#C00034] md:text-[33px] text-[20px] uppercase font-shoulders  tracking-[0px] leading-[100%] font-semibold
+}
+.offersPage .richTextTitle h3 strong{
+    @apply font-semibold
+}
+
+.pageBg .richTextTitle h1,.pageBg .richTextTitle h1 strong {
+    font-weight: normal!important;
+}
+
+.pageBg .richTextTitle p{
+    @apply font-urbanist text-[15px] dark:text-[#FAEADC] text-black opacity-80
+}
+
+.pageBg .richTextTitle p em{
+    @apply text-sm dark:text-[#FAEADC] text-black opacity-80 not-italic mb-4 block
+}
+
+.pageBg .richTextTitle p br{
+    display: none;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.prose{
+    max-width: 100%;
+}
+/* styles.css or module */
+.image-grey-to-white {
+  filter: grayscale(1) brightness(0.4);
+  transition: filter 0.1s ease;
+}
+
+.dark .image-grey-to-white:hover {
+  filter: grayscale(0) brightness(100);
+}
+
+.centerAlignRichText h2{
+    @apply text-[20px] dark:text-[#FAEADC] text-black font-urbanist leading-[1.3] mb-5
+}
+
+.centerAlignRichText li,.centerAlignRichText p{
+    @apply text-[15px] dark:text-[#FAEADC] text-black opacity-80 font-urbanist leading-[1.3] list-outside;
+}
+.centerAlignRichText p{
+margin-bottom:15px;
+}
+.serviceBooked .steps h2{
+   @apply text-3xl mb-6 dark:text-[#FAEADC] text-black font-shoulders font-normal
+}
+
+.serviceBooked .steps h2 strong{
+   @apply text-[#C00034] font-shoulders font-normal
+}
+
+.serviceBooked .steps ul{
+    @apply space-y-6  p-5  marker:text-[#C00034] pt-0 pr-0
+}
+
+.serviceBooked .steps ul li{
+    @apply  items-start gap-3 list-disc
+}
+
+.serviceBooked h1{
+    @apply text-4xl md:text-5xl font-semibold dark:text-[#FAEADC] text-black font-shoulders
+}
+
+.serviceBooked h1 strong{
+    @apply text-[#C00034] font-shoulders font-semibold
+}
+
+.centerAlignRichText ul{
+    padding: 0;
+    margin: 0;
+padding-left: 14px;
+}
+.testimonial-card{
+    /* position: absolute;
+    top: 0;
+    left: 0;
+    content: "";
+    background: #1f1f1f;
+    width: 100%;
+    height: 100%;
+    transform: rotate(6deg); */
+    @apply before:absolute before:top-0 before:left-0 before:content-[''] before:dark:bg-[#1f1f1f] before:bg-[#F2F2F2] before:w-full before:h-full before:rotate-[6deg];
+}
+.imageRichText h2{
+    @apply text-4xl md:text-5xl font-shoulders mb-6 font-normal dark:text-white text-black
+}
+.imageRichText h2 strong{
+    color: #cc2819;
+    font-weight: 400;
+}
+.imageRichText p{
+    margin-bottom: 24px;
+    /* color: #FAEADC; */
+    @apply font-urbanist dark:text-[#FAEADC] text-black;
+}
+.imageRichText ul{
+    display: flex;
+    gap: 2%;
+    padding: 0;
+    margin: 0;
+    flex-wrap: wrap;
+}
+.imageRichText li{
+    width: 48%;
+    list-style: none;
+    /* color: #FAEADC; */
+    @apply font-urbanist dark:text-[#FAEADC] text-black;
+}
+.offerItem p{
+    margin: 0;
+    padding: 0;
+}
+.heroVideo::before{
+    position: absolute;
+    top: 0;
+    left: 0;
+    content: "";
+    background: rgb(190 18 60);
+    width: 100%;mix-blend-mode: Overlay;
+    height: 100%;
+    opacity: 0.9;
+    z-index: 10;
+}
+.heroSlide  .swiper-pagination-bullet{
+background: #18181C;
+opacity: 1;
+}
+.heroSlide .swiper-pagination-bullet-active{
+background: rgb(194 0 52);
+} 
+.homePage footer{
+    margin-top: 0;
+}
+.custom-scrollbar::-webkit-scrollbar-track
+{
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	background-color: #18181C;
+}
+
+.custom-scrollbar::-webkit-scrollbar
+{
+	width: 6px;
+	background-color: #18181C;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb
+{
+	background-color: #C00034;
+}
+.textStroke,.scrollTxt div:nth-child(2n) span {
+    /* -webkit-text-stroke: 1px #fff;
+    text-stroke: 1px #fff;
+    color: transparent; */
+   @apply text-transparent dark:[-webkit-text-stroke:1px_#fff] [-webkit-text-stroke:1px_#000];
+}
+
+.innerPage .topBtnFixed{
+    display: none;
+}
+.serviceCart .swiper-button-prev{
+    left: 0px!important;
+}
+.serviceCart .swiper-button-next{
+    right: 0px!important;
+}
+.dateSwiper,.timeSwiper{
+    margin: 0 30px!important;
+}
+.offerText p{
+    margin: 0!important;
+}
+.offerText p strong{
+   color: #C00034; 
+}
+.serviceDetailPage .step3Services{
+    display: none;
+}
+.bgtrans{
+    background: linear-gradient(180deg, #000000 0%, rgba(0, 0, 0, 0) 62.8%);
+}
+.testimonial-card-wrapper p,.testimonial-card-wrapper p strong{
+    @apply dark:text-[#FAEADC] text-black 
+}
+
+.heroSlide img{
+    border-radius: 0;
+}
+.heroSlideinner::before{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    content: "";
+background: linear-gradient(
+  to top, 
+  rgba(0, 0, 0, 1) 0%,  
+  rgba(0, 0, 0, 0.8) 50%, 
+  rgba(0, 0, 0, 0) 100% 
+);
+
+    width: 100%;
+    height: 45%;
+    z-index: 10;
+}
+.serviceCardList{
+  padding: 1px; /* Border thickness */
+  border-radius: 30px;
+  background: linear-gradient(129.44deg, rgba(192, 0, 52, 0.55) 1.75%, rgba(192, 0, 52, 0) 41.24%);
+}
+.sListContent{
+  /* border-radius: 30px;
+  padding: 25px;
+  background: #0A0A0A; */
+  @apply rounded-[30px] p-[25px] dark:bg-[#0A0A0A] bg-[#F7F7F7]
+}
+
+.serviceCardListActive{
+  background: rgba(192, 0, 52, 0.2);
+  border: 1px solid #C00034;
+}
+
+.serviceCardListActive .sListContent{
+background: rgba(192, 0, 52, 0.2);
+padding: 24px;
+}
+.serviceCardListActive .serviceThumbnail{
+    bottom: -1px;
+    right: -1px;
+}
+.homeTeslaContent,.hFleetContent{
+    padding: 1px;
+    border-radius: 50px 0 0 50px;
+    background: linear-gradient(129.44deg, rgba(192, 0, 52, 0.55) 1.75%, rgba(192, 0, 52, 0) 41.24%);
+}
+.homeTeslaContent.borderR{
+    border-radius: 0px 50px 50px 0px;
+    background: linear-gradient(220.44deg, #c000348c 0, #c0003400 64.24% 64.24%);
+    background-size: 100% 50%;
+    background-repeat: no-repeat;
+}
+.teslaContent,.hFleetContentInner{
+ border-radius: 50px 0 0 50px;   
+ height: 100%;
+}
+.homeTeslaContent.borderR .teslaContent{
+    border-radius: 0px 50px 50px 0px;
+}
+.borderRImg img{
+  border-radius: 50px 0px 0px 50px!important;  
+}
+.mapLocation img{
+    filter: grayscale(1) brightness(0.4) contrast(3);
+}
+.formLabel .font-urbanist div{
+    margin-left: 0!important;
+    padding-left: 0!important;
+}
+.offerMain .richTextTitle{
+    max-width: inherit;
+    padding: 0!important;
+}
+.mobileCart{
+    padding-bottom: 50px !important;
+    margin-bottom: -45px;
+}
+.serviceCartPage .mobileCart{
+    padding-bottom: 64px !important;
+
+}
+.borderLeft::before{
+    right: -35px;
+}
+[lang="ar"] .borderLeft::before{
+    right: inherit;
+    left: -35px;
+}
+.offerMain .richTextTitle h1 {
+        font-size: 50px;
+    }
+a.opacity-0{
+  display: none;
+}
+.fleetForm .formLabel label,.warrantyForm .formLabel label,.fleetForm .formLabel .font-urbanist,.warrantyForm .formLabel .font-urbanist,.contactForm .formLabel label{
+    padding-left: 0!important;
+}
+.logoListSlider img{
+    max-height: 40px;
+}
+.light .logoListSlider img{
+    filter: brightness(0) invert(0.6);
+}
+.logoListSlider{
+    margin-top: -70px;
+    position: relative;
+    z-index: 9;
+}
+.dark .logoListSlider{
+margin-top: 0px;
+padding-top: 20px;
+padding-bottom: 20px;
+}
+.light .serviceCardList,.light .homeTeslaContent,.light .hFleetContent{
+    background: transparent;
+}
+.light #carListHome{
+    padding-top: 40px;
+}
+.light .mapLocation img{
+    filter: inherit;
+}
+.light .mapLocation h1{
+    color: #000000;
+}
+.light .testimonial-bullet{
+    background: #a6a2a2;
+}
+.light .toggleButton div{
+    background: #FAEADC;
+}
+.light .callBtn p.font-urbanist{
+color: #FAEADC;opacity: .5;
+}
+.light .callBtn p.font-shoulders{
+color: #FAEADC;
+}
+.light .langbtn button{
+    border: solid 1px #FAEADC;    color: #faeadc;
+}
+.light .fixed .langbtn button{
+    border: solid 1px #000;    color: #000;
+}
+.light .innerPage .toggleButton div{
+    background: #000000;
+}
+.light .innerPage .callBtn p.font-urbanist{
+    color: #000000; opacity: 0.5;
+}
+.light .innerPage .callBtn p.font-shoulders{
+color: #000000;
+}
+.light .innerPage .langbtn button{
+    border: 1px solid #000000;
+    color: #000000;
+}
+.logoInner{
+    display: none;
+}
+.light .innerPage .logoInner{
+    display: inline-block;
+}
+.light .innerPage .logoHome{
+    display: none;
+}
+.otpSection input.otpInput{
+width: calc(100% - 100px);
+}
+.light .homeTeslaLucid .inset-0.bg-gradient-to-r{
+    display: none;
+}
+.light .gridColPopup img,.light .aboutFleetLogo,.light .brandImage{
+    filter: brightness(0) saturate(100%);
+} 
+.light .serviceBooked .steps ul li,.light .serviceBooked .steps ul ::marker{
+    color: #000;
+}
+.formLabel .font-urbanist div .pl4{
+    padding-left: 8px!important;
+}
+.Toastify__toast-theme--light {
+    background: #F9F9F9!important;
+       border-radius: 15px;
+    font-size: 13px;
+    padding-right: 20px;
+    font-weight: 500;
+    font-family: "Urbanist", sans-serif;
+    color: #000!important;
+    display: block!important;
+  padding-top: 16px !important;
+    padding-bottom: 20px !important;
+    min-height: auto!important;
+}
+.Toastify__close-button--light{
+    opacity: 1!important;
+}
+.dark .Toastify__close-button--light{
+    opacity: 1!important;
+    color: #fff!important;
+}
+.Toastify__toast-theme--light .Toastify__zoom-enter svg {
+    display: none;
+}
+
+.dark .Toastify__toast-theme--light{
+background: #161616!important;
+color: #fff!important;
+border: solid 1px #faeadc33;
+}
+.Toastify__progress-bar--wrp{
+    border-radius: 0 0 15px 15px;
+}
+.headerLink a:last-child{
+    font-weight: bold;
+}
+.headerLink{
+        border-top: 1px solid rgb(0 0 0 / 24%);
+    max-width: 77%;
+    padding-top: 20px;
+}
+.blogDetail p{
+    @apply text-[15px] 
+           sm:text-[16px]
+           md:text-[17px]
+           lg:text-[18px]
+           xl:text-[19px]
+           2xl:text-[20px]
+           3xl:text-[22px]
+           leading-[130%] 
+           mb-6;
+}
+
+.blogDetail h2{
+  @apply text-[22px] font-extrabold
+         sm:text-[24px]
+         md:text-[26px]
+         lg:text-[30px] 
+         xl:text-[34px]
+         2xl:text-[36px]
+         3xl:text-[40px]   
+         leading-[100%] mb-6;
+}
+
+
+.blogDetail ul{
+    @apply mb-4 3xl:mb-6;
+}
+
+.blogDetail ul li{
+    @apply text-[15px] relative leading-[130%] pl-[28px] border-b border-b-[#D6D6D6] pb-[14px] mb-[14px]
+           sm:text-[16px]
+           md:text-[17px]
+           lg:text-[18px]
+           xl:text-[19px]
+           2xl:text-[20px]
+           3xl:text-[22px] ;
+}
+.blogDetail ul li::before{
+    position: absolute;
+    top: 4px;
+    left: 0;
+    content: '';
+    background: url(/images/listStyle.svg) no-repeat;
+    background-size: cover;
+    width: 21px;
+    height: 21px;
+}
+@media only screen and (min-width:940px){
+    .custom-scrollbar{
+        max-height: auto;
+    }
+.heroSlide .swiper-pagination{
+    bottom: 20px!important;
+}
+.heroSlidelight::before{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 50%;
+    content: '';
+    background: url(/images/bottomLayer.svg) no-repeat;
+    background-size: cover;
+    z-index: 9;
+}
+}
+@media (min-width: 769px) and (max-width: 940px) {
+      .hFleetContent {
+        margin-top: 0!important;
+      }
+}
+@media only screen and (max-width:1150px){
+.carSelectorForm{
+    display: none;
+}
+}
+@media only screen and (max-width:1023px){
+.mapImage{
+    position: static!important;
+    height: 1px!important;
+    visibility: hidden;
+}
+.locationPointsCntr,.locationPopup{
+    position: static!important;
+    transform: inherit!important;
+}
+.locationPopup{
+    width: calc(100% - 40px)!important;
+  margin: 20px;
+}
+.locationPoints{
+    display: none;
+}
+.mapLocation{
+    z-index: 20;
+    margin-bottom: 40px;
+}
+.navContainer{
+    padding-left: 0!important;
+    padding-right: 0!important;
+}
+}
+@media only screen and (max-width:940px){
+    .logoListSlider{
+    margin-top: 0px;
+    }
+.mobileCTA{
+    text-align: center;
+}
+.heroVideo video{
+    height: 500px;
+}
+.homePage{
+    padding-bottom: 50px;
+}
+.pageBg {
+    margin-top: 100px;
+}
+.homePage .mapLocation{
+    margin-top: 40px;
+}
+.pageBg:before{
+    width: 100%;
+}
+.innerPage footer{
+    margin-top: 20px;
+}
+.whitespace-scroll span{
+    font-size: 70px;
+}
+.topBtnFixed{
+    z-index: 35;
+}
+.carTeslaPopup,.carModalPopup{
+    max-height: 90%;
+    overflow-y: auto;
+}
+.gradientMobileBtn{
+    width: calc(100% - 40px);
+}
+.mapLocation{
+    overflow-x: clip;
+}
+.mhidden{
+    display: none;
+}
+.cardListHome,.carServiceList {
+    display: flex;
+    flex-wrap: wrap;
+        gap: 0;
+}
+.cardListHome a,.carServiceList a{
+width: 48%;
+margin: 0 1% 20px 1%;
+}
+/*.cardListHome a>div,.carServiceList a>div{
+position: relative;
+background-color: rgb(35 34 34)!important;
+}*/
+.cardListHome a>div:hover,.carServiceList a>div:hover{
+background-color: #C00034!important;
+}
+
+.heroSlide .gradientBG{
+width: 100%;
+}
+.heroSlide{
+text-align: center;
+}
+.heroSlide h2{
+font-size: 22px;
+}
+.heroSlide h3{
+font-size: 30px;
+margin-top: 10px;
+}
+.cardListHome a:nth-child(7),footer:before {
+display: none;
+}
+.heroSlide .swiper-pagination{
+bottom: 20px!important;
+}
+.cardListHome a.gradientBG{
+margin: 0!important;
+}
+.hFleet{
+display: flex;
+flex-direction: column-reverse;
+}
+.hFleetContent{
+position: relative;
+top: 0px;
+margin-top: -65px;
+background: #000;
+border-radius: 50px 50px 0 0;
+z-index: 10;
+}
+.hFleet a{
+text-align: center;
+}
+.mobileNav{
+display: none;
+}
+.teslaLogo{
+right: inherit;
+left: 20px;
+}
+[lang=ar] .teslaLogo{
+left: inherit;
+right: 20px;
+}
+.howWeDoIt h3,.howWeDoIt p{
+color: #e6d9c0!important;
+opacity: 1!important;
+}
+input,
+textarea,
+select {
+font-size: 16px;
+}
+.homeTeslaContent,.hFleetContent{
+padding-top: 10px;
+padding-left: 30px;
+padding-right: 30px;
+border-top-right-radius: 40px;
+border-top-left-radius: 40px;
+background: #000;
+}
+.homeTeslaContent{
+padding-left: 0rem;
+padding-right: 0rem;  
+}
+
+.teslaContent{
+padding: 30px;    border-radius: 50px 50px 0px 0px!important;
+}
+.dark .teslaContent{
+background: #0A0A0A!important;
+}
+.hFleetContent{
+padding-top: 2rem;
+}
+.heroSlide img{
+border-radius: 0 0 50px 50px;
+}
+.serviceCardList,.sListContent{
+border-radius: 20px;
+}
+.borderLeft::before{
+right: inherit;
+left: 0;
+}
+[lang="ar"] .borderLeft::before{
+left: inherit;
+right: 0px;
+}
+.borderRImg img {
+border-radius: 40px 40px 0 0px !important;
+}
+.homeTeslaContent.borderR{
+border-radius: 40px 40px 0 0;        background: #000;
+}
+.light #carListHome {
+padding-top: 0px;
+}
+.homeTeslaContent{
+top: 0;
+margin-top: -90px;
+}
+.light .homeTeslaContent.borderR{
+background: transparent;
+}
+.light .hFleetContent {
+background: #F7F7F7;        padding-bottom: 40px;
+}
+.light .howWeDoIt h3,.light .howWeDoIt p {
+color: #000 !important;
+}
+.carCta{
+padding-bottom: 40px;
+}
+.themeButton{
+right: 20px !important;
+top: 54px;
+}
+[lang="ar"] .themeButton{
+right: inherit!important;
+left: 20px;
+}
+.homeTeslaLucid,.hFleetOtr{
+    margin-bottom: 40px;
+}
+.howWeDoIt{
+    padding-top: 10px!important;
+}
+}
+
+.blogdetailPage .richTextTitle p{ 
+   @apply text-[22px]
+}
+
+@media only screen and (min-width: 1440px) {
+    .container {
+        max-width: 1230px;
+        margin: 0 auto;
+        padding: 0 !important;
+    }
+    .containerInner{
+        padding: 0 105px;
+    }
+}
+
+@media only screen and (min-width: 1536px) {
+  .container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 !important;
+  }
+
+  .containerInner {
+    padding: 0 116px;
+  }
+}
+
+
+@media only screen and (min-width: 1920px) {
+    .container {
+        max-width: 1640px;
+        margin: 0 auto;
+        padding: 0 !important;
+
+    }
+    .containerInner{
+        padding: 0 140px;
+    }
+}
+
+@media only screen and (max-width: 1400px) {
+    .container {
+        max-width: 100%;
+        margin: 0 auto;
+        padding: 0 60px !important;
+    }
+    .containerInner{
+        padding: 0 50px;
+    }
+}
+
+@media only screen and (max-width: 1280px) {
+    .container {
+        max-width: 100%;
+        margin: 0 auto;
+        padding: 0 24px !important;
+    }
+    .containerInner{
+        padding: 0;
+    }
+}
