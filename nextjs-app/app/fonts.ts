@@ -1,5 +1,5 @@
 import localFont from "next/font/local"
-import { Urbanist } from "next/font/google"
+import { Urbanist, Host_Grotesk, Cairo } from "next/font/google"
 
 /* ---------- GOOGLE FONT ---------- */
 export const urbanist = Urbanist({
@@ -7,6 +7,20 @@ export const urbanist = Urbanist({
   weight: ["100","200","300","400","500","600","700","800","900"],
   display: "swap",
 })
+
+export const hostGrotesk = Host_Grotesk({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+  display: "swap",
+  variable: "--font-host-grotesk",
+});
+
+export const cairo = Cairo({
+  subsets: ["arabic"],
+  weight: ["400", "500", "600", "700", "800"],
+  display: "swap",
+  variable: "--font-cairo",
+});
 
 /* ---------- LOCAL FONT ---------- */
 export const bigShoulders = localFont({

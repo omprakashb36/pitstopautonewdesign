@@ -19,12 +19,21 @@ const config: Config = {
         layer: "0 35px 60px -15px rgba(0, 0, 0, 0.3)",
       },
       screens: {
-        '3xl': '1700px',
+        '2xl': '1440px',
+        '3xl': '1920px',
       },
       colors: {
         cream: "#FAEADC",
         black: "#0d0e12",
         white: "#fff",
+        pitstop: {
+          "oil-black": "#211D1D",
+          "near-white": "#FCF3ED",
+          "burnt-red": "#801B01",
+          "fiery-orange": "#FF3300",
+          "action-dark-grey": "#898989",
+          "action-grey": "#EAEAEA",
+        },
         cyan: {
           50: "#e7fefe",
           100: "#c5fcfc",
@@ -107,6 +116,8 @@ const config: Config = {
       fontFamily: {
         shoulders: ["var(--font-big-shoulders)", "system-ui", "sans-serif"],
         urbanist: ["Urbanist", ...fontFamily.sans],
+        host: ["var(--font-host-grotesk)", ...fontFamily.sans],
+        cairo: ["var(--font-cairo)", ...fontFamily.sans],
       },
     },
   },

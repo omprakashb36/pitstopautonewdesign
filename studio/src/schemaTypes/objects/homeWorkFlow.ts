@@ -18,6 +18,11 @@ export const homeWorkFlow = defineType({
             title: "Heading"
         }),
         defineField({
+            name: "subHeading",
+            type: "string",
+            title: "Sub Heading"
+        }),
+        defineField({
             name: "workFlow",
             title: "Work Flow",
             type: "array",

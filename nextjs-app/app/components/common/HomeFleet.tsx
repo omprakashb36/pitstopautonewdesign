@@ -2,8 +2,7 @@
 
 import { HomeFleet } from "@/sanity.types"
 import ImageComp from "../CustomImage"
-import Link from "next/link"
-import { Squircle } from "corner-smoothing"
+import { Button } from "@/app/components/ui/Button"
 import useDeviceDetection from "../../hooks/useDeviceDetection"
 
 type HomeFleetProps = {
@@ -16,70 +15,74 @@ export default function HomeFleetComp({ block }: HomeFleetProps) {
   const { currentLocale } = useDeviceDetection()
 
   return (
-    <div className="w-full hFleetOtr xl:px-[60px] 3xl:px-[116px] md:mt-[100px] mt-5">
-      <div className="md:grid md:grid-cols-1 lg:grid-cols-2 gap-8 rounded-3xl overflow-hidden hFleet">
-        {/* Content always first */}
-        <div className={`hFleetContent flex flex-col ${isImageLeft ? "lg:order-2" : "lg:order-1"}`}>
-          <div className="hFleetContentInner flex items-center justify-center flex-col dark:bg-[#0A0A0A] bg-[#F7F7F7]">
-            <div className="xl:max-w-[430px] px-5">
-              {/* Logo */}
-              
-                {block.aboutFleet?.topLogo?.altText && (
-                  <div className="md:mb-12 mb-5">
-                  <ImageComp
-                    block={block.aboutFleet.topLogo}
-                    imageClassName="w-auto aboutFleetLogo"
-                    width={100}
-                    height={105}
-                  />
+    <div className="w-full relative overflow-hidden bg-white dark:bg-black pb-16 lg:pb-20">
+      {/* ========================================================
+          PIXEL-PERFECT CSS GRID CONTAINER
+          1920px screen -> 1640px container, 40px gap
+          1440px screen -> 1280px container, 24px gap
+          ======================================================== */}
+      <div className="container-grid mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-y-[32px] lg:gap-x-[24px] 3xl:gap-x-[40px] px-0 lg:px-0">
+        
+        {/* Content Box */}
+        {/* Mobile: order-2 (bottom). Desktop: order depends on isImageLeft */}
+        <div className={`col-span-1 hFleetTxt lg:col-span-6 flex flex-col justify-center p-8 lg:p-[40px] 2xl:p-[80px] 3xl:p-[120px] bg-[#FAFAFA] dark:bg-[#0A0A0A] rounded-[40px] lg:rounded-[60px] order-2 ${isImageLeft ? 'lg:order-2' : 'lg:order-1'}`}>
+          <div className="flex flex-col items-start gap-[40px] w-full">
+            {/* Top Logo */}
+            {block.aboutFleet?.topLogo?.altText && (
+              <div className="relative h-[50px] lg:h-[71px] w-[150px] lg:w-[212px]">
+                <ImageComp
+                  block={block.aboutFleet.topLogo}
+                  imageClassName="object-contain object-left w-full h-full aboutFleetLogo"
+                  width={212}
+                  height={71}
+                />
+              </div>
+            )}
+
+            {/* Text Content */}
+            <div className="flex flex-col gap-[24px] w-full">
+              <div className="flex flex-col">
+                {block.aboutFleet?.heading && (
+                  <div className="text-pitstop-oil-black h1 dark:text-white font-extrabold rtl:font-cairo ltr:font-host font-host leading-[1.1] tracking-tight">
+                    {block.aboutFleet.heading} <span className="text-pitstop-fiery-orange">{block.aboutFleet.subHeading}</span>
                   </div>
                 )}
-              
-
-              {/* Headings */}
-              <div className="md:mb-3 mb-4">
-                <h2 className="text-3xl uppercase md:text-[50px] leading-[1] font-shoulders font-semibold tracking-tight dark:text-[#FAEADC] text-black">
-                  {block.aboutFleet?.heading}
-                </h2>
-                <h3 className="text-3xl uppercase text-[#FAEADC] md:text-[50px] mt-2 font-shoulders font-semibold tracking-tight">
-                  <span className="text-[#C00034] text-3xl md:text-[50px] leading-[1] font-semibold">{block.aboutFleet?.subHeading}</span>
-                </h3>
               </div>
 
-              {/* Description */}
-              <div className="md:mb-[50px] mt-5 mb-4">
-                <p className="dark:text-[#FAEADC] text-black opacity-80 mt-4 md:mt-[20px] font-urbanist text-base md:text-[18px]">
-                  {block.aboutFleet?.decription}
+              {block.aboutFleet?.decription && (
+                <p className="text-pitstop-oil-black dark:text-white opacity-90 text-[18px] lg:text-[22px] leading-[1.5] font-normal rtl:font-cairo ltr:font-host font-host">
+                  {block.aboutFleet.decription}
                 </p>
-              </div>
-
-              {/* CTA Button */}
-              <div className="">
-                <Squircle className="md:w-auto w-full" cornerRadius={10}>
-                  <Link
-                    href={`/${currentLocale}/${(block?.aboutFleet?.buttonLink as any)?.slug?.replace(/^ar\//, "") || ""}`}
-                    className="md:inline-block block px-[26px] py-[13px] gradientBG text-[#FAEADC] font-urbanist font-bold rounded-md hover:bg-rose-800 transition-colors text-sm tracking-wide uppercase"
-                  >
-                    {block.aboutFleet?.button}
-                  </Link>
-                </Squircle>
-              </div>
+              )}
             </div>
+
+            {/* CTA Button */}
+            {block.aboutFleet?.button && (
+              <div className="w-full sm:w-auto">
+                <Button
+                  variant="orange"
+                  href={`/${currentLocale}/${(block?.aboutFleet?.buttonLink as any)?.slug?.replace(/^ar\//, "") || ""}`}
+                  className="w-full sm:w-auto tracking-wide"
+                >
+                  {block.aboutFleet.button}
+                </Button>
+              </div>
+            )}
           </div>
         </div>
 
-        {/* Image second always on mobile; on desktop adjusts via flex direction */}
-        <div
-          className={`relative h-auto lg:h-auto md:rounded-3xl rounded-tl-[40px] rounded-tr-[40px] overflow-hidden ${isImageLeft ? "lg:order-1" : "lg:order-2"}`}
-        >
+        {/* Image Box */}
+        {/* Mobile: order-1 (top). Desktop: order depends on isImageLeft */}
+        <div className={`col-span-1 lg:col-span-6 relative h-[400px] lg:h-auto lg:min-h-[788px] w-full rounded-[40px] lg:rounded-[60px] overflow-hidden order-1 ${isImageLeft ? 'lg:order-1' : 'lg:order-2'}`}>
           {block.RightImage?.altText && (
             <ImageComp
               block={block.RightImage}
-              imageClassName="object-cover object-center md:h-[666px] h-[350px] w-full"
-              width={684}
-              height={531}
+              imageClassName="object-cover object-center absolute inset-0 w-full h-full"
+              width={800}
+              height={788}
             />
           )}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none"></div>
         </div>
       </div>
     </div>

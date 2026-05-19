@@ -2,6 +2,90 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  h1, h2, h3, h4, h5, h6, p {
+    font-family: var(--font-host-grotesk), sans-serif;
+  }
+  [dir="rtl"] h1, [dir="rtl"] h2, [dir="rtl"] h3, [dir="rtl"] h4, [dir="rtl"] h5, [dir="rtl"] h6, [dir="rtl"] p {
+    font-family: var(--font-cairo), sans-serif;
+  }
+  
+  h1,.h1 { font-size: 36px; font-weight: 800; line-height: 1.1; }
+  @screen md { h1,.h1 { font-size: 42px; } }
+  @screen lg { h1,.h1 { font-size: 48px; } }
+  @screen xl { h1,.h1 { font-size: 54px; } }
+  @screen 3xl { h1,.h1 { font-size: 60px; } }
+  
+  h2,.h2 { font-size: 28px; font-weight: 800; line-height: 1.1; }
+  @screen md { h2,.h2 { font-size: 32px; } }
+  @screen lg { h2,.h2 { font-size: 36px; } }
+  @screen xl { h2,.h2 { font-size: 38px; } }
+  @screen 3xl { h2,.h2 { font-size: 40px; } }
+  
+  h3,.h3 { font-size: 24px; font-weight: 800; line-height: 1.1; }
+  @screen md { h3,.h3 { font-size: 26px; } }
+  @screen lg { h3,.h3 { font-size: 28px; } }
+  @screen xl { h3,.h3 { font-size: 30px; } }
+  @screen 3xl { h3,.h3 { font-size: 32px; } }
+  
+  h4,.h4 { font-size: 22px; font-weight: 800; line-height: 1.2; }
+  @screen md { h4,.h4 { font-size: 24px; } }
+  @screen lg { h4,.h4 { font-size: 26px; } }
+  @screen 3xl { h4,.h4 { font-size: 28px; } }
+  
+  h5,.h5 { font-size: 20px; font-weight: 700; line-height: 1.2; }
+  @screen md { h5,.h5 { font-size: 22px; } }
+  @screen lg { h5,.h5 { font-size: 24px; } }
+  
+  h6 { font-size: 18px; font-weight: 700; line-height: 1.2; }
+  @screen md { h6 { font-size: 20px; } }
+  @screen xl { h6 { font-size: 22px; } }
+  
+  p { font-size: 16px; font-weight: 400; line-height: 1.5; }
+  @screen md { p { font-size: 18px; } }
+  @screen lg { p { font-size: 20px; } }
+  @screen xl { p { font-size: 22px; } }
+
+  /* Pitstop360 Figma Typography Tokens */
+  .display-l { font-size: 50px; font-weight: 800; line-height: 1.1; }
+  @screen md { .display-l { font-size: 70px; } }
+  @screen lg { .display-l { font-size: 90px; } }
+  @screen xl { .display-l { font-size: 100px; } }
+  @screen 3xl { .display-l { font-size: 120px; } }
+
+  .display-m { font-size: 40px; font-weight: 800; line-height: 1.1; }
+  @screen md { .display-m { font-size: 50px; } }
+  @screen lg { .display-m { font-size: 60px; } }
+  @screen xl { .display-m { font-size: 70px; } }
+  @screen 3xl { .display-m { font-size: 80px; } }
+
+  .display-s { font-size: 30px; font-weight: 800; line-height: 1.1; }
+  @screen md { .display-s { font-size: 36px; } }
+  @screen lg { .display-s { font-size: 42px; } }
+  @screen xl { .display-s { font-size: 46px; } }
+  @screen 3xl { .display-s { font-size: 50px; } }
+  
+  .body-xl { font-size: 30px; font-weight: 400; line-height: 1.5; }
+  .body-l { font-size: 22px; font-weight: 400; line-height: 1.5; }
+  .body-m { font-size: 20px; font-weight: 400; line-height: 1.5; }
+  .body-base { font-size: 18px; font-weight: 400; line-height: 1.5; }
+  .body-s { font-size: 16px; font-weight: 400; line-height: 1.5; }
+  .body-xs { font-size: 15px; font-weight: 400; line-height: 1.5; }
+  
+  .caption-16 { font-size: 16px; font-weight: 400; line-height: 1.5; }
+  .caption-14 { font-size: 14px; font-weight: 400; line-height: 1.5; }
+  .caption-12 { font-size: 12px; font-weight: 400; line-height: 1.5; }
+  /* Common Container Class */
+
+.container-grid {
+  @apply w-full mx-auto
+         lg:max-w-[864px]
+         xl:max-w-[1080px]
+         2xl:max-w-[1280px]
+         3xl:max-w-[1640px];
+}
+}
+
 body{
     @apply dark:bg-black bg-[#FFFFFF]
 }
@@ -460,6 +544,9 @@ padding-bottom: 20px;
 .light .testimonial-bullet{
     background: #a6a2a2;
 }
+.light .testimonial-bullet-active{
+    background: #000;
+}
 .light .toggleButton div{
     background: #FAEADC;
 }
@@ -599,7 +686,13 @@ border: solid 1px #faeadc33;
     width: 21px;
     height: 21px;
 }
-@media only screen and (min-width:940px){
+.reviewText p{
+    font-size: 18px!important;
+}
+.locationAddressTxt p{
+  font-size: 16px!important;  
+}
+@media only screen and (min-width:1023px){
     .custom-scrollbar{
         max-height: auto;
     }
@@ -618,7 +711,7 @@ border: solid 1px #faeadc33;
     z-index: 9;
 }
 }
-@media (min-width: 769px) and (max-width: 940px) {
+@media (min-width: 769px) and (max-width: 1023px) {
       .hFleetContent {
         margin-top: 0!important;
       }
@@ -654,7 +747,7 @@ border: solid 1px #faeadc33;
     padding-right: 0!important;
 }
 }
-@media only screen and (max-width:940px){
+@media only screen and (max-width:1023px){
     .logoListSlider{
     margin-top: 0px;
     }
@@ -746,6 +839,13 @@ position: relative;
 top: 0px;
 margin-top: -65px;
 background: #000;
+border-radius: 50px 50px 0 0;
+z-index: 10;
+}
+.hFleetTxt{
+position: relative;
+top: 0px;
+margin-top: -105px;
 border-radius: 50px 50px 0 0;
 z-index: 10;
 }
@@ -846,6 +946,10 @@ left: 20px;
 }
 .howWeDoIt{
     padding-top: 10px!important;
+}
+.mobileContentTxt{
+    padding:40px 30px;
+    border-radius: 50px 50px 0 0 !important;
 }
 }
 

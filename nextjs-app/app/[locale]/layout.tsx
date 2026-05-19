@@ -20,7 +20,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { ThemeProvider } from "next-themes";
 import GoogleTagManager from "@/app/components/GoogleTagManager"
 import Script from "next/script";
-import { urbanist, bigShoulders } from "../fonts"
+import { urbanist, bigShoulders, hostGrotesk, cairo } from "../fonts"
 import WhatsAppButton from '@/app/components/WhatsAppButton';
 
 export const viewport = {
@@ -89,7 +89,7 @@ export default async function RootLayout({
     <html
       lang={locale}
       dir={isRtl ? "rtl" : "ltr"}
-      className={`${urbanist.className} ${bigShoulders.variable}`}
+      className={`${urbanist.className} ${bigShoulders.variable} ${hostGrotesk.variable} ${cairo.variable}`}
     >
       <body>
         <>
@@ -127,7 +127,6 @@ export default async function RootLayout({
           </ThemeProvider>
           {settings?.whatsAppNumber && <WhatsAppButton phoneNumber={settings.whatsAppNumber} />}
         </>
-       
       </body>
     </html>
   );

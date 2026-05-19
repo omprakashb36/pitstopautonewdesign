@@ -5,8 +5,8 @@ import Image from "next/image"
 import CarSelectionTesla from "./CarSelectionTesla"
 import type { HomeTesla } from "@/sanity.types"
 import { urlForImage } from "@/sanity/lib/utils"
-import { Squircle } from "corner-smoothing"
 import ImageComp from "../CustomImage"
+import { Button } from "@/app/components/ui/Button"
 
 interface TeslaCarData {
   countryCode: string
@@ -32,96 +32,131 @@ type HomeTeslaProps = {
   className?: string
 }
 
-
 export default function HomeTeslaComp({ block, index, className = "" }: HomeTeslaProps) {
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   const handleSubmit = (data: TeslaCarData) => {
     console.log("Tesla car selection data:", data)
-    // Process the data as needed
     setIsModalOpen(false)
   }
+
+  const isLeftAlign = block?.imageAlign === 'left';
 
   return (
     <>
       <CarSelectionTesla isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onSubmit={handleSubmit} block={block} />
-      <div className={`${block?.marginBottom === true ? 'lg:mb-24 mb-12' : ''} dark:bg-black homeTeslaLucid bg-[#FFFFFF] w-full overflow-hidden ${className}`}>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-[33px]">
-          {/* Left side - Tesla Image (full height) */}
-          <div className={`${block?.imageAlign === 'left' ? 'lg:order-1' : 'lg:order-2 borderRImg'} relative md:h-[50vh] lg:h-[675px] min-h-[400px] overflow-hidden`}>
+      
+      <div className={`${block?.marginBottom ? 'mb-16 lg:mb-20' : ''} dark:bg-black bg-white w-full overflow-hidden relative ${className}`}>
+        
+        {/* ========================================================
+            DESKTOP BLEED BACKGROUNDS
+            Formula: 50vw - (gutter / 2)
+            1920px: 50vw - 20px
+            1440px: 50vw - 12px
+            ======================================================== */}
+        <div className={`hidden lg:block absolute top-0 bottom-0 ${isLeftAlign ? 'ltr:right-0 rtl:left-0 ltr:rounded-l-[60px] rtl:rounded-r-[60px]' : 'ltr:left-0 rtl:right-0 ltr:rounded-r-[60px] rtl:rounded-l-[60px]'} w-[calc(50vw-20px)] 3xl:w-[calc(50vw-30px)] bg-[#FAFAFA] dark:bg-[#0A0A0A] z-0 transition-colors`} />
+        
+        <div className={`hidden lg:block absolute top-0 bottom-0 ${isLeftAlign ? 'ltr:left-0 rtl:right-0 ltr:rounded-r-[60px] rtl:rounded-l-[60px]' : 'ltr:right-0 rtl:left-0 ltr:rounded-l-[60px] rtl:rounded-r-[60px]'} w-[calc(50vw-20px)] 3xl:w-[calc(50vw-30px)] z-0 overflow-hidden`}>
+          {block.leftImage?.image?.asset && (
+            <Image
+              src={urlForImage(block.leftImage.image)?.url() || ""}
+              alt={block.leftImage.altText || "Tesla vehicle"}
+              fill
+              className="object-cover object-center"
+              priority
+            />
+          )}
+          <div className="absolute inset-0 bg-gradient-to-r from-black/20 to-transparent"></div>
+        </div>
+
+        {/* ========================================================
+            PIXEL-PERFECT CSS GRID CONTAINER
+            1920px screen -> 1640px container, 40px gap
+            1440px screen -> 1280px container, 24px gap
+            ======================================================== */}
+        <div className="container-grid mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-y-0 lg:gap-x-[24px] 3xl:gap-x-[40px] relative z-10 px-0 lg:px-0">
+          
+          {/* Mobile Image (Hidden on Desktop) */}
+          <div className="lg:hidden relative h-[500px] w-full rounded-t-[40px] overflow-hidden order-1">
             {block.leftImage?.image?.asset && (
               <Image
                 src={urlForImage(block.leftImage.image)?.url() || ""}
                 alt={block.leftImage.altText || "Tesla vehicle"}
                 fill
-                className="object-cover object-center ltr:md:rounded-tr-[50px] ltr:md:rounded-br-[50px] rtl:md:rounded-tl-[50px] md:rounded-tl-[0px] rounded-tl-[40px] rounded-tr-[40px] rtl:md:rounded-bl-[30px]"
+                className="object-cover object-center"
                 priority
               />
             )}
             <div className="absolute inset-0 bg-gradient-to-r from-black/20 to-transparent"></div>
           </div>
 
-          {/* Right side - Content and image */}
-          <div className={`${block?.imageAlign === 'left' ? 'lg:order-2' : 'lg:order-1 borderR'} flex flex-col relative homeTeslaContent md:top-0 top-[-65px]`}>
-            <div className="teslaContent px-6 flex items-center justify-center flex-col md:px-5 dark:md:bg-[#0A0A0A] bg-[#F7F7F7]">
-            {/* Top section - Logo */}
-            <div className="absolute mhidden teslaLogo md:ltr:right-[50px] md:rtl:left-[50px] top-8 sm:top-[50px] z-10">
+          {/* Content Aligned to Grid (Col 1-5 or Col 8-12) */}
+          {/* 5 columns width = 660px at 1920px, ~519px at 1440px */}
+          <div className={`col-span-1 mobileContentTxt lg:col-span-5 flex flex-col justify-center py-12 lg:py-[100px] 3xl:py-[162px] order-2 ${
+            isLeftAlign ? 'lg:col-start-8' : 'lg:col-start-1'
+          } bg-[#FAFAFA] dark:bg-[#0A0A0A] lg:bg-transparent rounded-b-[40px] lg:rounded-none px-8 lg:px-0 -mt-16 lg:mt-0 relative z-20 shadow-xl lg:shadow-none mx-0 lg:mx-0`}>
+            
+            <div className="flex flex-col items-start gap-[40px] w-full">
+              {/* Top Logo */}
               {block.aboutTesla?.topLogo?.image?.asset && (
-                <Image
-                  src={urlForImage(block.aboutTesla.topLogo.image)?.url() || ""}
-                  alt={block.aboutTesla.topLogo.altText || "Pitstop logo"}
-                  width={100}
-                  height={105}
-                  className="w-auto h-[80px] md:h-[98px] object-contain"
-                />
-              )}
-            </div>
-
-            {/* Middle section - Text content */}
-            <div className="flex-grow-content lg:max-w-[550px]">
-              {block.aboutTesla?.heading && (
-                <h2 className="text-[#C00034] text-2xl sm:text-[3xl] md:text-[50px] font-semibold md:leading-[1] font-shoulders tracking-tight uppercase">
-                  {block.aboutTesla.heading}
-                </h2>
+              <div className="relative h-[80px] lg:h-[117px] w-[90px] overflow-hidden">
+                  <Image
+                    src={urlForImage(block.aboutTesla.topLogo.image)?.url() || ""}
+                    alt={block.aboutTesla.topLogo.altText || "Logo"}
+                    fill
+                    className="object-contain object-left"
+                  />
+              </div>
               )}
 
-              {block.aboutTesla?.subHeading && (
-                <h3 className="dark:text-white text-black text-3xl sm:text-4xl md:text-[50px] font-shoulders md:leading-[60px] font-bold tracking-tight uppercase">
-                  {block.aboutTesla.subHeading}
-                </h3>
-              )}
+              {/* Text Content */}
+              <div className="flex flex-col gap-[24px] w-full">
+                <div className="flex flex-col leading-[1.1]">
+                  {block.aboutTesla?.heading && (
+                    <h2 className="text-pitstop-fiery-orange font-extrabold rtl:font-cairo ltr:font-host font-host uppercase tracking-tight">
+                      {block.aboutTesla.heading}
+                    </h2>
+                  )}
+                  {block.aboutTesla?.subHeading && (
+                    <div className="text-pitstop-oil-black dark:text-white h1 font-extrabold rtl:font-cairo ltr:font-host font-host">
+                      {block.aboutTesla.subHeading}
+                    </div>
+                  )}
+                </div>
 
-              {block.aboutTesla?.decription && (
-                <p className="dark:text-[#FAEADC] text-black opacity-80 mt-4 md:mt-[20px] font-urbanist text-base md:text-[18px]">
-                  {block.aboutTesla.decription}
-                </p>
-              )}
+                {block.aboutTesla?.decription && (
+                  <p className="text-pitstop-oil-black dark:text-white opacity-90 text-[18px] lg:text-[22px] leading-[1.5] font-normal rtl:font-cairo ltr:font-host font-host">
+                    {block.aboutTesla.decription}
+                  </p>
+                )}
+              </div>
 
+              {/* Booking Button */}
               {block.aboutTesla?.button?.buttonText && (
-                <Squircle cornerRadius={10} className="mt-6 md:mt-[50px] md:inline-block">
-                  <button
+                <div className="mt-4 w-full sm:w-auto">
+                  <Button 
+                    variant="orange" 
                     onClick={() => setIsModalOpen(true)}
-                    className="inline-block gradientBG text-center text-[#FAEADC] w-full sm:max-w-[380px] px-6 py-3 font-urbanist font-bold rounded-lg hover:bg-rose-800 transition-colors text-sm tracking-wide"
+                    className="w-full sm:w-auto px-[40px] py-[16px] rounded-[12px] uppercase tracking-wide"
                   >
                     {block.aboutTesla.button.buttonText}
-                  </button>
-                </Squircle>
+                  </Button>
+                </div>
               )}
+
               {/* Bottom section - Bottom Logo */}
-            <div className="mt-8 md:mt-[74px]">
               {block.aboutTesla?.BottomLogo?.altText && (
-                <ImageComp
-                  block={block.aboutTesla.BottomLogo}
-                  imageClassName="object-contain w-auto h-[70px] image-grey-to-white"
-                  width={390}
-                  height={70}
-                />
+                <div className="mt-8 lg:mt-4">
+                  <ImageComp
+                    block={block.aboutTesla.BottomLogo}
+                    imageClassName="object-contain object-left w-auto h-[70px] image-grey-to-white"
+                    width={390}
+                    height={70}
+                  />
+                </div>
               )}
-            </div>
             </div>
 
-            
-            </div>
           </div>
         </div>
       </div>

@@ -32,6 +32,40 @@ export type BlogImage = {
   } & CustomImage>;
 };
 
+export type TeslaForm = {
+  _type: "teslaForm";
+  whiteHeading?: string;
+  redHeading?: string;
+  teslaImage?: CustomImage;
+  teslaLogo?: CustomImage;
+  stepOne?: {
+    countryLabel?: string;
+    phoneLabel?: string;
+    phonePlaceholder?: string;
+    modelLabel?: string;
+    modelPlaceholder?: string;
+    yearLabel?: string;
+    yearPlaceholder?: string;
+    years?: Array<string>;
+    plateNumberLabel?: string;
+    plateNumberPlaceholder?: string;
+    proceed?: string;
+  };
+  stepTwo?: {
+    workshopLabel?: string;
+    workshopPlaceholder?: string;
+    selectAndProceed?: string;
+  };
+  stepThree?: {
+    fullNameLabel?: string;
+    fullNamePlaceholder?: string;
+    emailLabel?: string;
+    emailPlaceholder?: string;
+    declaration?: string;
+    scheduleAppointment?: string;
+  };
+};
+
 export type FleetManagement = {
   _type: "fleetManagement";
   title?: string;
@@ -188,38 +222,7 @@ export type Location = {
     serviceName?: string;
     poptitle?: string;
     phoneNo?: string;
-    address?: Array<{
-      children?: Array<{
-        marks?: Array<string>;
-        text?: string;
-        _type: "span";
-        _key: string;
-      }>;
-      style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
-      listItem?: "bullet" | "number";
-      markDefs?: Array<{
-        linkType?: "href" | "page" | "post";
-        href?: string;
-        page?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "page";
-        };
-        post?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "post";
-        };
-        openInNewTab?: boolean;
-        _type: "link";
-        _key: string;
-      }>;
-      level?: number;
-      _type: "block";
-      _key: string;
-    }>;
+    address?: BlockContent;
     timingLabel1?: string;
     workingHours?: string;
     fridayTiming?: {
@@ -308,71 +311,9 @@ export type ServiceBooked = {
     title?: string;
     subTitle?: string;
   };
-  heading?: Array<{
-    children?: Array<{
-      marks?: Array<string>;
-      text?: string;
-      _type: "span";
-      _key: string;
-    }>;
-    style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
-    listItem?: "bullet" | "number";
-    markDefs?: Array<{
-      linkType?: "href" | "page" | "post";
-      href?: string;
-      page?: {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
-        [internalGroqTypeReferenceTo]?: "page";
-      };
-      post?: {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
-        [internalGroqTypeReferenceTo]?: "post";
-      };
-      openInNewTab?: boolean;
-      _type: "link";
-      _key: string;
-    }>;
-    level?: number;
-    _type: "block";
-    _key: string;
-  }>;
+  heading?: BlockContent;
   nextSteps?: {
-    steps?: Array<{
-      children?: Array<{
-        marks?: Array<string>;
-        text?: string;
-        _type: "span";
-        _key: string;
-      }>;
-      style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
-      listItem?: "bullet" | "number";
-      markDefs?: Array<{
-        linkType?: "href" | "page" | "post";
-        href?: string;
-        page?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "page";
-        };
-        post?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "post";
-        };
-        openInNewTab?: boolean;
-        _type: "link";
-        _key: string;
-      }>;
-      level?: number;
-      _type: "block";
-      _key: string;
-    }>;
+    steps?: BlockContent;
     stepsBackgroundImage?: CustomImage;
   };
   BookingSummary?: {
@@ -394,6 +335,14 @@ export type LinkItem = {
   _type: "linkItem";
   linkText?: string;
   link?: Link;
+};
+
+export type LinkList = {
+  _type: "linkList";
+  title?: string;
+  links?: Array<{
+    _key: string;
+  } & LinkItem>;
 };
 
 export type ServiceListing = {
@@ -449,47 +398,47 @@ export type LocaleText = {
   ar?: string;
 };
 
+export type LocaleString = {
+  _type: "localeString";
+  en?: string;
+  ar?: string;
+};
+
+export type CustomImage = {
+  _type: "customImage";
+  image?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  altText?: string;
+  isImageFullWidth?: boolean;
+};
+
+export type LocaleBlockContent = {
+  _type: "localeBlockContent";
+  en?: BlockContent;
+  ar?: BlockContent;
+};
+
 export type TermsAndConditionSection = {
   _type: "termsAndConditionSection";
   title?: string;
-  richText?: Array<{
-    children?: Array<{
-      marks?: Array<string>;
-      text?: string;
-      _type: "span";
-      _key: string;
-    }>;
-    style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
-    listItem?: "bullet" | "number";
-    markDefs?: Array<{
-      linkType?: "href" | "page" | "post";
-      href?: string;
-      page?: {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
-        [internalGroqTypeReferenceTo]?: "page";
-      };
-      post?: {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
-        [internalGroqTypeReferenceTo]?: "post";
-      };
-      openInNewTab?: boolean;
-      _type: "link";
-      _key: string;
-    }>;
-    level?: number;
-    _type: "block";
-    _key: string;
-  }>;
+  richText?: BlockContent;
 };
 
 export type HomeWorkFlow = {
   _type: "homeWorkFlow";
   image?: CustomImage;
   heading?: string;
+  subHeading?: string;
   workFlow?: Array<{
     workName?: string;
     workDesc?: string;
@@ -525,38 +474,7 @@ export type HomeHeroSlider = {
 
 export type RichTextTitle = {
   _type: "richTextTitle";
-  aboutsection?: Array<{
-    children?: Array<{
-      marks?: Array<string>;
-      text?: string;
-      _type: "span";
-      _key: string;
-    }>;
-    style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
-    listItem?: "bullet" | "number";
-    markDefs?: Array<{
-      linkType?: "href" | "page" | "post";
-      href?: string;
-      page?: {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
-        [internalGroqTypeReferenceTo]?: "page";
-      };
-      post?: {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
-        [internalGroqTypeReferenceTo]?: "post";
-      };
-      openInNewTab?: boolean;
-      _type: "link";
-      _key: string;
-    }>;
-    level?: number;
-    _type: "block";
-    _key: string;
-  }>;
+  aboutsection?: BlockContent;
 };
 
 export type HomeCta = {
@@ -571,74 +489,12 @@ export type HomeCta = {
 export type ImageRichText = {
   _type: "imageRichText";
   leftImage?: CustomImage;
-  aboutAutocare?: Array<{
-    children?: Array<{
-      marks?: Array<string>;
-      text?: string;
-      _type: "span";
-      _key: string;
-    }>;
-    style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
-    listItem?: "bullet" | "number";
-    markDefs?: Array<{
-      linkType?: "href" | "page" | "post";
-      href?: string;
-      page?: {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
-        [internalGroqTypeReferenceTo]?: "page";
-      };
-      post?: {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
-        [internalGroqTypeReferenceTo]?: "post";
-      };
-      openInNewTab?: boolean;
-      _type: "link";
-      _key: string;
-    }>;
-    level?: number;
-    _type: "block";
-    _key: string;
-  }>;
+  aboutAutocare?: BlockContent;
 };
 
 export type RichText = {
   _type: "richText";
-  content?: Array<{
-    children?: Array<{
-      marks?: Array<string>;
-      text?: string;
-      _type: "span";
-      _key: string;
-    }>;
-    style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
-    listItem?: "bullet" | "number";
-    markDefs?: Array<{
-      linkType?: "href" | "page" | "post";
-      href?: string;
-      page?: {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
-        [internalGroqTypeReferenceTo]?: "page";
-      };
-      post?: {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
-        [internalGroqTypeReferenceTo]?: "post";
-      };
-      openInNewTab?: boolean;
-      _type: "link";
-      _key: string;
-    }>;
-    level?: number;
-    _type: "block";
-    _key: string;
-  }>;
+  content?: BlockContent;
   htmlId?: string;
 };
 
@@ -670,38 +526,7 @@ export type HomeIntro = {
   _type: "homeIntro";
   heading?: string;
   subheading?: string;
-  introText?: Array<{
-    children?: Array<{
-      marks?: Array<string>;
-      text?: string;
-      _type: "span";
-      _key: string;
-    }>;
-    style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
-    listItem?: "bullet" | "number";
-    markDefs?: Array<{
-      linkType?: "href" | "page" | "post";
-      href?: string;
-      page?: {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
-        [internalGroqTypeReferenceTo]?: "page";
-      };
-      post?: {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
-        [internalGroqTypeReferenceTo]?: "post";
-      };
-      openInNewTab?: boolean;
-      _type: "link";
-      _key: string;
-    }>;
-    level?: number;
-    _type: "block";
-    _key: string;
-  }>;
+  introText?: BlockContent;
   leftBottomImage?: CustomImage;
   rihgtTopImage?: CustomImage;
 };
@@ -724,40 +549,6 @@ export type HomeTesla = {
   teslaForm?: TeslaForm;
 };
 
-export type TeslaForm = {
-  _type: "teslaForm";
-  whiteHeading?: string;
-  redHeading?: string;
-  teslaImage?: CustomImage;
-  teslaLogo?: CustomImage;
-  stepOne?: {
-    countryLabel?: string;
-    phoneLabel?: string;
-    phonePlaceholder?: string;
-    modelLabel?: string;
-    modelPlaceholder?: string;
-    yearLabel?: string;
-    yearPlaceholder?: string;
-    years?: Array<string>;
-    plateNumberLabel?: string;
-    plateNumberPlaceholder?: string;
-    proceed?: string;
-  };
-  stepTwo?: {
-    workshopLabel?: string;
-    workshopPlaceholder?: string;
-    selectAndProceed?: string;
-  };
-  stepThree?: {
-    fullNameLabel?: string;
-    fullNamePlaceholder?: string;
-    emailLabel?: string;
-    emailPlaceholder?: string;
-    declaration?: string;
-    scheduleAppointment?: string;
-  };
-};
-
 export type Link = {
   _type: "link";
   linkType?: "href" | "page" | "post";
@@ -777,42 +568,17 @@ export type Link = {
   openInNewTab?: boolean;
 };
 
+export type CallToAction = {
+  _type: "callToAction";
+  buttonText?: string;
+  link?: Link;
+};
+
 export type InfoSection = {
   _type: "infoSection";
   heading?: string;
   subheading?: string;
-  content?: Array<{
-    children?: Array<{
-      marks?: Array<string>;
-      text?: string;
-      _type: "span";
-      _key: string;
-    }>;
-    style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
-    listItem?: "bullet" | "number";
-    markDefs?: Array<{
-      linkType?: "href" | "page" | "post";
-      href?: string;
-      page?: {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
-        [internalGroqTypeReferenceTo]?: "page";
-      };
-      post?: {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
-        [internalGroqTypeReferenceTo]?: "post";
-      };
-      openInNewTab?: boolean;
-      _type: "link";
-      _key: string;
-    }>;
-    level?: number;
-    _type: "block";
-    _key: string;
-  }>;
+  content?: BlockContent;
 };
 
 export type BlockContent = Array<{
@@ -848,12 +614,26 @@ export type BlockContent = Array<{
   _key: string;
 }>;
 
-export type LinkList = {
-  _type: "linkList";
-  title?: string;
-  links?: Array<{
-    _key: string;
-  } & LinkItem>;
+export type Footer = {
+  _type: "footer";
+  centerFarrari?: CustomImage;
+  servicesList?: LinkList;
+  linkList?: LinkList;
+  agmcLogo?: CustomImage;
+  copyrightText?: string;
+  footerLogo2?: CustomImage;
+  privacyPolicyLink?: LinkList;
+};
+
+export type Header = {
+  _type: "header";
+  callUs?: string;
+  contact?: string;
+  lang?: LocaleString;
+  headerLogo?: CustomImage;
+  cornerLogo?: string;
+  headerLink?: LinkList;
+  privacyPolicyLink?: LinkList;
 };
 
 export type Testimonials = {
@@ -880,6 +660,22 @@ export type Testimonials = {
   stars?: "1" | "2" | "3" | "4" | "5";
 };
 
+export type SanityImageCrop = {
+  _type: "sanity.imageCrop";
+  top?: number;
+  bottom?: number;
+  left?: number;
+  right?: number;
+};
+
+export type SanityImageHotspot = {
+  _type: "sanity.imageHotspot";
+  x?: number;
+  y?: number;
+  height?: number;
+  width?: number;
+};
+
 export type Faq = {
   _id: string;
   _type: "faq";
@@ -888,12 +684,6 @@ export type Faq = {
   _rev: string;
   question?: LocaleString;
   answer?: LocaleBlockContent;
-};
-
-export type LocaleBlockContent = {
-  _type: "localeBlockContent";
-  en?: BlockContent;
-  ar?: BlockContent;
 };
 
 export type Settings = {
@@ -1000,12 +790,7 @@ export type Settings = {
     _type: "brand";
     _key: string;
   }>;
-};
-
-export type LocaleString = {
-  _type: "localeString";
-  en?: string;
-  ar?: string;
+  whatsAppNumber?: string;
 };
 
 export type Tags = Array<{
@@ -1016,32 +801,6 @@ export type Tag = {
   _type: "tag";
   value?: string;
   label?: string;
-};
-
-export type MetaTag = {
-  _type: "metaTag";
-  metaAttributes?: Array<{
-    _key: string;
-  } & MetaAttribute>;
-};
-
-export type MetaAttribute = {
-  _type: "metaAttribute";
-  attributeKey?: string;
-  attributeType?: "string" | "image";
-  attributeValueImage?: {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    _type: "image";
-  };
-  attributeValueString?: string;
 };
 
 export type Twitter = {
@@ -1070,6 +829,57 @@ export type OpenGraph = {
   title?: string;
   description?: string;
   siteName?: string;
+};
+
+export type MetaTag = {
+  _type: "metaTag";
+  metaAttributes?: Array<{
+    _key: string;
+  } & MetaAttribute>;
+};
+
+export type MetaAttribute = {
+  _type: "metaAttribute";
+  attributeKey?: string;
+  attributeType?: "string" | "image";
+  attributeValueImage?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  attributeValueString?: string;
+};
+
+export type SeoMetaFields = {
+  _type: "seoMetaFields";
+  nofollowAttributes?: boolean;
+  metaTitle?: string;
+  metaDescription?: string;
+  metaImage?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  seoKeywords?: Array<string>;
+  openGraph?: OpenGraph;
+  additionalMetaTags?: Array<{
+    _key: string;
+  } & MetaTag>;
+  twitter?: Twitter;
 };
 
 export type SanityAssistInstructionTask = {
@@ -1217,11 +1027,13 @@ export type TranslationMetadata = {
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
-  translations?: Array<{
-    _key: string;
-  } & InternationalizedArrayReferenceValue>;
+  translations?: InternationalizedArrayReference;
   schemaTypes?: Array<string>;
 };
+
+export type InternationalizedArrayReference = Array<{
+  _key: string;
+} & InternationalizedArrayReferenceValue>;
 
 export type InternationalizedArrayReferenceValue = {
   _type: "internationalizedArrayReferenceValue";
@@ -1275,6 +1087,12 @@ export type Blog = {
   language?: "en" | "ar";
 };
 
+export type Slug = {
+  _type: "slug";
+  current?: string;
+  source?: string;
+};
+
 export type Offer = {
   _id: string;
   _type: "offer";
@@ -1305,28 +1123,6 @@ export type Fragment = {
   header?: Header;
   footer?: Footer;
   language?: "en" | "ar";
-};
-
-export type Footer = {
-  _type: "footer";
-  centerFarrari?: CustomImage;
-  servicesList?: LinkList;
-  linkList?: LinkList;
-  agmcLogo?: CustomImage;
-  copyrightText?: string;
-  footerLogo2?: CustomImage;
-  privacyPolicyLink?: LinkList;
-};
-
-export type Header = {
-  _type: "header";
-  callUs?: string;
-  contact?: string;
-  lang?: LocaleString;
-  headerLogo?: CustomImage;
-  cornerLogo?: string;
-  headerLink?: LinkList;
-  privacyPolicyLink?: LinkList;
 };
 
 export type Page = {
@@ -1425,55 +1221,6 @@ export type Service = {
   language?: "en" | "ar";
 };
 
-export type SeoMetaFields = {
-  _type: "seoMetaFields";
-  nofollowAttributes?: boolean;
-  metaTitle?: string;
-  metaDescription?: string;
-  metaImage?: {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    _type: "image";
-  };
-  seoKeywords?: Array<string>;
-  openGraph?: OpenGraph;
-  additionalMetaTags?: Array<{
-    _key: string;
-  } & MetaTag>;
-  twitter?: Twitter;
-};
-
-export type CallToAction = {
-  _type: "callToAction";
-  buttonText?: string;
-  link?: Link;
-};
-
-export type CustomImage = {
-  _type: "customImage";
-  image?: {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    _type: "image";
-  };
-  altText?: string;
-  isImageFullWidth?: boolean;
-};
-
 export type Post = {
   _id: string;
   _type: "post";
@@ -1529,10 +1276,6 @@ export type Person = {
   };
 };
 
-export type InternationalizedArrayReference = Array<{
-  _key: string;
-} & InternationalizedArrayReferenceValue>;
-
 export type SanityImagePaletteSwatch = {
   _type: "sanity.imagePaletteSwatch";
   background?: string;
@@ -1559,20 +1302,15 @@ export type SanityImageDimensions = {
   aspectRatio?: number;
 };
 
-export type SanityImageHotspot = {
-  _type: "sanity.imageHotspot";
-  x?: number;
-  y?: number;
-  height?: number;
-  width?: number;
-};
-
-export type SanityImageCrop = {
-  _type: "sanity.imageCrop";
-  top?: number;
-  bottom?: number;
-  left?: number;
-  right?: number;
+export type SanityImageMetadata = {
+  _type: "sanity.imageMetadata";
+  location?: Geopoint;
+  dimensions?: SanityImageDimensions;
+  palette?: SanityImagePalette;
+  lqip?: string;
+  blurHash?: string;
+  hasAlpha?: boolean;
+  isOpaque?: boolean;
 };
 
 export type SanityFileAsset = {
@@ -1595,6 +1333,13 @@ export type SanityFileAsset = {
   path?: string;
   url?: string;
   source?: SanityAssetSourceData;
+};
+
+export type SanityAssetSourceData = {
+  _type: "sanity.assetSourceData";
+  name?: string;
+  id?: string;
+  url?: string;
 };
 
 export type SanityImageAsset = {
@@ -1620,17 +1365,6 @@ export type SanityImageAsset = {
   source?: SanityAssetSourceData;
 };
 
-export type SanityImageMetadata = {
-  _type: "sanity.imageMetadata";
-  location?: Geopoint;
-  dimensions?: SanityImageDimensions;
-  palette?: SanityImagePalette;
-  lqip?: string;
-  blurHash?: string;
-  hasAlpha?: boolean;
-  isOpaque?: boolean;
-};
-
 export type Geopoint = {
   _type: "geopoint";
   lat?: number;
@@ -1638,20 +1372,7 @@ export type Geopoint = {
   alt?: number;
 };
 
-export type Slug = {
-  _type: "slug";
-  current?: string;
-  source?: string;
-};
-
-export type SanityAssetSourceData = {
-  _type: "sanity.assetSourceData";
-  name?: string;
-  id?: string;
-  url?: string;
-};
-
-export type AllSanitySchemaTypes = HomeBlog | BlogImage | FleetManagement | ContactUsForm | ExtendedWarrantyForm | ServiceCard | Location | ServiceCart | ServiceBookedTesla | ServiceBooked | LinkItem | ServiceListing | FaqSection | Testimonial | LogoList | CarServicesList | LocaleText | TermsAndConditionSection | HomeWorkFlow | HomeHeroSlider | RichTextTitle | HomeCta | ImageRichText | RichText | ScrollContent | HomeFleet | HomeIntro | HomeTesla | TeslaForm | Link | InfoSection | BlockContent | LinkList | Testimonials | Faq | LocaleBlockContent | Settings | LocaleString | Tags | Tag | MetaTag | MetaAttribute | Twitter | OpenGraph | SanityAssistInstructionTask | SanityAssistTaskStatus | SanityAssistSchemaTypeAnnotations | SanityAssistOutputType | SanityAssistOutputField | SanityAssistInstructionContext | AssistInstructionContext | SanityAssistInstructionUserInput | SanityAssistInstructionPrompt | SanityAssistInstructionFieldRef | SanityAssistInstruction | SanityAssistSchemaTypeField | InternationalizedArrayTextValue | InternationalizedArrayStringValue | InternationalizedArrayText | InternationalizedArrayString | TranslationMetadata | InternationalizedArrayReferenceValue | Blog | Offer | Fragment | Footer | Header | Page | Service | SeoMetaFields | CallToAction | CustomImage | Post | Person | InternationalizedArrayReference | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageHotspot | SanityImageCrop | SanityFileAsset | SanityImageAsset | SanityImageMetadata | Geopoint | Slug | SanityAssetSourceData;
+export type AllSanitySchemaTypes = HomeBlog | BlogImage | TeslaForm | FleetManagement | ContactUsForm | ExtendedWarrantyForm | ServiceCard | Location | ServiceCart | ServiceBookedTesla | ServiceBooked | LinkItem | LinkList | ServiceListing | FaqSection | Testimonial | LogoList | CarServicesList | LocaleText | LocaleString | CustomImage | LocaleBlockContent | TermsAndConditionSection | HomeWorkFlow | HomeHeroSlider | RichTextTitle | HomeCta | ImageRichText | RichText | ScrollContent | HomeFleet | HomeIntro | HomeTesla | Link | CallToAction | InfoSection | BlockContent | Footer | Header | Testimonials | SanityImageCrop | SanityImageHotspot | Faq | Settings | Tags | Tag | Twitter | OpenGraph | MetaTag | MetaAttribute | SeoMetaFields | SanityAssistInstructionTask | SanityAssistTaskStatus | SanityAssistSchemaTypeAnnotations | SanityAssistOutputType | SanityAssistOutputField | SanityAssistInstructionContext | AssistInstructionContext | SanityAssistInstructionUserInput | SanityAssistInstructionPrompt | SanityAssistInstructionFieldRef | SanityAssistInstruction | SanityAssistSchemaTypeField | InternationalizedArrayTextValue | InternationalizedArrayStringValue | InternationalizedArrayText | InternationalizedArrayString | TranslationMetadata | InternationalizedArrayReference | InternationalizedArrayReferenceValue | Blog | Slug | Offer | Fragment | Page | Service | Post | Person | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint;
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ./sanity/lib/queries.ts
 // Variable: settingsQuery
@@ -1760,6 +1481,7 @@ export type SettingsQueryResult = {
     _type: "brand";
     _key: string;
   }>;
+  whatsAppNumber?: string;
 } | null;
 // Variable: getPageQuery
 // Query: *[_type == 'page' && slug.current == $slug][0]{    _id,    _type,    name,    slug,    heading,    subheading,    "pageBuilder": pageBuilder[]{      ...,      _type == "callToAction" => {          link {      ...,        _type == "link" => {    "page": page->slug.current,    "post": post->slug.current  }      },      },      _type == "location" => {      ...,      locations[]{         ...,        "relatedServices": relatedServices[]->{            _id,            title,            slug,            _type          }      }      },      _type == "infoSection" => {        content[]{          ...,          markDefs[]{            ...,              _type == "link" => {    "page": page->slug.current,    "post": post->slug.current  }          }        }      },    },  }
@@ -1978,38 +1700,7 @@ export type GetPageQueryResult = {
     _type: "homeIntro";
     heading?: string;
     subheading?: string;
-    introText?: Array<{
-      children?: Array<{
-        marks?: Array<string>;
-        text?: string;
-        _type: "span";
-        _key: string;
-      }>;
-      style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
-      listItem?: "bullet" | "number";
-      markDefs?: Array<{
-        linkType?: "href" | "page" | "post";
-        href?: string;
-        page?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "page";
-        };
-        post?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "post";
-        };
-        openInNewTab?: boolean;
-        _type: "link";
-        _key: string;
-      }>;
-      level?: number;
-      _type: "block";
-      _key: string;
-    }>;
+    introText?: BlockContent;
     leftBottomImage?: CustomImage;
     rihgtTopImage?: CustomImage;
   } | {
@@ -2034,6 +1725,7 @@ export type GetPageQueryResult = {
     _type: "homeWorkFlow";
     image?: CustomImage;
     heading?: string;
+    subHeading?: string;
     workFlow?: Array<{
       workName?: string;
       workDesc?: string;
@@ -2044,38 +1736,7 @@ export type GetPageQueryResult = {
     _key: string;
     _type: "imageRichText";
     leftImage?: CustomImage;
-    aboutAutocare?: Array<{
-      children?: Array<{
-        marks?: Array<string>;
-        text?: string;
-        _type: "span";
-        _key: string;
-      }>;
-      style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
-      listItem?: "bullet" | "number";
-      markDefs?: Array<{
-        linkType?: "href" | "page" | "post";
-        href?: string;
-        page?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "page";
-        };
-        post?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "post";
-        };
-        openInNewTab?: boolean;
-        _type: "link";
-        _key: string;
-      }>;
-      level?: number;
-      _type: "block";
-      _key: string;
-    }>;
+    aboutAutocare?: BlockContent;
   } | {
     _key: string;
     _type: "infoSection";
@@ -2117,38 +1778,7 @@ export type GetPageQueryResult = {
       serviceName?: string;
       poptitle?: string;
       phoneNo?: string;
-      address?: Array<{
-        children?: Array<{
-          marks?: Array<string>;
-          text?: string;
-          _type: "span";
-          _key: string;
-        }>;
-        style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
-        listItem?: "bullet" | "number";
-        markDefs?: Array<{
-          linkType?: "href" | "page" | "post";
-          href?: string;
-          page?: {
-            _ref: string;
-            _type: "reference";
-            _weak?: boolean;
-            [internalGroqTypeReferenceTo]?: "page";
-          };
-          post?: {
-            _ref: string;
-            _type: "reference";
-            _weak?: boolean;
-            [internalGroqTypeReferenceTo]?: "post";
-          };
-          openInNewTab?: boolean;
-          _type: "link";
-          _key: string;
-        }>;
-        level?: number;
-        _type: "block";
-        _key: string;
-      }>;
+      address?: BlockContent;
       timingLabel1?: string;
       workingHours?: string;
       fridayTiming?: {
@@ -2183,38 +1813,7 @@ export type GetPageQueryResult = {
   } | {
     _key: string;
     _type: "richTextTitle";
-    aboutsection?: Array<{
-      children?: Array<{
-        marks?: Array<string>;
-        text?: string;
-        _type: "span";
-        _key: string;
-      }>;
-      style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
-      listItem?: "bullet" | "number";
-      markDefs?: Array<{
-        linkType?: "href" | "page" | "post";
-        href?: string;
-        page?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "page";
-        };
-        post?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "post";
-        };
-        openInNewTab?: boolean;
-        _type: "link";
-        _key: string;
-      }>;
-      level?: number;
-      _type: "block";
-      _key: string;
-    }>;
+    aboutsection?: BlockContent;
   } | {
     _key: string;
     _type: "scrollContent";
@@ -2226,71 +1825,9 @@ export type GetPageQueryResult = {
       title?: string;
       subTitle?: string;
     };
-    heading?: Array<{
-      children?: Array<{
-        marks?: Array<string>;
-        text?: string;
-        _type: "span";
-        _key: string;
-      }>;
-      style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
-      listItem?: "bullet" | "number";
-      markDefs?: Array<{
-        linkType?: "href" | "page" | "post";
-        href?: string;
-        page?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "page";
-        };
-        post?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "post";
-        };
-        openInNewTab?: boolean;
-        _type: "link";
-        _key: string;
-      }>;
-      level?: number;
-      _type: "block";
-      _key: string;
-    }>;
+    heading?: BlockContent;
     nextSteps?: {
-      steps?: Array<{
-        children?: Array<{
-          marks?: Array<string>;
-          text?: string;
-          _type: "span";
-          _key: string;
-        }>;
-        style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
-        listItem?: "bullet" | "number";
-        markDefs?: Array<{
-          linkType?: "href" | "page" | "post";
-          href?: string;
-          page?: {
-            _ref: string;
-            _type: "reference";
-            _weak?: boolean;
-            [internalGroqTypeReferenceTo]?: "page";
-          };
-          post?: {
-            _ref: string;
-            _type: "reference";
-            _weak?: boolean;
-            [internalGroqTypeReferenceTo]?: "post";
-          };
-          openInNewTab?: boolean;
-          _type: "link";
-          _key: string;
-        }>;
-        level?: number;
-        _type: "block";
-        _key: string;
-      }>;
+      steps?: BlockContent;
       stepsBackgroundImage?: CustomImage;
     };
     BookingSummary?: {
@@ -2369,38 +1906,7 @@ export type GetPageQueryResult = {
     _key: string;
     _type: "termsAndConditionSection";
     title?: string;
-    richText?: Array<{
-      children?: Array<{
-        marks?: Array<string>;
-        text?: string;
-        _type: "span";
-        _key: string;
-      }>;
-      style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
-      listItem?: "bullet" | "number";
-      markDefs?: Array<{
-        linkType?: "href" | "page" | "post";
-        href?: string;
-        page?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "page";
-        };
-        post?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "post";
-        };
-        openInNewTab?: boolean;
-        _type: "link";
-        _key: string;
-      }>;
-      level?: number;
-      _type: "block";
-      _key: string;
-    }>;
+    richText?: BlockContent;
   } | {
     _key: string;
     _type: "teslaForm";
@@ -2728,6 +2234,7 @@ export type SiteSettingEnQueryResult = {
     _type: "brand";
     _key: string;
   }>;
+  whatsAppNumber?: string;
 } | null;
 // Variable: siteSettingArQuery
 // Query: *[_type == 'settings' ][0]{  ...,  "addThisService" : addThisService.ar,  "addVehicleToContinue" : addVehicleToContinue.ar,  "serviceAdded" : serviceAdded.ar,  "recommended" : recommended.ar,  "serviceAlert" : serviceAlert.ar,  "bookService" : bookService.ar,  "bookServiceDes" : bookServiceDes.ar,  "addVehicle" : addVehicle.ar,  "testimonialHeading" : testimonialHeading.ar,  "testimonialSubHeading" : testimonialSubHeading.ar,  "faqTitle" : faqTitle.ar,  fragmentItem{  ...,  "addressLine1" : addressLine1.ar,  "addressLine2" : addressLine2.ar,  "OpenDay" : OpenDay.ar,  "endDay" : endDay.ar,  "followUs" : followUs.ar,  "facebookTitle" : facebookTitle.ar,  "instagramTitle" : instagramTitle.ar,  "twitterTitle" : twitterTitle.ar,  "youtubeTitle" : youtubeTitle.ar,},serviceBookForm{...,carImage,stepOne{...,"whiteHeading":whiteHeading.ar,"redHeading": redHeading.ar,"brandLabel": brandLabel.ar,"brandPlaceholder": brandPlaceholder.ar,"modelLabel": modelLabel.ar,"modelPlaceholder": modelPlaceholder.ar,"yearLabel": yearLabel.ar,"yearPlaceholder": yearPlaceholder.ar,"numberPlateLabel": numberPlateLabel.ar,"numberPlatePlaceholder": numberPlatePlaceholder.ar,"proceedBtn": proceedBtn.ar},stepTwo{...,"whiteHeading":whiteHeading.ar,"redHeading": redHeading.ar,"nameLabel": nameLabel.ar,"namePlaceholder": namePlaceholder.ar,"countryLabel": countryLabel.ar,"phoneLabel": phoneLabel.ar,"phonePlaceholder": phonePlaceholder.ar,"emailLabel": emailLabel.ar,"emailPlaceholder": emailPlaceholder.ar,"proceedBtn": proceedBtn.ar}}}
@@ -2835,6 +2342,7 @@ export type SiteSettingArQueryResult = {
     _type: "brand";
     _key: string;
   }>;
+  whatsAppNumber?: string;
 } | null;
 // Variable: getServiceDetailQuery
 // Query: *[_type == 'service' && slug.current == $slug][0]{     ...,     link -> {              "slug": slug.current          }  }
