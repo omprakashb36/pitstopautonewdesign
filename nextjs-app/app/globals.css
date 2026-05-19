@@ -10,7 +10,7 @@
     font-family: var(--font-cairo), sans-serif;
   }
   
-  h1,.h1 { font-size: 36px; font-weight: 800; line-height: 1.1; }
+  h1,.h1,.richTextTitle h1 { font-size: 36px; font-weight: 800; line-height: 1.1; }
   @screen md { h1,.h1 { font-size: 42px; } }
   @screen lg { h1,.h1 { font-size: 48px; } }
   @screen xl { h1,.h1 { font-size: 54px; } }
@@ -66,11 +66,11 @@
   @screen 3xl { .display-s { font-size: 50px; } }
   
   .body-xl { font-size: 30px; font-weight: 400; line-height: 1.5; }
-  .body-l { font-size: 22px; font-weight: 400; line-height: 1.5; }
-  .body-m { font-size: 20px; font-weight: 400; line-height: 1.5; }
-  .body-base { font-size: 18px; font-weight: 400; line-height: 1.5; }
-  .body-s { font-size: 16px; font-weight: 400; line-height: 1.5; }
-  .body-xs { font-size: 15px; font-weight: 400; line-height: 1.5; }
+  .body-l { font-size: 28px; font-weight: 400; line-height: 1.5; }
+  .body-m { font-size: 24px; font-weight: 400; line-height: 1.5; }
+  .body-base { font-size: 22px; font-weight: 400; line-height: 1.5; }
+  .body-s { font-size: 20px; font-weight: 400; line-height: 1.5; }
+  .body-xs { font-size: 18px; font-weight: 400; line-height: 1.5; }
   
   .caption-16 { font-size: 16px; font-weight: 400; line-height: 1.5; }
   .caption-14 { font-size: 14px; font-weight: 400; line-height: 1.5; }
@@ -79,15 +79,16 @@
 
 .container-grid {
   @apply w-full mx-auto
-         lg:max-w-[864px]
-         xl:max-w-[1080px]
-         2xl:max-w-[1280px]
-         3xl:max-w-[1640px];
+         lg:max-w-[864px] lg:min-w-[864px]
+         xl:max-w-[1080px] xl:min-w-[1080px]
+         2xl:max-w-[1280px] 2xl:min-w-[1280px]
+         3xl:max-w-[1640px] 3xl:min-w-[1640px];
 }
 }
 
 body{
-    @apply dark:bg-black bg-[#FFFFFF]
+    @apply dark:bg-black bg-[#FFFFFF];
+    overflow-x: hidden;
 }
 .container{
     max-width: 1358px;
@@ -195,7 +196,7 @@ margin-top: 1px !important;
 }
 
 .richTextTitle h1{
-    @apply mb-8 text-5xl xl:text-[100px] md:mb-5 font-shoulders font-normal dark:text-white text-black
+    @apply mb-8 md:mb-[50px] font-host font-normal dark:text-white text-black
 }
 
 .richTextTitle h1{
@@ -407,7 +408,11 @@ background: rgb(194 0 52);
     display: none;
 }
 .bgtrans{
-    background: linear-gradient(180deg, #000000 0%, rgba(0, 0, 0, 0) 62.8%);
+    background: #211D1D;
+  filter: blur(85px);
+  top: 0;
+  height: 22%;
+  width: 100%;
 }
 .testimonial-card-wrapper p,.testimonial-card-wrapper p strong{
     @apply dark:text-[#FAEADC] text-black 
@@ -524,11 +529,11 @@ a.opacity-0{
     position: relative;
     z-index: 9;
 }
-.dark .logoListSlider{
+/*.dark .logoListSlider{
 margin-top: 0px;
 padding-top: 20px;
 padding-bottom: 20px;
-}
+}*/
 .light .serviceCardList,.light .homeTeslaContent,.light .hFleetContent{
     background: transparent;
 }
@@ -698,6 +703,7 @@ border: solid 1px #faeadc33;
     }
 .heroSlide .swiper-pagination{
     bottom: 20px!important;
+    display: none!important;
 }
 .heroSlidelight::before{
     position: absolute;

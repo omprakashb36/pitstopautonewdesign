@@ -176,14 +176,77 @@ export default function HeroSlider({ block }: HeroSliderProps) {
 
     const customSelectStyles = {
       ...selectStyles,
+      control: (provided: any, state: any) => ({
+        ...provided,
+        backgroundColor: "transparent",
+        border: "none",
+        boxShadow: "none",
+        minHeight: "auto",
+        padding: 0,
+        "&:hover": {
+          border: "none",
+        },
+        cursor: "pointer",
+      }),
+      valueContainer: (provided: any) => ({
+        ...provided,
+        padding: 0,
+      }),
+      input: (provided: any) => ({
+        ...provided,
+        margin: 0,
+        padding: 0,
+        color: "white",
+        fontFamily: "'Host Grotesk', sans-serif",
+        fontSize: "20px",
+      }),
+      singleValue: (provided: any) => ({
+        ...provided,
+        color: "white",
+        fontFamily: "'Host Grotesk', sans-serif",
+        fontSize: "20px",
+        margin: 0,
+      }),
+      placeholder: (provided: any) => ({
+        ...provided,
+        color: "rgba(255, 255, 255, 0.6)",
+        fontFamily: "'Host Grotesk', sans-serif",
+        fontSize: "20px",
+        margin: 0,
+      }),
+      indicatorSeparator: () => ({
+        display: "none",
+      }),
+      dropdownIndicator: (provided: any) => ({
+        ...provided,
+        color: "white",
+        padding: 0,
+        "&:hover": {
+          color: "white",
+        },
+      }),
       menuList: (provided: any) => ({
         ...provided,
         maxHeight: "200px",
         overflowY: "auto",
+        backgroundColor: "#1a1a1a",
+      }),
+      option: (provided: any, state: any) => ({
+        ...provided,
+        backgroundColor: state.isFocused ? "#FF3300" : "transparent",
+        color: "white",
+        fontFamily: "'Host Grotesk', sans-serif",
+        "&:active": {
+          backgroundColor: "#FF3300",
+        },
       }),
       menu: (provided: any) => ({
         ...provided,
         zIndex: 9999,
+        backgroundColor: "#1a1a1a",
+        border: "1px solid rgba(217,217,217,0.1)",
+        borderRadius: "12px",
+        overflow: "hidden",
       }),
     }
 
@@ -193,7 +256,6 @@ export default function HeroSlider({ block }: HeroSliderProps) {
         const target = e.currentTarget as HTMLElement
         const { scrollTop, scrollHeight, clientHeight } = target
 
-        // Only prevent default if we're not at the boundaries
         if ((e.deltaY < 0 && scrollTop > 0) || (e.deltaY > 0 && scrollTop < scrollHeight - clientHeight)) {
           e.preventDefault()
         }
@@ -217,12 +279,13 @@ export default function HeroSlider({ block }: HeroSliderProps) {
     }
 
     return (
-      <div className="homeForm">
-        <form onSubmit={carFormik.handleSubmit}>
-          <div className="flex gap-5">
-            <div className="formLabel min-w-[35%] selectReact border border-black/15 dark:border-white/20 rounded-[15px] space-y-2">
-              <label htmlFor="brand" className="block font-urbanist sandDrift text-xs uppercase text-gray-700">
-                {block?.brandName || "Brand"}
+      <div className="w-full">
+        <form onSubmit={carFormik.handleSubmit} className="w-full">
+          <div className="backdrop-blur-[30.5px] bg-[#FF3300]/[0.08] border border-[#ff3300] rounded-[40px] p-[20px] md:p-[20px] 3xl:p-[40px] flex flex-col md:flex-row items-center gap-[16px] w-full">
+            
+            <div className="flex-1 bg-white/[0.04] border border-[#d9d9d9]/10 rounded-[20px] px-[24px] 3xl:py-[20px] py-[15px] w-full flex flex-col justify-center 3xl:h-[88px] h-[78px]">
+              <label htmlFor="brand" className="block font-host font-medium text-[12px] uppercase text-white mb-[2px]">
+                {block?.brandName || "BRAND"}
               </label>
               <Select
                 id="brand"
@@ -234,13 +297,11 @@ export default function HeroSlider({ block }: HeroSliderProps) {
                   carFormik.setFieldValue("model", "")
                 }}
                 onBlur={carFormik.handleBlur}
-                placeholder={isLoading ? "Loading brands..." : block?.brandPlaceholder || "Select Brand"}
+                placeholder={isLoading ? "Loading..." : block?.brandPlaceholder || "Select"}
                 styles={customSelectStyles}
-                classNames={selectClassNames}
                 components={components}
                 isDisabled={isLoading}
                 isSearchable={!isMobileDevice}
-                className="font-urbanist"
                 menuPortalTarget={typeof document !== "undefined" ? document.body : null}
                 menuPosition="fixed"
                 menuPlacement="auto"
@@ -249,13 +310,11 @@ export default function HeroSlider({ block }: HeroSliderProps) {
                   return event.target === document
                 }}
                 onMenuOpen={() => {
-                  // Prevent body scroll when menu is open on mobile
                   if (isMobileDevice) {
                     document.body.style.overflow = "hidden"
                   }
                 }}
                 onMenuClose={() => {
-                  // Restore body scroll when menu closes
                   if (isMobileDevice) {
                     document.body.style.overflow = "unset"
                   }
@@ -264,7 +323,7 @@ export default function HeroSlider({ block }: HeroSliderProps) {
                   <div className="flex items-center gap-2">
                     {option.image?.image?.asset?._ref && (
                       <Image
-                        src={option.image?.image ? urlForImage(option.image.image)?.width(24)?.height(24)?.url() ?? "" : ""} // Sanity image helper
+                        src={option.image?.image ? urlForImage(option.image.image)?.width(24)?.height(24)?.url() ?? "" : ""}
                         alt={option.image.altText || option.label}
                         width={24}
                         height={24}
@@ -276,13 +335,13 @@ export default function HeroSlider({ block }: HeroSliderProps) {
                 )}
               />
               {carFormik.errors.brand && carFormik.touched.brand && (
-                <div className="mt-1 text-sm text-[#c00034] font-urbanist">{carFormik.errors.brand}</div>
+                <div className="mt-1 text-sm text-[#FF3300] font-host absolute -bottom-6">{carFormik.errors.brand}</div>
               )}
             </div>
 
-            <div className="formLabel min-w-[35%] selectReact border border-black/15 dark:border-white/20 rounded-[15px] space-y-2">
-              <label htmlFor="model" className="block sandDrift font-urbanist text-xs uppercase text-gray-700">
-                {block?.brandModelName || "Model"}
+            <div className="flex-1 bg-white/[0.04] border border-[#d9d9d9]/10 rounded-[20px] px-[24px] 3xl:py-[20px] py-[15px] w-full flex flex-col justify-center 3xl:h-[88px] h-[78px]">
+              <label htmlFor="model" className="block font-host font-medium text-[12px] uppercase text-white mb-[2px]">
+                {block?.brandModelName || "MODEL"}
               </label>
               <Select
                 id="model"
@@ -293,13 +352,11 @@ export default function HeroSlider({ block }: HeroSliderProps) {
                   carFormik.setFieldValue("model", option?.value || "")
                 }}
                 onBlur={carFormik.handleBlur}
-                placeholder={isLoading ? "Loading models..." : block?.brandModelPlaceholder || "Select Model"}
+                placeholder={isLoading ? "Loading..." : block?.brandModelPlaceholder || "Select"}
                 styles={customSelectStyles}
-                classNames={selectClassNames}
                 components={components}
                 isDisabled={!carFormik.values.brand || isLoading}
                 isSearchable={!isMobileDevice}
-                className="font-urbanist"
                 menuPortalTarget={typeof document !== "undefined" ? document.body : null}
                 menuPosition="fixed"
                 menuPlacement="auto"
@@ -308,32 +365,28 @@ export default function HeroSlider({ block }: HeroSliderProps) {
                   return event.target === document
                 }}
                 onMenuOpen={() => {
-                  // Prevent body scroll when menu is open on mobile
                   if (isMobileDevice) {
                     document.body.style.overflow = "hidden"
                   }
                 }}
                 onMenuClose={() => {
-                  // Restore body scroll when menu closes
                   if (isMobileDevice) {
                     document.body.style.overflow = "unset"
                   }
                 }}
               />
               {carFormik.errors.model && carFormik.touched.model && (
-                <div className="mt-1 text-sm text-[#c00034] font-urbanist">{carFormik.errors.model}</div>
+                <div className="mt-1 text-sm text-[#FF3300] font-host absolute -bottom-6">{carFormik.errors.model}</div>
               )}
             </div>
 
-            <div className="min-w-[200px]">
-              <Squircle cornerRadius={12} className="relative">
-                <button
-                  type="submit"
-                  className="w-full px-6 py-2 bg-[#C00034] h-[68.6px] text-[#FAEADC] font-urbanist font-medium hover:bg-[#C00034] hover:text-[#fff] transition-colors"
-                >
-                  {block?.SearchButtonText || "Search"}
-                </button>
-              </Squircle>
+            <div className="flex-1 w-full md:w-auto 3xl:h-[88px] h-[78px]">
+              <button
+                type="submit"
+                className="w-full h-full bg-[#FF3300] rounded-[20px] text-[#FCF3ED] font-host font-extrabold text-[16px] uppercase hover:bg-opacity-90 transition-colors flex items-center justify-center px-[40px] py-[16px]"
+              >
+                {block?.SearchButtonText || "SEARCH"}
+              </button>
             </div>
           </div>
         </form>
@@ -375,7 +428,7 @@ export default function HeroSlider({ block }: HeroSliderProps) {
             >
               {block?.slides?.map((slide) => (
                 <SwiperSlide key={slide._key} className="relative md:h-full min-h-[680px]">
-                  <div className="absolute inset-0 bgtrans z-10" />
+                  <div className="absolute bgtrans z-10" />
                   <div className="relative inline-block w-full h-full heroSlideinner">
 
 
@@ -398,34 +451,24 @@ export default function HeroSlider({ block }: HeroSliderProps) {
                     )}
 
                   </div>
-                  <div className="absolute md:bottom-[150px] bottom-[50px] ltr:xl:left-[116px] rtl:xl:right-[116px] ltr:md:left-[20px] rtl:md:right-[20px] z-[160] md:max-w-[650px] w-full md:px-0 px-5">
-                    {!isMobileDevice && (
-                      <Squircle cornerRadius={isMobileDevice ? 9 : 12} className="relative inline-block">
-                        <button
-                          onClick={() => setIsModalOpen(true)}
-                          className="inline-block px-6 py-3 gradientBG text-[#FAEADC] font-urbanist font-medium hover:bg-[#FAEADC] transition-colors"
-                        >
-                          {slide.buttonText}
-                        </button>
-                      </Squircle>
-                    )}
-                    <h2 className="md:text-[40px] md:mt-6 text-[30px] uppercase font-shoulders font-normal leading-[1] text-[#FAEADC] tracking-tight">
-                      {slide.heading}
-                    </h2>
-                    <h3 className="md:text-[55px] text-[40px] uppercase text-[#C00034] leading-[1] font-shoulders font-bold tracking-tight">
-                      {slide.subHeading}
-                    </h3>
-                    {isMobileDevice && (
-                      <Squircle cornerRadius={isMobileDevice ? 9 : 12} className="mt-5 relative">
-                        <button
-                          onClick={() => setIsModalOpen(true)}
-                          className="inline-block w-full px-6 py-3 gradientBG text-[#FAEADC] font-urbanist font-medium hover:bg-[#FAEADC] transition-colors"
-                        >
-                          {slide.buttonText}
-                        </button>
-                      </Squircle>
-                    )}
-                  </div>
+                    <div className="absolute lg:bottom-[240px] 3xl:bottom-[310px] bottom-[150px] left-1/2 -translate-x-1/2 z-20 w-full max-w-[1920px] px-6 lg:px-[140px] 3xl:px-[263px]">
+                      <div className="body-m font-host font-bold leading-[1.5] text-white">
+                        {slide.heading}
+                      </div>
+                      <h2 className="font-host font-extrabold text-[#FF3300] leading-[1.1]">
+                        {slide.subHeading}
+                      </h2>
+                      {isMobileDevice && (
+                        <Squircle cornerRadius={isMobileDevice ? 9 : 12} className="mt-5 relative">
+                          <button
+                            onClick={() => setIsModalOpen(true)}
+                            className="inline-block w-full px-6 py-3 bg-[#FF3300] text-[#FAEADC] font-medium hover:bg-[#FAEADC] transition-colors"
+                          >
+                            {slide.buttonText}
+                          </button>
+                        </Squircle>
+                      )}
+                    </div>
                 </SwiperSlide>
               ))}
             </Swiper>
@@ -459,7 +502,7 @@ export default function HeroSlider({ block }: HeroSliderProps) {
                 .map((slide) => (
 
                   <SwiperSlide key={slide._key} className="relative md:h-full min-h-[680px]">
-                    <div className="absolute inset-0 bgtrans z-10" />
+                    <div className="absolute bgtrans z-10" />
                     <div className="relative inline-block heroSlidelight w-full h-full">
 
 
@@ -482,18 +525,18 @@ export default function HeroSlider({ block }: HeroSliderProps) {
                       )}
 
                     </div>
-                    <div className="absolute md:bottom-[185px] bottom-[50px] ltr:xl:left-[116px] rtl:xl:right-[116px] ltr:md:left-[20px] rtl:md:right-[20px] z-20 md:max-w-[700px] w-full md:px-0 px-5">
-                      <h2 className="md:text-[24px] md:mt-6 text-[20px] uppercase font-urbanist font-bold leading-[1] text-[#000000] tracking-tight">
+                    <div className="absolute lg:bottom-[240px] 3xl:bottom-[310px] bottom-[150px] left-1/2 -translate-x-1/2 z-20 w-full max-w-[1920px] px-6 lg:px-[140px] 3xl:px-[263px]">
+                      <div className="body-m font-host font-bold leading-[1.5] text-white">
                         {slide.heading}
-                      </h2>
-                      <h3 className="md:text-[40px] text-[30px] uppercase text-[#C00034] leading-[1] font-urbanist font-black tracking-tight">
+                      </div>
+                      <h2 className="font-host font-extrabold text-[#FF3300] leading-[1.1]">
                         {slide.subHeading}
-                      </h3>
+                      </h2>
                       {isMobileDevice && (
                         <Squircle cornerRadius={isMobileDevice ? 9 : 12} className="mt-5 relative">
                           <button
                             onClick={() => setIsModalOpen(true)}
-                            className="inline-block w-full px-6 py-3 gradientBG text-[#FAEADC] font-urbanist font-medium hover:bg-[#FAEADC] transition-colors"
+                            className="inline-block w-full px-6 py-3 bg-[#FF3300] text-[#FAEADC] font-medium hover:bg-[#FAEADC] transition-colors"
                           >
                             {slide.buttonText}
                           </button>
@@ -514,12 +557,11 @@ export default function HeroSlider({ block }: HeroSliderProps) {
           width={50}
           height={150}
           alt="scroll down image"
-          src={theme === "light" ? "/images/scrollDownLight.svg" : "/images/scrollDown.svg"}
+          src={theme === "light" ? "/images/scrollDown.svg" : "/images/scrollDown.svg"}
         />
       </button>
       <div
-        className="absolute carSelectorForm dark:md:bottom-[60px] md:bottom-[90px] bottom-[50px] ltr:xl:left-[116px] rtl:xl:right-[116px] ltr:md:left-[20px] rtl:md:right-[20px] z-20 md:w-[calc(100%-40px)] 
-  xl:w-[calc(100%-116px)] w-full md:px-0 px-5"
+        className="absolute carSelectorForm 3xl:bottom-[124px] lg:bottom-[100px] md:bottom-[90px] bottom-[50px] left-1/2 -translate-x-1/2 z-20 w-full max-w-[1920px] px-6 lg:px-[140px] 3xl:px-[263px]"
       >
         <CarSelectorForm />
       </div>

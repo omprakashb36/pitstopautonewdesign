@@ -39,7 +39,7 @@ export default function LogoListComp({ block }: LogoListProps) {
     .flat()
 
   return (
-    <div className="relative logoListSlider mx-auto px-2 sm:px-6 md:px-[160px] bg-white dark:bg-black py-4">
+    <div className="relative logoListSlider w-full max-w-[1920px] mx-auto px-6 lg:px-[140px] 3xl:px-[263px] bg-transparent pb-8 z-30 3xl:-mt-[100px] lg:-mt-20 -mt-10 pointer-events-none">
       <div className="overflow-hidden">
         <style jsx>{`
         @keyframes scroll-left {
@@ -54,7 +54,7 @@ export default function LogoListComp({ block }: LogoListProps) {
 
         <div
           ref={scrollRef}
-          className="flex gap-5 w-max"
+          className="flex gap-[30px] items-center w-max opacity-50 hover:opacity-100 transition-opacity duration-300"
           style={{
             animation: "scroll-left 30s linear infinite",
           }}
@@ -62,15 +62,15 @@ export default function LogoListComp({ block }: LogoListProps) {
           {cloneLogos.map((logo, index) => (
             <div
               key={`${logo._key}-${index}`}
-              className="flex items-center justify-center w-[45px] h-[40px] flex-shrink-0"
+              className="flex items-center justify-center w-[60px] h-[60px] flex-shrink-0 pointer-events-auto"
               title={logo.logoImage?.altText}
             >
               <Image
                 src={urlForImage(logo?.logoImage?.image)?.url() || ""}
                 alt={logo?.logoImage?.altText || "logo"}
-                width={45}
-                height={40}
-                className="object-contain filter grayscale opacity-90 hover:opacity-100 transition-opacity"
+                width={60}
+                height={60}
+                className="object-contain filter grayscale hover:grayscale-0 transition-all hover:scale-110"
               />
             </div>
           ))}

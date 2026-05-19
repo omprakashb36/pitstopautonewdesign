@@ -57,14 +57,14 @@ function ServiceCard({ service, isHovered, onHover, onLeave }: ServiceCardProps)
   return (
     <Link
       href={`/${currentLocale}/services/${(link as any)?.slug?.replace(/^ar\//, "") || ""}`}
-      className={`h-[190px] min-h-[150px] md:h-[203px] overflow-hidden relative serviceCardList ${service.highlight ? "serviceCardListActive" : ""} transition-transform duration-300 ${isHovered ? "serviceCardListActive" : ""}`} onMouseEnter={onHover} onMouseLeave={onLeave}>
+      className={`h-[190px] min-h-[150px] md:h-[259px] overflow-hidden relative serviceCardList ${service.highlight ? "serviceCardListActive" : ""} transition-transform duration-300 ${isHovered ? "serviceCardListActive" : ""}`} onMouseEnter={onHover} onMouseLeave={onLeave}>
       <div
         className={`sListContent  h-full ${service.highlight ? "sListContentActive" : ""} transition-transform duration-300 ${isHovered ? "sListContentActive" : ""}`}>
         <div className=" flex flex-col">
-          <h3 className="text-[1rem] md:text-[21px] dark:text-[#FAEADC] text-[#000000] leading-[1] uppercase font-semibold font-shoulders">
+          <h3 className=" dark:text-[#FAEADC] text-[#000000] text-[14px] 2xl:text-[20px] 3xl:text-[28px] body-l">
             {service?.title}
           </h3>
-          <span className="text-[10px] mt-[6px] dark:text-white text-[#C00034] font-bold tracking-wider font-urbanist uppercase">{service?.schedule}</span>
+          <span className="text-[12px] mt-[6px] dark:text-white text-[#C00034] uppercase font-bold tracking-wider">{service?.schedule}</span>
           <div className="absolute bottom-0 serviceThumbnail ltr:right-0 rtl:right-0 md:h-auto h-[95px]  max-h-[127px] w-full">
             {service?.thumbnail?.altText && (
               <ImageComp
@@ -111,8 +111,9 @@ export default function CarServicesList({ block }: carServiceListProps) {
   const displayData = serviceData.length > 0 ? serviceData : [];
 
   return (
-    <div id="carListHome" className="w-full mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-[60px] 3xl:px-[116px] dark:bg-black bg-white text-white py-8 md:py-12 lg:py-16">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 md:gap-[20px] cardListHome">
+    <div id="carListHome" className="w-full mx-auto dark:bg-black bg-white text-white py-8 md:py-12 lg:py-16">
+      <div className="container-grid">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-[20px] 2xl:gap-8 3xl:gap-10 cardListHome">
         {block.serviceCard?.slice(0, 7).map((service, index) => {
           const rawSlug = service.selectServiceLink || ""
           // const cleanedSlug = rawSlug.startsWith("ar/") ? rawSlug.replace(/^ar\//, "") : rawSlug;
@@ -159,6 +160,7 @@ export default function CarServicesList({ block }: carServiceListProps) {
             </Link>
           </Squircle>
         }
+      </div>
       </div>
     </div>
   )

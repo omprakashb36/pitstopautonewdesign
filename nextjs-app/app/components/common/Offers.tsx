@@ -10,7 +10,7 @@ export default function OffersComp({ offers }: OfferListProps) {
   return (
     <>
       <section className="">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:gap-[33px] gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:gap-[24px] 3xl:gap-10 gap-5">
           {offers.map((offer)=>(
             <OfferCard offer={offer} key={offer._id}/>
           ))}         
