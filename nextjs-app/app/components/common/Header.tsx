@@ -113,7 +113,7 @@ export default function Header({ fragment, siteSettingData, services }: HeaderPr
                           className="object-contain"
                         />
                       </button>
-                      
+
                       <div className="langbtn lg:hidden ml-auto">
                         {currentLocale === "en" && (
                           <button onClick={() => switchLanguage("ar")} className="font-host font-bold text-[#801b01] text-sm border border-[#801b01] rounded-[12px] px-[20px] py-[8px] hover:bg-[#801b01] hover:text-white transition-colors duration-200">
@@ -169,7 +169,7 @@ export default function Header({ fragment, siteSettingData, services }: HeaderPr
                               </Link>
                             </div>
                           ))}
-                          
+
                           <div
                             className="md:hidden mt-4"
                             style={{
@@ -234,9 +234,9 @@ export default function Header({ fragment, siteSettingData, services }: HeaderPr
 
                     {/* Footer Section */}
                     <div className="flex flex-col lg:flex-row gap-[40px] 3xl:gap-[149px] w-full mt-[0px] 3xl:mt-[137px] pt-[40px] lg:pt-0 pb-[20px]">
-                      
+
                       {/* Address & Hours */}
-                      <div 
+                      <div
                         className="flex flex-col gap-[24px] w-full lg:w-[320px] shrink-0"
                         style={{
                           opacity: isMenuOpen ? 1 : 0,
@@ -257,7 +257,7 @@ export default function Header({ fragment, siteSettingData, services }: HeaderPr
                           <br />
                           {String(siteSettingData?.fragmentItem?.addressLine2 || "")}
                         </p>
-                        
+
                         <div className="flex flex-col gap-[4px] w-full">
                           <p className="font-host font-normal text-[28px] text-[#211d1d] leading-[1.5]">
                             {siteSettingData?.fragmentItem?.openTime}—{siteSettingData?.fragmentItem?.closeTime}
@@ -275,7 +275,7 @@ export default function Header({ fragment, siteSettingData, services }: HeaderPr
                       </div>
 
                       {/* Socials & Legal */}
-                      <div 
+                      <div
                         className="flex flex-col gap-[16px] lg:items-end w-full lg:w-auto mt-6 lg:mt-0"
                         style={{
                           opacity: isMenuOpen ? 1 : 0,
@@ -286,7 +286,7 @@ export default function Header({ fragment, siteSettingData, services }: HeaderPr
                         <p className="font-host font-medium text-[12px] text-[#393d45] leading-[1.5]">
                           {String(siteSettingData?.fragmentItem?.followUs || 'Follow us')}
                         </p>
-                        
+
                         <div className="flex flex-wrap items-center gap-[8px] font-host font-normal text-[16px]">
                           {[
                             { key: "instagram", link: siteSettingData?.fragmentItem?.instagramLink, title: siteSettingData?.fragmentItem?.instagramTitle || 'Instagram' },
@@ -390,7 +390,7 @@ export default function Header({ fragment, siteSettingData, services }: HeaderPr
           </Link>
         </div>
       </div>
-      <div className="md:absolute fixed bottom-0 topBtnFixed z-50 w-full ltr:md:max-w-[227px] rtl:md:max-w-[240px] md:h-[61px] h-[51px] max-w-[190px] lg:bottom-auto lg:top-[58px] ltr:right-0 rtl:left-0">
+      <div className="md:absolute fixed bottom-0 topBtnFixed z-50 w-full ltr:md:max-w-[227px] rtl:md:max-w-[240px] md:h-[61px] h-[51px] max-w-[190px] lg:bottom-auto lg:top-[41px] ltr:right-0 rtl:left-0">
         <Link href={`/${currentLocale}/contact-us`} className="w-full md:h-auto h-[51px]">
           <div className="flex">
             <svg className="mr-[-6px] shrink  md:h-[61px] h-[51px] rtl:scale-x-[-1] rtl:transform text-[#801B01]" width="58" height="74" viewBox="0 0 58 74" fill="none" xmlns="http://www.w3.org/2000/svg">

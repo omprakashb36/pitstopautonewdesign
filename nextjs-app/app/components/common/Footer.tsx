@@ -59,7 +59,7 @@ export default function Footer({ locale, fragment, siteSettingData, services }: 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-[40px] mt-10 3xl:mt-[60px]">
           
           {/* Left Column: Services & Links (Span 8) */}
-          <div className="col-span-1 lg:col-span-9 flex flex-col justify-between">
+          <div className="col-span-1 lg:col-span-9  flex-col justify-between lg:flex hidden">
             
             {/* Services List */}
             <div className="mb-8">
@@ -102,7 +102,7 @@ export default function Footer({ locale, fragment, siteSettingData, services }: 
           </div>
 
           {/* Right Column: Contact Info (Span 4) */}
-          <div className="col-span-1 lg:col-span-3 flex flex-col items-start lg:items-end justify-start lg:text-right gap-[24px]">
+          <div className="col-span-1 lg:col-span-3 lg:flex flex-col items-start lg:items-end hidden justify-start lg:text-right gap-[24px]">
             
             {/* Phone & Email */}
             <div className="flex flex-col items-start lg:items-end w-full">
@@ -184,7 +184,7 @@ export default function Footer({ locale, fragment, siteSettingData, services }: 
           </div>
 
           {/* Follow Us Section (Right) */}
-          <div className="flex flex-col items-center md:items-end justify-end order-2 md:order-3 text-center md:text-right gap-[16px]">
+          <div className="lg:flex flex-col items-center md:items-end hidden justify-end order-2 md:order-3 text-center md:text-right gap-[16px]">
             <p className="font-host font-medium text-[12px] text-[#393D45] dark:text-gray-400">
               {String(siteSettingData?.fragmentItem?.followUs || 'Follow us')}
             </p>

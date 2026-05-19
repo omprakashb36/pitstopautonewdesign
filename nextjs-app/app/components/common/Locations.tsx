@@ -24,7 +24,7 @@ const useDeviceDetection = () => {
   useEffect(() => {
     const mql = window.matchMedia("(max-width: 1023px)");
     const handler = (e: MediaQueryListEvent | MediaQueryList) => setIsMobileDevice(e.matches);
-    
+
     // Initial check
     setIsMobileDevice(mql.matches);
 
@@ -83,8 +83,8 @@ export default function Locations({ block }: LocationProps) {
     selectedService === "all"
       ? block?.locations
       : block?.locations?.filter((location) =>
-          location.relatedServices?.some((service) => (service as any)?.slug?.current === selectedService),
-        )
+        location.relatedServices?.some((service) => (service as any)?.slug?.current === selectedService),
+      )
 
   const locationOptions = [
     { value: "all", label: "All locations" },
@@ -311,216 +311,221 @@ export default function Locations({ block }: LocationProps) {
         MAP & LOCATIONS SECTION
         ======================================================== 
       */}
-      <div className="relative w-full bg-[#f7f7f7] dark:bg-[#121212] lg:h-[1000px] 3xl:h-[1274px]">
-        
-        {/* Absolute Full-Width Map Background Layer */}
-        <div className="absolute inset-0 w-full h-full pointer-events-none" ref={mapContainerRef}>
-          <Image
-            src="/images/uae-map.webp"
-            alt="Map of Pitstop locations in UAE"
-            fill
-            className="object-cover opacity-10 dark:opacity-20 mix-blend-multiply dark:mix-blend-screen"
-            priority
-            onLoad={() => {
-              setTimeout(() => {
-                if (mapContainerRef.current) {
-                  const { width, height } = mapContainerRef.current.getBoundingClientRect()
-                  setMapDimensions({ width, height })
-                }
-              }, 50)
-            }}
-          />
-        </div>
 
-        {/* Interactive Markers Layer (Absolute to Map) */}
-        <div className="absolute inset-0 w-full h-full pointer-events-none">
-          {mapDimensions.width > 0 && mapDimensions.height > 0 &&
-            filteredLocations?.map((location) => {
-              const markerPosition = getMarkerPosition(location?.coordinates as any)
-              const isActive = activeLocation === location.mapId
-              const isHovered = hoveredLocation === location.mapId
+      <div
+        className={`${toggle || block?.showFilters ? "mobileNavToggle" : "mobileNavToggle"} relative mapLocation`}
+      >
+        <div className="relative w-full bg-[#f7f7f7] dark:bg-[#121212] lg:pb-0 pb-24 lg:h-[1100px] 3xl:h-[1274px]">
 
-              return (
-                <div
-                  key={location.mapId}
-                  className="absolute pointer-events-auto"
-                  style={{
-                    left: markerPosition.left,
-                    top: markerPosition.top,
-                    transform: "translate(-50%, -50%)",
-                    zIndex: isHovered || isActive ? 50 : 10,
-                  }}
-                  onMouseEnter={() => setHoveredLocation(location.mapId!)}
-                  onMouseLeave={() => setHoveredLocation(null)}
-                >
-                  {/* The Dot */}
+          {/* Absolute Full-Width Map Background Layer */}
+          <div className="absolute inset-0 w-full h-full pointer-events-none" ref={mapContainerRef}>
+            <Image
+              src="/images/uae-map.webp"
+              alt="Map of Pitstop locations in UAE"
+              fill
+              className="object-cover opacity-10 dark:opacity-20 mix-blend-multiply dark:mix-blend-screen"
+              priority
+              onLoad={() => {
+                setTimeout(() => {
+                  if (mapContainerRef.current) {
+                    const { width, height } = mapContainerRef.current.getBoundingClientRect()
+                    setMapDimensions({ width, height })
+                  }
+                }, 50)
+              }}
+            />
+          </div>
+
+          {/* Foreground Content constrained to Grid */}
+          <div className="relative z-10 container-grid mx-auto w-full h-full px-6 lg:px-0 pt-12 lg:pt-[100px] pb-12 pointer-events-none">
+
+            {/* Location List Panel (4 columns) */}
+            <div className="w-full lg:w-[420px] 3xl:w-[500px] flex flex-col gap-[24px] pointer-events-auto 3xl:mt-[276px] 2xl:mt-[200px]">
+
+              <h2 className="text-[40px] font-extrabold text-pitstop-fiery-orange leading-[1.1] rtl:font-cairo ltr:font-host font-host">
+                {block?.heading || "Our Locations"}
+              </h2>
+
+              <div className="bg-white dark:bg-[#1A1A1A] rounded-[24px] p-[30px] 3xl:p-[40px] flex flex-col gap-[40px] shadow-sm w-full">
+                <h3 className="text-[28px] 3xl:text-[32px] font-extrabold text-pitstop-oil-black dark:text-white rtl:font-cairo ltr:font-host font-host leading-[1.1]">
+                  {block?.subHeading || "NAVIGATE"}
+                </h3>
+
+                {/* Scrollable list */}
+                <div className="max-h-[350px] 3xl:max-h-[500px] overflow-y-auto custom-scrollbar pr-2 flex flex-col gap-[24px] w-full">
+                  {filteredLocations?.map((location) => {
+                    const isActive = activeLocation === location.mapId;
+
+                    return (
+                      <div
+                        key={location.mapId}
+                        className="flex items-center gap-[12px] cursor-pointer transition-colors duration-300 group w-full"
+                        onClick={() => handleLocationSelect(location.mapId!)}
+                        onMouseEnter={() => setHoveredLocation(location.mapId!)}
+                        onMouseLeave={() => setHoveredLocation(null)}
+                      >
+                        {/* The list dot */}
+                        <div
+                          className={`shrink-0 w-[44px] h-[44px] rounded-[100px] flex items-center justify-center transition-colors ${isActive
+                              ? "bg-pitstop-fiery-orange text-white"
+                              : "bg-pitstop-oil-black dark:bg-[#333] text-white group-hover:bg-pitstop-fiery-orange/80"
+                            }`}
+                        >
+                          <p className="font-host font-bold text-[28px] uppercase mt-[2px] leading-[1.5]">
+                            {location.mapId}
+                          </p>
+                        </div>
+
+                        {/* Text */}
+                        <div className="flex flex-col w-full text-pitstop-oil-black dark:text-white leading-[1.5]">
+                          <p className={`font-host font-bold text-[20px] 3xl:text-[24px] capitalize ${isActive ? "text-pitstop-fiery-orange" : ""}`}>
+                            {location.title}
+                          </p>
+                          <p className="font-host font-medium text-[12px] opacity-80">
+                            {location.serviceName || "Pitstop Automotive Services LLC"}
+                          </p>
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          {/* Interactive Markers Layer (Absolute to Map) */}
+          <div className="lg:absolute inset-0 w-full h-full pointer-events-none">
+            {mapDimensions.width > 0 && mapDimensions.height > 0 &&
+              filteredLocations?.map((location) => {
+                const markerPosition = getMarkerPosition(location?.coordinates as any)
+                const isActive = activeLocation === location.mapId
+                const isHovered = hoveredLocation === location.mapId
+
+                return (
                   <div
-                    className={`w-[44px] h-[44px] rounded-full flex items-center justify-center cursor-pointer transition-all duration-300 shadow-md ${
-                      isActive ? "bg-pitstop-fiery-orange text-white" : "bg-pitstop-oil-black dark:bg-[#2A2A2A] text-white"
-                    } ${isHovered ? "scale-110" : ""}`}
-                    onClick={() => handleLocationSelect(location.mapId!)}
+                    key={location.mapId}
+                    className="lg:absolute markerPositionLft pointer-events-auto"
+                    style={{
+                      left: markerPosition.left,
+                      top: markerPosition.top,
+                      transform: "translate(-50%, -50%)",
+                      zIndex: isHovered || isActive ? 50 : 10,
+                    }}
+                    onMouseEnter={() => setHoveredLocation(location.mapId!)}
+                    onMouseLeave={() => setHoveredLocation(null)}
                   >
-                    <span className="font-host font-bold text-[28px] uppercase mt-1">
-                      {location.mapId}
-                    </span>
-                  </div>
-
-                  {/* The Popup Box */}
-                  {(isHovered || isActive) && (
+                    {/* The Dot */}
                     <div
-                      className={`
+                      className={`w-[44px] mapPositionTxt h-[44px] rounded-full flex items-center justify-center cursor-pointer transition-all duration-300 shadow-md ${isActive ? "bg-pitstop-fiery-orange text-white" : "bg-pitstop-oil-black dark:bg-[#2A2A2A] text-white"
+                        } ${isHovered ? "scale-110" : ""}`}
+                      onClick={() => handleLocationSelect(location.mapId!)}
+                    >
+                      <span className="font-host font-bold text-[28px] uppercase mt-1">
+                        {location.mapId}
+                      </span>
+                    </div>
+
+                    {/* The Popup Box */}
+                    {(isHovered || isActive) && (
+                      <div
+                        className={`
                         absolute 
                         left-1/2 -translate-x-1/2 rtl:translate-x-1/2
                         top-[5%] mb-4 w-[320px] md:w-[400px]
                         bg-white dark:bg-[#1A1A1A] shadow-xl p-[24px] 
                         rounded-[30px] locationAddressTxt border border-pitstop-fiery-orange z-50
                       `}
-                    >
-                      <div className="mb-4">
-                        <h3 className="font-host font-bold text-[24px] text-pitstop-oil-black dark:text-white capitalize mb-1 leading-[1.2]">
-                          {location.poptitle}
-                        </h3>
-                        <p className="text-[12px] font-host font-medium opacity-80 text-pitstop-oil-black dark:text-white">
-                          {location.serviceName}
-                        </p>
-                      </div>
-
-                      <div className="flex items-start gap-[11px] mb-4">
-                        <Navigation className="w-[24px] h-[24px] shrink-0 text-pitstop-oil-black dark:text-white" />
-                        <div className="text-[16px] font-host text-pitstop-oil-black dark:text-white whitespace-pre-line leading-[1.5]">
-                          {location?.address?.length && (
-                            <PortableText value={location?.address as PortableTextBlock[]} />
-                          )}
+                      >
+                        <div className="mb-4">
+                          <h3 className="font-host font-bold text-[24px] text-pitstop-oil-black dark:text-white capitalize mb-1 leading-[1.2]">
+                            {location.poptitle}
+                          </h3>
+                          <p className="text-[12px] font-host font-medium opacity-80 text-pitstop-oil-black dark:text-white">
+                            {location.serviceName}
+                          </p>
                         </div>
-                      </div>
 
-                      {location?.phoneNo && (
-                        <div className="flex items-center gap-[11px] mb-4">
+                        <div className="flex items-start gap-[11px] mb-4">
+                          <Navigation className="w-[24px] h-[24px] shrink-0 text-pitstop-oil-black dark:text-white" />
+                          <div className="text-[16px] font-host text-pitstop-oil-black dark:text-white whitespace-pre-line leading-[1.5]">
+                            {location?.address?.length && (
+                              <PortableText value={location?.address as PortableTextBlock[]} />
+                            )}
+                          </div>
+                        </div>
+
+                        {location?.phoneNo && (
+                          <div className="flex items-center gap-[11px] mb-4">
+                            <Image
+                              src="/images/phone-icon.svg"
+                              alt="Phone"
+                              width={24}
+                              height={24}
+                              className="shrink-0 dark:invert"
+                            />
+                            <p className="text-[16px] font-host font-bold text-pitstop-oil-black dark:text-white leading-[1.5]">
+                              {location.phoneNo}
+                            </p>
+                          </div>
+                        )}
+
+                        <div className="border-t border-[#D9D9D9] dark:border-white/10 w-full mb-4" />
+
+                        <div className="flex items-start gap-[11px]">
                           <Image
-                            src="/images/phone-icon.svg"
-                            alt="Phone"
+                            src="/images/calendar-icon.svg"
+                            alt="Hours"
                             width={24}
                             height={24}
                             className="shrink-0 dark:invert"
                           />
-                          <p className="text-[16px] font-host font-bold text-pitstop-oil-black dark:text-white leading-[1.5]">
-                            {location.phoneNo}
-                          </p>
-                        </div>
-                      )}
+                          <div className="flex-1 flex flex-col gap-[11px] font-host text-[16px] text-pitstop-oil-black dark:text-white">
+                            <div className="flex justify-between items-center w-full">
+                              <span className="font-normal opacity-80">{location.timingLabel1}</span>
+                              <span className="font-bold">{location.workingHours}</span>
+                            </div>
 
-                      <div className="border-t border-[#D9D9D9] dark:border-white/10 w-full mb-4" />
+                            <div className="flex justify-between items-start w-full">
+                              <span className="font-normal opacity-80">
+                                {location?.fridayTiming?.fridayTimingLabel || "Friday"}
+                              </span>
+                              <div className="flex flex-col items-end font-bold">
+                                <p>{location?.fridayTiming?.morning}</p>
+                                <p>{location?.fridayTiming?.evening}</p>
+                              </div>
+                            </div>
 
-                      <div className="flex items-start gap-[11px]">
-                        <Image
-                          src="/images/calendar-icon.svg"
-                          alt="Hours"
-                          width={24}
-                          height={24}
-                          className="shrink-0 dark:invert"
-                        />
-                        <div className="flex-1 flex flex-col gap-[11px] font-host text-[16px] text-pitstop-oil-black dark:text-white">
-                          <div className="flex justify-between items-center w-full">
-                            <span className="font-normal opacity-80">{location.timingLabel1}</span>
-                            <span className="font-bold">{location.workingHours}</span>
-                          </div>
-
-                          <div className="flex justify-between items-start w-full">
-                            <span className="font-normal opacity-80">
-                              {location?.fridayTiming?.fridayTimingLabel || "Friday"}
-                            </span>
-                            <div className="flex flex-col items-end font-bold">
-                              <p>{location?.fridayTiming?.morning}</p>
-                              <p>{location?.fridayTiming?.evening}</p>
+                            <div className="flex justify-between items-center w-full">
+                              <span className="font-normal opacity-80">{location.timingLabel3 || "Sat"}</span>
+                              <span className="font-bold">{location.saturdayTime}</span>
                             </div>
                           </div>
+                        </div>
 
-                          <div className="flex justify-between items-center w-full">
-                            <span className="font-normal opacity-80">{location.timingLabel3 || "Sat"}</span>
-                            <span className="font-bold">{location.saturdayTime}</span>
+                        {location.mapUrl && (
+                          <div className="mt-6">
+                            <Link
+                              href={location.mapUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="flex items-center justify-center w-full bg-pitstop-fiery-orange hover:bg-pitstop-fiery-orange/90 text-white py-3 px-4 rounded-xl font-host font-bold transition-colors"
+                            >
+                              <Navigation className="w-5 h-5 mr-2" />
+                              Get Directions
+                            </Link>
                           </div>
-                        </div>
+                        )}
                       </div>
-
-                      {location.mapUrl && (
-                        <div className="mt-6">
-                          <Link
-                            href={location.mapUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex items-center justify-center w-full bg-pitstop-fiery-orange hover:bg-pitstop-fiery-orange/90 text-white py-3 px-4 rounded-xl font-host font-bold transition-colors"
-                          >
-                            <Navigation className="w-5 h-5 mr-2" />
-                            Get Directions
-                          </Link>
-                        </div>
-                      )}
-                    </div>
-                  )}
-                </div>
-              )
-            })}
-        </div>
-
-        {/* Foreground Content constrained to Grid */}
-        <div className="relative z-10 container-grid mx-auto w-full h-full px-6 lg:px-0 pt-12 lg:pt-[100px] pb-12 pointer-events-none">
-          
-          {/* Location List Panel (4 columns) */}
-          <div className="w-full lg:w-[420px] 3xl:w-[500px] flex flex-col gap-[24px] pointer-events-auto 3xl:mt-[200px] 2xl:mt-[344px]">
-            
-            <h2 className="text-[40px] font-extrabold text-pitstop-fiery-orange leading-[1.1] rtl:font-cairo ltr:font-host font-host">
-              {block?.heading || "Our Locations"}
-            </h2>
-
-            <div className="bg-white dark:bg-[#1A1A1A] rounded-[24px] p-[30px] 3xl:p-[40px] flex flex-col gap-[40px] shadow-sm w-full">
-              <h3 className="text-[28px] 3xl:text-[32px] font-extrabold text-pitstop-oil-black dark:text-white rtl:font-cairo ltr:font-host font-host leading-[1.1]">
-                {block?.subHeading || "NAVIGATE"}
-              </h3>
-              
-              {/* Scrollable list */}
-              <div className="max-h-[350px] 3xl:max-h-[500px] overflow-y-auto custom-scrollbar pr-2 flex flex-col gap-[24px] w-full">
-                {filteredLocations?.map((location) => {
-                  const isActive = activeLocation === location.mapId;
-                  
-                  return (
-                    <div
-                      key={location.mapId}
-                      className="flex items-center gap-[12px] cursor-pointer transition-colors duration-300 group w-full"
-                      onClick={() => handleLocationSelect(location.mapId!)}
-                      onMouseEnter={() => setHoveredLocation(location.mapId!)}
-                      onMouseLeave={() => setHoveredLocation(null)}
-                    >
-                      {/* The list dot */}
-                      <div
-                        className={`shrink-0 w-[44px] h-[44px] rounded-[100px] flex items-center justify-center transition-colors ${
-                          isActive 
-                            ? "bg-pitstop-fiery-orange text-white" 
-                            : "bg-pitstop-oil-black dark:bg-[#333] text-white group-hover:bg-pitstop-fiery-orange/80"
-                        }`}
-                      >
-                        <p className="font-host font-bold text-[28px] uppercase mt-[2px] leading-[1.5]">
-                          {location.mapId}
-                        </p>
-                      </div>
-                      
-                      {/* Text */}
-                      <div className="flex flex-col w-full text-pitstop-oil-black dark:text-white leading-[1.5]">
-                        <p className={`font-host font-bold text-[20px] 3xl:text-[24px] capitalize ${isActive ? "text-pitstop-fiery-orange" : ""}`}>
-                          {location.title}
-                        </p>
-                        <p className="font-host font-medium text-[12px] opacity-80">
-                          {location.serviceName || "Pitstop Automotive Services LLC"}
-                        </p>
-                      </div>
-                    </div>
-                  )
-                })}
-              </div>
-            </div>
-
+                    )}
+                  </div>
+                )
+              })}
           </div>
-        </div>
 
+
+
+        </div>
       </div>
     </section>
   )

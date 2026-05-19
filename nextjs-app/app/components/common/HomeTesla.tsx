@@ -74,7 +74,7 @@ export default function HomeTeslaComp({ block, index, className = "" }: HomeTesl
             1920px screen -> 1640px container, 40px gap
             1440px screen -> 1280px container, 24px gap
             ======================================================== */}
-        <div className="container-grid mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-y-0 lg:gap-x-[24px] 3xl:gap-x-[40px] relative z-10 px-0 lg:px-0">
+        <div className="container-grid mGridPadd0 mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-y-0 lg:gap-x-[24px] 3xl:gap-x-[40px] relative z-10 px-0 lg:px-0">
           
           {/* Mobile Image (Hidden on Desktop) */}
           <div className="lg:hidden relative h-[500px] w-full rounded-t-[40px] overflow-hidden order-1">

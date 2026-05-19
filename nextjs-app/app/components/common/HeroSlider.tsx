@@ -68,70 +68,70 @@ export default function HeroSlider({ block }: HeroSliderProps) {
   })
 
   useEffect(() => {
-  const fetchVehicleData = async () => {
-    setIsLoading(true)
-    try {
-      const [data, commonData] = await Promise.all([
-        getMakeModelList(),
-        getSiteSettingData({ locale: "en" }),
-      ])
-      setSiteSettings(commonData)
+    const fetchVehicleData = async () => {
+      setIsLoading(true)
+      try {
+        const [data, commonData] = await Promise.all([
+          getMakeModelList(),
+          getSiteSettingData({ locale: "en" }),
+        ])
+        setSiteSettings(commonData)
 
-      if (data.status && data?.data?.message) {
-        // Brands to exclude (case-insensitive)
-        const excludedBrands = ["articulated", "ford usa"]
+        if (data.status && data?.data?.message) {
+          // Brands to exclude (case-insensitive)
+          const excludedBrands = ["articulated", "ford usa"]
 
-        const uniqueBrands: string[] = [
-          ...new Set((data.data.message as { brand: string }[]).map((item) => item.brand)),
-        ]
+          const uniqueBrands: string[] = [
+            ...new Set((data.data.message as { brand: string }[]).map((item) => item.brand)),
+          ]
 
-        const brandOptions = uniqueBrands
-          .filter(
-            (brand) =>
-              Boolean(brand) &&
-              !excludedBrands.includes(brand.toLowerCase()) // only compare in lowercase
-          )
-          .sort()
-          .map((brand) => {
-            const match = commonData?.brands?.find(
-              (b: any) => b.brandValue?.toLowerCase() === brand.toLowerCase()
+          const brandOptions = uniqueBrands
+            .filter(
+              (brand) =>
+                Boolean(brand) &&
+                !excludedBrands.includes(brand.toLowerCase()) // only compare in lowercase
             )
+            .sort()
+            .map((brand) => {
+              const match = commonData?.brands?.find(
+                (b: any) => b.brandValue?.toLowerCase() === brand.toLowerCase()
+              )
 
-            return {
-              value: brand, // keep as-is
-              label: brand, // keep as-is
-              image: match?.carImage || null,
-            }
+              return {
+                value: brand, // keep as-is
+                label: brand, // keep as-is
+                image: match?.carImage || null,
+              }
+            })
+
+          setBrands(brandOptions)
+
+          const modelsByBrand: Record<string, { value: string; label: string }[]> = {}
+
+          uniqueBrands.forEach((brand: string) => {
+            if (!brand || excludedBrands.includes(brand.toLowerCase())) return
+
+            const brandModels = data.data.message
+              .filter((item: any) => item.brand === brand)
+              .map((item: any) => ({
+                value: item.item_name,
+                label: item.item_name,
+              }))
+
+            modelsByBrand[brand] = brandModels
           })
 
-        setBrands(brandOptions)
-
-        const modelsByBrand: Record<string, { value: string; label: string }[]> = {}
-
-        uniqueBrands.forEach((brand: string) => {
-          if (!brand || excludedBrands.includes(brand.toLowerCase())) return 
-
-          const brandModels = data.data.message
-            .filter((item: any) => item.brand === brand)
-            .map((item: any) => ({
-              value: item.item_name, 
-              label: item.item_name, 
-            }))
-
-          modelsByBrand[brand] = brandModels
-        })
-
-        setModels(modelsByBrand)
+          setModels(modelsByBrand)
+        }
+      } catch (error) {
+        console.error("Error fetching vehicle data:", error)
+      } finally {
+        setIsLoading(false)
       }
-    } catch (error) {
-      console.error("Error fetching vehicle data:", error)
-    } finally {
-      setIsLoading(false)
     }
-  }
 
-  fetchVehicleData()
-}, [])
+    fetchVehicleData()
+  }, [])
 
 
   useEffect(() => {
@@ -282,7 +282,7 @@ export default function HeroSlider({ block }: HeroSliderProps) {
       <div className="w-full">
         <form onSubmit={carFormik.handleSubmit} className="w-full">
           <div className="backdrop-blur-[30.5px] bg-[#FF3300]/[0.08] border border-[#ff3300] rounded-[40px] p-[20px] md:p-[20px] 3xl:p-[40px] flex flex-col md:flex-row items-center gap-[16px] w-full">
-            
+
             <div className="flex-1 bg-white/[0.04] border border-[#d9d9d9]/10 rounded-[20px] px-[24px] 3xl:py-[20px] py-[15px] w-full flex flex-col justify-center 3xl:h-[88px] h-[78px]">
               <label htmlFor="brand" className="block font-host font-medium text-[12px] uppercase text-white mb-[2px]">
                 {block?.brandName || "BRAND"}
@@ -394,14 +394,14 @@ export default function HeroSlider({ block }: HeroSliderProps) {
     )
   }
 
- 
- if (!mounted) {
-  return (
-    <div className="min-h-[650px] md:min-h-screen flex items-center justify-center">
-      
-    </div>
-  )
-}
+
+  if (!mounted) {
+    return (
+      <div className="min-h-[650px] md:min-h-screen flex items-center justify-center">
+
+      </div>
+    )
+  }
 
 
 
@@ -451,24 +451,28 @@ export default function HeroSlider({ block }: HeroSliderProps) {
                     )}
 
                   </div>
-                    <div className="absolute lg:bottom-[240px] 3xl:bottom-[310px] bottom-[150px] left-1/2 -translate-x-1/2 z-20 w-full max-w-[1920px] px-6 lg:px-[140px] 3xl:px-[263px]">
-                      <div className="body-m font-host font-bold leading-[1.5] text-white">
-                        {slide.heading}
+                  <div className="absolute lg:bottom-[240px] 3xl:bottom-[310px] bottom-[150px] left-1/2 -translate-x-1/2 z-20 w-full">
+                    <div className="container-grid">
+                      <div className="3xl:px-[123px] 2xl:px-[80px]">
+                        <div className="body-m font-host font-bold leading-[1.5] text-white">
+                          {slide.heading}
+                        </div>
+                        <h2 className="font-host font-extrabold text-[#FF3300] leading-[1.1]">
+                          {slide.subHeading}
+                        </h2>
                       </div>
-                      <h2 className="font-host font-extrabold text-[#FF3300] leading-[1.1]">
-                        {slide.subHeading}
-                      </h2>
-                      {isMobileDevice && (
-                        <Squircle cornerRadius={isMobileDevice ? 9 : 12} className="mt-5 relative">
-                          <button
-                            onClick={() => setIsModalOpen(true)}
-                            className="inline-block w-full px-6 py-3 bg-[#FF3300] text-[#FAEADC] font-medium hover:bg-[#FAEADC] transition-colors"
-                          >
-                            {slide.buttonText}
-                          </button>
-                        </Squircle>
-                      )}
                     </div>
+                    {isMobileDevice && (
+                      <Squircle cornerRadius={isMobileDevice ? 9 : 12} className="mt-5 relative">
+                        <button
+                          onClick={() => setIsModalOpen(true)}
+                          className="inline-block w-full px-6 py-3 bg-[#FF3300] text-[#FAEADC] font-medium hover:bg-[#FAEADC] transition-colors"
+                        >
+                          {slide.buttonText}
+                        </button>
+                      </Squircle>
+                    )}
+                  </div>
                 </SwiperSlide>
               ))}
             </Swiper>
@@ -525,13 +529,17 @@ export default function HeroSlider({ block }: HeroSliderProps) {
                       )}
 
                     </div>
-                    <div className="absolute lg:bottom-[240px] 3xl:bottom-[310px] bottom-[150px] left-1/2 -translate-x-1/2 z-20 w-full max-w-[1920px] px-6 lg:px-[140px] 3xl:px-[263px]">
-                      <div className="body-m font-host font-bold leading-[1.5] text-white">
-                        {slide.heading}
+                    <div className="absolute lg:bottom-[240px] 3xl:bottom-[310px] bottom-[150px] left-1/2 -translate-x-1/2 z-20 w-full">
+                      <div className="container-grid">
+                        <div className="3xl:px-[123px] 2xl:px-[80px]">
+                          <div className="body-m font-host font-bold leading-[1.5] text-white">
+                            {slide.heading}
+                          </div>
+                          <h2 className="font-host font-extrabold text-[#FF3300] leading-[1.1]">
+                            {slide.subHeading}
+                          </h2>
+                        </div>
                       </div>
-                      <h2 className="font-host font-extrabold text-[#FF3300] leading-[1.1]">
-                        {slide.subHeading}
-                      </h2>
                       {isMobileDevice && (
                         <Squircle cornerRadius={isMobileDevice ? 9 : 12} className="mt-5 relative">
                           <button
@@ -561,9 +569,13 @@ export default function HeroSlider({ block }: HeroSliderProps) {
         />
       </button>
       <div
-        className="absolute carSelectorForm 3xl:bottom-[124px] lg:bottom-[100px] md:bottom-[90px] bottom-[50px] left-1/2 -translate-x-1/2 z-20 w-full max-w-[1920px] px-6 lg:px-[140px] 3xl:px-[263px]"
+        className="absolute carSelectorForm 3xl:bottom-[124px] lg:bottom-[100px] md:bottom-[90px] bottom-[50px] left-1/2 -translate-x-1/2 z-20 w-full"
       >
-        <CarSelectorForm />
+        <div className="container-grid">
+          <div className="3xl:px-[123px] 2xl:px-[80px]">
+            <CarSelectorForm />
+          </div>
+        </div>
       </div>
       {siteSettings && (
         <CarSelectorModal

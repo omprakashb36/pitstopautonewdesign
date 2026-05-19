@@ -941,7 +941,7 @@ padding-bottom: 40px;
 }
 .themeButton{
 right: 20px !important;
-top: 54px;
+top: 21px;
 }
 [lang="ar"] .themeButton{
 right: inherit!important;
@@ -956,6 +956,25 @@ left: 20px;
 .mobileContentTxt{
     padding:40px 30px;
     border-radius: 50px 50px 0 0 !important;
+}
+.locationPopup,.markerPositionLft,.locationAddressTxt{
+    position: static!important;
+    transform: inherit!important;
+}
+.mapPositionTxt{
+    display: none;
+}
+.locationAddressTxt{
+    width: calc(100% - 40px);
+    margin-left: 20px;
+}
+.container-grid{
+    padding-left: 20px;
+    padding-right: 20px;
+}
+.mGridPadd0{
+    padding-left: 0;
+    padding-right: 0;
 }
 }
 

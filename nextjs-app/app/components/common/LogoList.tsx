@@ -39,9 +39,11 @@ export default function LogoListComp({ block }: LogoListProps) {
     .flat()
 
   return (
-    <div className="relative logoListSlider w-full max-w-[1920px] mx-auto px-6 lg:px-[140px] 3xl:px-[263px] bg-transparent pb-8 z-30 3xl:-mt-[100px] lg:-mt-20 -mt-10 pointer-events-none">
-      <div className="overflow-hidden">
-        <style jsx>{`
+    <div className="relative logoListSlider w-full mx-auto bg-transparent pb-8 z-30 3xl:-mt-[100px] lg:-mt-20 -mt-10 pointer-events-none">
+      <div className="container-grid">
+        <div className="3xl:px-[123px] 2xl:px-[80px]">
+          <div className="overflow-hidden">
+            <style jsx>{`
         @keyframes scroll-left {
           0% {
             transform: translateX(0);
@@ -52,28 +54,30 @@ export default function LogoListComp({ block }: LogoListProps) {
         }
       `}</style>
 
-        <div
-          ref={scrollRef}
-          className="flex gap-[30px] items-center w-max opacity-50 hover:opacity-100 transition-opacity duration-300"
-          style={{
-            animation: "scroll-left 30s linear infinite",
-          }}
-        >
-          {cloneLogos.map((logo, index) => (
             <div
-              key={`${logo._key}-${index}`}
-              className="flex items-center justify-center w-[60px] h-[60px] flex-shrink-0 pointer-events-auto"
-              title={logo.logoImage?.altText}
+              ref={scrollRef}
+              className="flex gap-[30px] items-center w-max opacity-50 hover:opacity-100 transition-opacity duration-300"
+              style={{
+                animation: "scroll-left 30s linear infinite",
+              }}
             >
-              <Image
-                src={urlForImage(logo?.logoImage?.image)?.url() || ""}
-                alt={logo?.logoImage?.altText || "logo"}
-                width={60}
-                height={60}
-                className="object-contain filter grayscale hover:grayscale-0 transition-all hover:scale-110"
-              />
+              {cloneLogos.map((logo, index) => (
+                <div
+                  key={`${logo._key}-${index}`}
+                  className="flex items-center justify-center w-[60px] h-[60px] flex-shrink-0 pointer-events-auto"
+                  title={logo.logoImage?.altText}
+                >
+                  <Image
+                    src={urlForImage(logo?.logoImage?.image)?.url() || ""}
+                    alt={logo?.logoImage?.altText || "logo"}
+                    width={60}
+                    height={60}
+                    className="object-contain filter grayscale hover:grayscale-0 transition-all hover:scale-110"
+                  />
+                </div>
+              ))}
             </div>
-          ))}
+          </div>
         </div>
       </div>
     </div>

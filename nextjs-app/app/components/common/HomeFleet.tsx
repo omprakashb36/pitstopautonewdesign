@@ -21,7 +21,7 @@ export default function HomeFleetComp({ block }: HomeFleetProps) {
           1920px screen -> 1640px container, 40px gap
           1440px screen -> 1280px container, 24px gap
           ======================================================== */}
-      <div className="container-grid mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-y-[32px] lg:gap-x-[24px] 3xl:gap-x-[40px] px-0 lg:px-0">
+      <div className="container-grid mGridPadd0 mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-y-[32px] lg:gap-x-[24px] 3xl:gap-x-[40px] px-0 lg:px-0">
         
         {/* Content Box */}
         {/* Mobile: order-2 (bottom). Desktop: order depends on isImageLeft */}
