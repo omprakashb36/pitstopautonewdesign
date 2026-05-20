@@ -229,7 +229,7 @@ margin-top: 1px !important;
 }
 
 .pageBg .richTextTitle h1,.pageBg .richTextTitle h1 strong {
-    font-weight: normal!important;
+    font-weight: 800!important;
 }
 
 .pageBg .richTextTitle p{
@@ -696,6 +696,10 @@ border: solid 1px #faeadc33;
 }
 .locationAddressTxt p{
   font-size: 16px!important;  
+}
+.css-hlgwow{
+    padding-left: 0!important;
+    padding-right: 0!important;
 }
 @media only screen and (min-width:1023px){
     .custom-scrollbar{

@@ -461,7 +461,7 @@ export default function HeroSlider({ block }: HeroSliderProps) {
                           {slide.subHeading}
                         </h2>
                       </div>
-                    </div>
+                    
                     {isMobileDevice && (
                       <Squircle cornerRadius={isMobileDevice ? 9 : 12} className="mt-5 relative">
                         <button
@@ -472,6 +472,7 @@ export default function HeroSlider({ block }: HeroSliderProps) {
                         </button>
                       </Squircle>
                     )}
+                    </div>
                   </div>
                 </SwiperSlide>
               ))}
@@ -539,7 +540,7 @@ export default function HeroSlider({ block }: HeroSliderProps) {
                             {slide.subHeading}
                           </h2>
                         </div>
-                      </div>
+                      
                       {isMobileDevice && (
                         <Squircle cornerRadius={isMobileDevice ? 9 : 12} className="mt-5 relative">
                           <button
@@ -550,6 +551,7 @@ export default function HeroSlider({ block }: HeroSliderProps) {
                           </button>
                         </Squircle>
                       )}
+                      </div>
                     </div>
                   </SwiperSlide>
                 ))}

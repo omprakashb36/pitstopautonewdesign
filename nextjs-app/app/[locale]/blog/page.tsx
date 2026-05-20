@@ -59,15 +59,17 @@ export default async function Page({
         <div className={`main_page innerPage`}>
             <Header services={services} siteSettingData={siteSettingData} locale={locale} fragment={headerData} />
             <div className=" dark:text-white text-black mt-[180px] min-h-screen  pageBg relative mb-16">
-                <div className="px-4 xl:px-[60px] 2xl:px-[116px] py-8 md:pb-0 md:py-12 md:pt-0">
+                <div className="py-8 md:pb-0 md:py-12 md:pt-0">
+                    <div className="container-grid">
                     {/* Breadcrumb */}
                     <div className="flex items-center gap-2 text-[15px] mb-6">
                         <Link href={`/${locale}`}>Home</Link>
                         <span>/</span>
                         <span className="opacity-60">{"Blog"}</span>
                     </div>
-                    <h1 className="text-[50px] 3xl:text-[60px] font-semibold font-shoulders mb-12 semibold uppercase">latest <span className="text-[#C00034]">article</span></h1>
+                    <h1 className="h1 font-semibold mb-[50px] uppercase">latest <span className="text-[#C00034]">article</span></h1>
                     <Blogs blogs={blogs} />
+                </div>
                 </div>
             </div>
             <Footer services={services} siteSettingData={siteSettingData} locale={locale} fragment={footerData} />

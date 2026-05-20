@@ -33,6 +33,8 @@ import { urlForImage } from "@/sanity/lib/utils"
 import { useTheme } from "next-themes"
 import { getTimeSlotsDateRange } from "@/app/actions/appointment/getTimeSlotsDateRange"
 import { getTimeSlots } from "@/app/actions/appointment/getTimeSlots"
+import { Button } from "../ui/Button"
+
 
 
 interface CarSelectionTeslaProps {
@@ -669,7 +671,7 @@ export default function CarSelectionTesla({ isOpen, onClose, onSubmit, block }: 
       cornerRadius={40}
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm overflow-y-auto"
     >
-      <div className="relative carTeslaPopup max-h-[90vh] min-h-[500px] overflow-y-auto custom-scrollbar w-full max-w-[1130px] rounded-[30px] dark:bg-[#0f0f0f] bg-[#F7F7F7] p-8 2xl:p-[48px] md:p-12 ltr:md:pr-0 rtl:md:pl-0 my-4 mx-4">
+      <div className="relative carTeslaPopup max-h-[90vh] min-h-[500px] overflow-y-auto custom-scrollbar w-full max-w-[1200px] 3xl:max-w-[1300px] rounded-[60px] dark:bg-[#0f0f0f] bg-[#F7F7F7] p-8 md:p-[60px] xl:p-[80px] ltr:md:pr-0 rtl:md:pl-0 my-4 mx-4">
         <button
           onClick={onClose}
           className="absolute z-10 ltr:2xl:right-[48px] rtl:2xl:left-[48px] ltr:right-8 rtl:left-8 2xl:top-[48px] top-8 dark:text-white text-black hover:text-gray-300"
@@ -687,16 +689,18 @@ export default function CarSelectionTesla({ isOpen, onClose, onSubmit, block }: 
         {step === "car" && (
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
             <div className="flex flex-col md:min-w-[560px] gap-6">
-              <h2 className="font-shoulders text-3xl md:text-4xl">
-                <span className="dark:text-white text-black uppercase">{block?.teslaForm?.whiteHeading}</span>{" "}
-                <span className="text-[#c00034] uppercase">{block?.teslaForm?.redHeading}</span>
+              <h2 className="dark:text-white text-black font-host font-extrabold text-[32px] md:text-[40px] leading-[1.1] uppercase">
+                <span>{block?.teslaForm?.whiteHeading}</span>{" "}
+                <span className="text-[#FF3300]">{block?.teslaForm?.redHeading}</span>
               </h2>
 
               <form autoComplete="off" onSubmit={carFormik.handleSubmit} className="space-y-6">
-                <div className="md:grid md:grid-cols-3 gap-4">
-                  <div className="formLabel selectReact border dark:border-white/20 border-black/20  rounded-[15px] md:mb-0 mb-5 space-y-2">
-                    <label htmlFor="countryCode" className="block font-urbanist text-xs uppercase sandDrift">
-                      {block?.teslaForm?.stepOne?.countryLabel}
+                {/* Phone row with Country code integrated */}
+                <div className="border border-[#D9D9D9] dark:border-white/20 rounded-[20px] h-[92px] flex items-center w-full overflow-hidden">
+                  {/* Country Code Selection */}
+                  <div className="w-[124px] h-full flex flex-col justify-center px-[24px] relative border-r border-[#D9D9D9] dark:border-white/20 selectReact no-border">
+                    <label htmlFor="countryCode" className="block font-host font-medium opacity-60 text-[10px] md:text-[12px] uppercase dark:text-white text-black">
+                      {block?.teslaForm?.stepOne?.countryLabel || "COUNTRY"}
                     </label>
                     <Select
                       id="countryCode"
@@ -706,19 +710,15 @@ export default function CarSelectionTesla({ isOpen, onClose, onSubmit, block }: 
                       onChange={(option) => carFormik.setFieldValue("countryCode", option?.value || "")}
                       onBlur={carFormik.handleBlur}
                       placeholder="Select"
-                      // styles={customStyles}
                       styles={selectStyles}
                       classNames={selectClassNames}
-                      className="font-urbanist"
+                      className="font-host text-[16px] md:text-[20px]"
                     />
-                    {carFormik.errors.countryCode && carFormik.touched.countryCode && (
-                      <div className="mt-1 text-sm text-[#c00034] font-urbanist">{carFormik.errors.countryCode}</div>
-                    )}
                   </div>
-
-                  <div className="formLabel col-span-2 border dark:border-white/20 border-black/20 rounded-[15px] space-y-2">
-                    <label htmlFor="phoneNumber" className="block font-urbanist text-xs uppercase sandDrift">
-                      {block?.teslaForm?.stepOne?.phoneLabel || "Phone Number"}
+                  {/* Phone Number Input */}
+                  <div className="flex-1 h-full flex flex-col justify-center px-[24px] selectReact">
+                    <label htmlFor="phoneNumber" className="block font-host font-medium opacity-60 text-[10px] md:text-[12px] uppercase dark:text-white text-black">
+                      {block?.teslaForm?.stepOne?.phoneLabel || "PHONE NUMBER"}
                     </label>
                     <input
                       id="phoneNumber"
@@ -728,20 +728,18 @@ export default function CarSelectionTesla({ isOpen, onClose, onSubmit, block }: 
                       value={carFormik.values.phoneNumber}
                       onChange={carFormik.handleChange}
                       onBlur={carFormik.handleBlur}
-                      className={`w-full rounded-lg border ${carFormik.errors.phoneNumber && carFormik.touched.phoneNumber
-                        ? "border-[#c00034]"
-                        : "border-white/20 focus:border-white/40"
-                        } bg-transparent px-4 py-3 font-urbanist dark:text-white text-black placeholder:text-black/50 dark:placeholder:text-white/50 focus:outline-none`}
+                      className="w-full bg-transparent font-host text-[16px] md:text-[20px] dark:text-white text-black placeholder:text-black/30 dark:placeholder:text-white/30 focus:outline-none"
                     />
-                    {carFormik.errors.phoneNumber && carFormik.touched.phoneNumber && (
-                      <div className="mt-1 text-sm text-[#c00034] font-urbanist">{carFormik.errors.phoneNumber}</div>
-                    )}
                   </div>
                 </div>
+                {carFormik.errors.phoneNumber && carFormik.touched.phoneNumber && (
+                  <div className="mt-1 text-sm text-[#FF3300] font-host">{carFormik.errors.phoneNumber}</div>
+                )}
 
-                <div className="formLabel selectReact border dark:border-white/20 border-black/20 rounded-[15px] space-y-2">
-                  <label htmlFor="model" className="block font-urbanist text-xs uppercase sandDrift">
-                    {block?.teslaForm?.stepOne?.modelLabel || "Select Your Tesla Model"}
+                {/* Model Row */}
+                <div className="border border-[#D9D9D9] dark:border-white/20 rounded-[20px] px-[24px] py-[20px] flex flex-col justify-center selectReact w-full">
+                  <label htmlFor="model" className="block font-host font-medium opacity-60 text-[12px] uppercase dark:text-white text-black">
+                    {block?.teslaForm?.stepOne?.modelLabel || "SELECT YOUR TESLA MODEL"}
                   </label>
                   <Select
                     id="model"
@@ -754,19 +752,19 @@ export default function CarSelectionTesla({ isOpen, onClose, onSubmit, block }: 
                       isLoading ? "Loading models..." : block?.teslaForm?.stepOne?.modelPlaceholder || "Select"
                     }
                     isLoading={isLoading}
-                    // styles={customStyles}
                     styles={selectStyles}
                     classNames={selectClassNames}
-                    className="font-urbanist"
+                    className="font-host text-[16px] md:text-[20px]"
                   />
-                  {carFormik.errors.model && carFormik.touched.model && (
-                    <div className="mt-1 text-sm text-[#c00034] font-urbanist">{carFormik.errors.model}</div>
-                  )}
                 </div>
+                {carFormik.errors.model && carFormik.touched.model && (
+                  <div className="mt-1 text-sm text-[#FF3300] font-host">{carFormik.errors.model}</div>
+                )}
 
-                <div className="formLabel selectReact border dark:border-white/20 border-black/20 rounded-[15px] space-y-2">
-                  <label htmlFor="year" className="block font-urbanist text-xs uppercase sandDrift">
-                    {block?.teslaForm?.stepOne?.yearLabel || "Select Your Tesla Year"}
+                {/* Year Row */}
+                <div className="border border-[#D9D9D9] dark:border-white/20 rounded-[20px] px-[24px] py-[20px] flex flex-col justify-center selectReact w-full">
+                  <label htmlFor="year" className="block font-host font-medium opacity-60 text-[12px] uppercase dark:text-white text-black">
+                    {block?.teslaForm?.stepOne?.yearLabel || "SELECT YOUR TESLA YEAR"}
                   </label>
                   <Select
                     id="year"
@@ -776,20 +774,20 @@ export default function CarSelectionTesla({ isOpen, onClose, onSubmit, block }: 
                     onChange={(option) => carFormik.setFieldValue("year", option?.value || "")}
                     onBlur={carFormik.handleBlur}
                     placeholder={block?.teslaForm?.stepOne?.yearPlaceholder || "Select"}
-                    // styles={customStyles}
                     styles={selectStyles}
                     classNames={selectClassNames}
                     isSearchable={false}
-                    className="font-urbanist"
+                    className="font-host text-[16px] md:text-[20px]"
                   />
-                  {carFormik.errors.year && carFormik.touched.year && (
-                    <div className="mt-1 text-sm text-[#c00034] font-urbanist">{carFormik.errors.year}</div>
-                  )}
                 </div>
+                {carFormik.errors.year && carFormik.touched.year && (
+                  <div className="mt-1 text-sm text-[#FF3300] font-host">{carFormik.errors.year}</div>
+                )}
 
-                <div className="formLabel border dark:border-white/20 border-black/20 rounded-[15px] space-y-2">
-                  <label htmlFor="plateNumber" className="block font-urbanist text-xs uppercase sandDrift">
-                    {block?.teslaForm?.stepOne?.plateNumberLabel || "Vehicle Plate Number"}
+                {/* Vehicle Plate Row */}
+                <div className="border border-[#D9D9D9] dark:border-white/20 rounded-[20px] px-[24px] py-[20px] flex flex-col justify-center w-full">
+                  <label htmlFor="plateNumber" className="block font-host font-medium opacity-60 text-[12px] uppercase dark:text-white text-black">
+                    {block?.teslaForm?.stepOne?.plateNumberLabel || "VEHICLE PLATE NUMBER"}
                   </label>
                   <input
                     id="plateNumber"
@@ -799,23 +797,20 @@ export default function CarSelectionTesla({ isOpen, onClose, onSubmit, block }: 
                     value={carFormik.values.plateNumber}
                     onChange={carFormik.handleChange}
                     onBlur={carFormik.handleBlur}
-                    className={`w-full rounded-lg border ${carFormik.errors.plateNumber && carFormik.touched.plateNumber
-                      ? "border-[#c00034]"
-                      : "border-white/20 focus:border-white/40"
-                      } bg-transparent px-4 py-3 font-urbanist dark:text-white text-black placeholder:text-black/50 dark:placeholder:text-white/50 focus:outline-none`}
+                    className="w-full bg-transparent font-host text-[16px] md:text-[20px] dark:text-white text-black placeholder:text-black/30 dark:placeholder:text-white/30 focus:outline-none"
                   />
-                  {carFormik.errors.plateNumber && carFormik.touched.plateNumber && (
-                    <div className="mt-1 text-sm text-[#c00034] font-urbanist">{carFormik.errors.plateNumber}</div>
-                  )}
                 </div>
-                <Squircle cornerRadius={10}>
-                  <button
-                    type="submit"
-                    className="mt-2 2xl:mt-8 rounded-lg px-[26px] leading-[1] py-[13px] gradientBG font-urbanist text-white transition-colors hover:bg-[#a00029]"
-                  >
-                    {block?.teslaForm?.stepOne?.proceed}
-                  </button>
-                </Squircle>
+                {carFormik.errors.plateNumber && carFormik.touched.plateNumber && (
+                  <div className="mt-1 text-sm text-[#FF3300] font-host">{carFormik.errors.plateNumber}</div>
+                )}
+
+                <Button
+                  type="submit"
+                  variant="orange"
+                  className="w-fit mt-4"
+                >
+                  {block?.teslaForm?.stepOne?.proceed}
+                </Button>
               </form>
             </div>
 
@@ -853,15 +848,15 @@ export default function CarSelectionTesla({ isOpen, onClose, onSubmit, block }: 
                 >
                   <ArrowLeft className="h-6 w-6" />
                 </button>
-                <h2 className="font-shoulders text-3xl md:text-4xl">
-                  <span className="dark:text-white text-black uppercase">{block?.teslaForm?.whiteHeading}</span>{" "}
-                  <span className="text-[#c00034] uppercase">{block?.teslaForm?.redHeading}</span>
+                <h2 className="dark:text-white text-black font-host font-extrabold text-[32px] md:text-[40px] leading-[1.1] uppercase">
+                  <span>{block?.teslaForm?.whiteHeading}</span>{" "}
+                  <span className="text-[#FF3300]">{block?.teslaForm?.redHeading}</span>
                 </h2>
               </div>
 
               <form autoComplete="off" onSubmit={appointmentFormik.handleSubmit} className="space-y-6 min-h-[400px]">
-                <div className="formLabel selectReact border dark:border-white/20 border-black/20 rounded-[15px] space-y-2">
-                  <label htmlFor="location" className="block font-urbanist text-xs uppercase sandDrift">
+                <div className="border border-[#D9D9D9] dark:border-white/20 rounded-[20px] px-[24px] py-[20px] flex flex-col justify-center selectReact w-full">
+                  <label htmlFor="location" className="block font-host font-medium opacity-60 text-[12px] uppercase dark:text-white text-black">
                     {block?.teslaForm?.stepTwo?.workshopLabel || "Select Workshop Location"}
                   </label>
                   <Select
@@ -885,22 +880,21 @@ export default function CarSelectionTesla({ isOpen, onClose, onSubmit, block }: 
                     onChange={(option) => handleWorkshopChange(option?.value || "")}
                     onBlur={appointmentFormik.handleBlur}
                     placeholder={block?.teslaForm?.stepTwo?.workshopPlaceholder || "Select Workshop Location"}
-                    // styles={customStyles}
                     styles={selectStyles}
                     classNames={selectClassNames}
-                    className="font-urbanist"
+                    className="font-host text-[16px] md:text-[20px]"
                   />
-                  {appointmentFormik.errors.appointment?.location &&
-                    appointmentFormik.touched.appointment?.location && (
-                      <div className="mt-1 text-sm text-[#c00034] font-urbanist">
-                        {appointmentFormik.errors.appointment.location}
-                      </div>
-                    )}
                 </div>
+                {appointmentFormik.errors.appointment?.location &&
+                  appointmentFormik.touched.appointment?.location && (
+                    <div className="mt-1 text-sm text-[#FF3300] font-host">
+                      {appointmentFormik.errors.appointment.location}
+                    </div>
+                  )}
 
                 {workshopSelected && isLoadingDates && (
                   <div className="flex justify-center py-8">
-                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#c00034]"></div>
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#FF3300]"></div>
                   </div>
                 )}
 
@@ -983,9 +977,9 @@ export default function CarSelectionTesla({ isOpen, onClose, onSubmit, block }: 
                               <button
                                 disabled={dateOption?.isHoliday}
                                 onClick={() => handleDateSelect(dateOption.date)}
-                                className={`${dateOption?.isHoliday ? ' bg-gray-300 opacity-40' : ''} flex flex-col items-center leading-[1] justify-center py-3 px-4 rounded-lg ${selectedDate === dateOption.date
-                                  ? "bg-[#c00034] text-white font-semibold"
-                                  : "bg-black/60 text-white hover:bg-[#c00034]/20"
+                                className={`${dateOption?.isHoliday ? ' bg-gray-300 dark:bg-neutral-800 opacity-40' : ''} flex flex-col items-center leading-[1] justify-center py-3 px-4 rounded-lg transition-colors ${selectedDate === dateOption.date
+                                  ? "bg-[#FF3300] text-white font-semibold"
+                                  : "bg-black/60 text-white hover:bg-[#FF3300]/20"
                                   }`}
                               >
                                 <span className="text-[2.1rem] font-shoulders font-light">{dayNumber}</span>
@@ -1028,11 +1022,11 @@ export default function CarSelectionTesla({ isOpen, onClose, onSubmit, block }: 
                   <>
                     {isLoadingTimeSlots ? (
                       <div className="flex justify-center py-8">
-                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#c00034]"></div>
+                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#FF3300]"></div>
                       </div>
                     ) : timeSlots.length > 0 ? (
                       <div className="mt-8">
-                        <h3 className="font-shoulders hidden text-xl darK:text-white text-black mb-4">
+                        <h3 className="font-shoulders hidden text-xl dark:text-white text-black mb-4">
                           SELECT TIME SLOT
                         </h3>
                         <div className="relative dateSwiperContainer">
@@ -1068,10 +1062,10 @@ export default function CarSelectionTesla({ isOpen, onClose, onSubmit, block }: 
                                     )
                                   }
                                   disabled={!slot.available}
-                                  className={`flex flex-col items-center justify-center py-3 px-4 rounded-lg border ${selectedTime === slot.time
-                                    ? "border-[#c00034] bg-[#c00034]/10 dark:text-white text-black"
+                                  className={`flex flex-col items-center justify-center py-3 px-4 rounded-lg border transition-colors ${selectedTime === slot.time
+                                    ? "border-[#FF3300] bg-[#FF3300]/10 dark:text-white text-black"
                                     : slot.available
-                                      ? "border-gray-700 dark:text-white text-black hover:bg-gray-800 hover:text-white dark:hover:black"
+                                      ? "border-gray-700 dark:text-white text-black hover:bg-gray-800 hover:text-white"
                                       : "border-gray-700 text-gray-500 opacity-50 cursor-not-allowed"
                                     }`}
                                 >
@@ -1123,17 +1117,15 @@ export default function CarSelectionTesla({ isOpen, onClose, onSubmit, block }: 
                 )}
 
                 {/* Continue Button */}
-                <Squircle cornerRadius={10}>
-                  <button
-                    type="button"
-                    onClick={handleSubmitAppointment}
-                    disabled={!selectedTime}
-                    className={`mt-2 uppercase px-[26.66px] gradientBG py-[13.33px] text-[11.66px] leading-[1] font-bold rounded-lg font-urbanist transition-colors
-                    ${selectedTime ? "text-white gradientBG hover:bg-[#a00029]" : " text-[#FAEADC]/50 cursor-not-allowed"}`}
-                  >
-                    {block?.teslaForm?.stepTwo?.selectAndProceed}
-                  </button>
-                </Squircle>
+                <Button
+                  type="button"
+                  variant={selectedTime ? "orange" : "disabled"}
+                  onClick={handleSubmitAppointment}
+                  disabled={!selectedTime}
+                  className="w-fit mt-4"
+                >
+                  {block?.teslaForm?.stepTwo?.selectAndProceed}
+                </Button>
               </form>
             </div>
 
@@ -1173,15 +1165,15 @@ export default function CarSelectionTesla({ isOpen, onClose, onSubmit, block }: 
                     className="mb-0"
                   />
                 </button>
-                <h2 className="font-shoulders text-3xl md:text-4xl">
-                  <span className="dark:text-white text-black uppercase">{block?.teslaForm?.whiteHeading}</span>{" "}
-                  <span className="text-[#c00034] uppercase">{block?.teslaForm?.redHeading}</span>
+                <h2 className="dark:text-white text-black font-host font-extrabold text-[32px] md:text-[40px] leading-[1.1] uppercase">
+                  <span>{block?.teslaForm?.whiteHeading}</span>{" "}
+                  <span className="text-[#FF3300]">{block?.teslaForm?.redHeading}</span>
                 </h2>
               </div>
 
               <form autoComplete="off" onSubmit={personalInfoFormik.handleSubmit} className="space-y-6">
-                <div className="formLabel border dark:border-white/20 border-black/20 rounded-[15px] space-y-2">
-                  <label htmlFor="fullName" className="block font-urbanist text-xs uppercase sandDrift">
+                <div className="border border-[#D9D9D9] dark:border-white/20 rounded-[20px] px-[24px] py-[20px] flex flex-col justify-center w-full">
+                  <label htmlFor="fullName" className="block font-host font-medium opacity-60 text-[12px] uppercase dark:text-white text-black">
                     {block?.teslaForm?.stepThree?.fullNameLabel || "YOUR FULL NAME"}
                   </label>
                   <input
@@ -1192,22 +1184,18 @@ export default function CarSelectionTesla({ isOpen, onClose, onSubmit, block }: 
                     value={personalInfoFormik.values.personalInfo.fullName}
                     onChange={personalInfoFormik.handleChange}
                     onBlur={personalInfoFormik.handleBlur}
-                    className={`w-full rounded-lg border ${personalInfoFormik.errors.personalInfo?.fullName &&
-                      personalInfoFormik.touched.personalInfo?.fullName
-                      ? "border-[#c00034]"
-                      : "border-white/20 focus:border-white/40"
-                      } bg-transparent px-4 py-3 font-urbanist dark:text-white text-black placeholder:text-black/50 dark:placeholder:text-white/50 focus:outline-none`}
+                    className="w-full bg-transparent font-host text-[16px] md:text-[20px] dark:text-white text-black placeholder:text-black/30 dark:placeholder:text-white/30 focus:outline-none"
                   />
-                  {personalInfoFormik.errors.personalInfo?.fullName &&
-                    personalInfoFormik.touched.personalInfo?.fullName && (
-                      <div className="mt-1 text-sm text-[#c00034] font-urbanist">
-                        {personalInfoFormik.errors.personalInfo.fullName}
-                      </div>
-                    )}
                 </div>
+                {personalInfoFormik.errors.personalInfo?.fullName &&
+                  personalInfoFormik.touched.personalInfo?.fullName && (
+                    <div className="mt-1 text-sm text-[#FF3300] font-host">
+                      {personalInfoFormik.errors.personalInfo.fullName}
+                    </div>
+                  )}
 
-                <div className="formLabel border dark:border-white/20 border-black/20 rounded-[15px] space-y-2">
-                  <label htmlFor="email" className="block font-urbanist text-xs uppercase sandDrift">
+                <div className="border border-[#D9D9D9] dark:border-white/20 rounded-[20px] px-[24px] py-[20px] flex flex-col justify-center w-full">
+                  <label htmlFor="email" className="block font-host font-medium opacity-60 text-[12px] uppercase dark:text-white text-black">
                     {block?.teslaForm?.stepThree?.emailLabel || "YOUR EMAIL ADDRESS"}
                   </label>
                   <input
@@ -1218,17 +1206,14 @@ export default function CarSelectionTesla({ isOpen, onClose, onSubmit, block }: 
                     value={personalInfoFormik.values.personalInfo.email}
                     onChange={personalInfoFormik.handleChange}
                     onBlur={personalInfoFormik.handleBlur}
-                    className={`w-full rounded-lg border ${personalInfoFormik.errors.personalInfo?.email && personalInfoFormik.touched.personalInfo?.email
-                      ? "border-[#c00034]"
-                      : "border-white/20 focus:border-white/40"
-                      } bg-transparent px-4 py-3 font-urbanist dark:text-white text-black placeholder:text-black/50 dark:placeholder:text-white/50 focus:outline-none`}
+                    className="w-full bg-transparent font-host text-[16px] md:text-[20px] dark:text-white text-black placeholder:text-black/30 dark:placeholder:text-white/30 focus:outline-none"
                   />
-                  {personalInfoFormik.errors.personalInfo?.email && personalInfoFormik.touched.personalInfo?.email && (
-                    <div className="mt-1 text-sm text-[#c00034] font-urbanist">
-                      {personalInfoFormik.errors.personalInfo.email}
-                    </div>
-                  )}
                 </div>
+                {personalInfoFormik.errors.personalInfo?.email && personalInfoFormik.touched.personalInfo?.email && (
+                  <div className="mt-1 text-sm text-[#FF3300] font-host">
+                    {personalInfoFormik.errors.personalInfo.email}
+                  </div>
+                )}
 
                 <div className="mt-6">
                   <label className="flex items-start cursor-pointer">
@@ -1241,44 +1226,45 @@ export default function CarSelectionTesla({ isOpen, onClose, onSubmit, block }: 
                         className="sr-only"
                       />
                       <div
-                        className={`flex h-6 w-6 items-center justify-center rounded border ${personalInfoFormik.values.personalInfo.consentToComms
-                          ? "border-[#c00034]  bg-[#c00034]"
+                        className={`flex h-6 w-6 items-center justify-center rounded border transition-colors ${personalInfoFormik.values.personalInfo.consentToComms
+                          ? "border-[#FF3300] bg-[#FF3300]"
                           : "dark:border-white/20 border-black/20"
                           }`}
                       >
                         {personalInfoFormik.values.personalInfo.consentToComms && (
-                          <Check className="h-4 w-4 dark:text-white text-black " />
+                          <Check className="h-4 w-4 text-white" />
                         )}
                       </div>
                     </div>
-                    <span className="ltr:ml-3 rtl:mr-3 text-sm dark:text-white/80 text-black/80 font-urbanist">
+                    <span className="ltr:ml-3 rtl:mr-3 text-sm dark:text-white/80 text-black/80 font-host">
                       {block?.teslaForm?.stepThree?.declaration}
                     </span>
                   </label>
                   {personalInfoFormik.errors.personalInfo?.consentToComms &&
                     personalInfoFormik.touched.personalInfo?.consentToComms && (
-                      <div className="mt-1 text-sm text-[#c00034] font-urbanist">
+                      <div className="mt-1 text-sm text-[#FF3300] font-host">
                         {personalInfoFormik.errors.personalInfo.consentToComms}
                       </div>
                     )}
                 </div>
-                <Squircle cornerRadius={10}>
-                  <button
-                    type="submit"
-                    className={`${finalSubmitLoader ? "cursor-not-allowed opacity-65" : ""} mt-2 px-[26.66px] py-[13.33px] leading-[1] gradientBG rounded-lg font-urbanist text-white transition-colors bg-[#c00034] hover:bg-[#a00029]`}
-                  >
-                    {block?.teslaForm?.stepThree?.scheduleAppointment}
-                    {finalSubmitLoader && (
-                      <Image
-                        src="/images/infinite-spinner.svg"
-                        alt="arrow right"
-                        width={30}
-                        height={15}
-                        className="loaderImage inline-block"
-                      />
-                    )}
-                  </button>
-                </Squircle>
+
+                <Button
+                  type="submit"
+                  variant="orange"
+                  disabled={finalSubmitLoader}
+                  className="w-fit mt-4 flex items-center gap-2"
+                >
+                  <span>{block?.teslaForm?.stepThree?.scheduleAppointment}</span>
+                  {finalSubmitLoader && (
+                    <Image
+                      src="/images/infinite-spinner.svg"
+                      alt="loading"
+                      width={30}
+                      height={15}
+                      className="loaderImage inline-block invert dark:invert-0"
+                    />
+                  )}
+                </Button>
               </form>
             </div>
 
@@ -1305,6 +1291,7 @@ export default function CarSelectionTesla({ isOpen, onClose, onSubmit, block }: 
           </div>
         )}
       </div>
+
       <style jsx global>{`
         .swiper-button-prev::after,
         .swiper-button-next::after,
