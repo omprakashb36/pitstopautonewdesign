@@ -52,11 +52,11 @@ export default function DesignSystemPage() {
                 <p className="text-xs opacity-50 uppercase tracking-widest border-b border-gray-200 dark:border-gray-800 pb-1">Body</p>
                 <div className="font-host font-normal flex flex-col gap-2">
                   <div className="body-xl">Body-XL (30px)</div>
-                  <div className="body-l">Body-L (22px)</div>
-                  <div className="body-m">Body-M (20px)</div>
-                  <div className="body-base">Body (18px)</div>
-                  <div className="body-s">Body-S (16px)</div>
-                  <div className="body-xs">Body-XS (15px)</div>
+                  <div className="body-l">Body-L (28px)</div>
+                  <div className="body-m">Body-M (24px)</div>
+                  <div className="body-base">Body (22px)</div>
+                  <div className="body-s">Body-S (20px)</div>
+                  <div className="body-xs">Body-XS (18px)</div>
                 </div>
               </div>
 

@@ -4,7 +4,7 @@ import { useEffect, useState, useMemo, useRef } from "react"
 import { useFormik } from "formik"
 import * as Yup from "yup"
 import Select from "react-select"
-import { X, ArrowLeft, Check } from "lucide-react"
+import { X, ArrowLeft, Check, ChevronLeft, ChevronRight } from "lucide-react"
 import { Swiper, SwiperSlide } from "swiper/react"
 import { Navigation } from "swiper/modules"
 import { Squircle } from "corner-smoothing"
@@ -671,10 +671,10 @@ export default function CarSelectionTesla({ isOpen, onClose, onSubmit, block }: 
       cornerRadius={40}
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm overflow-y-auto"
     >
-      <div className="relative carTeslaPopup max-h-[90vh] min-h-[500px] overflow-y-auto custom-scrollbar w-full max-w-[1200px] 3xl:max-w-[1300px] rounded-[60px] dark:bg-[#0f0f0f] bg-[#F7F7F7] p-8 md:p-[60px] xl:p-[80px] ltr:md:pr-0 rtl:md:pl-0 my-4 mx-4">
+      <div className="relative carTeslaPopup max-h-[90vh] min-h-[500px] overflow-y-auto custom-scrollbar w-full max-w-[1200px] 3xl:max-w-[1360px] rounded-3xl  2xl:rounded-[60px] dark:bg-[#0f0f0f] bg-[#F7F7F7] p-8 md:p-[60px] 3xl:p-[80px] ltr:md:pr-0 rtl:md:pl-0 my-4 mx-4">
         <button
           onClick={onClose}
-          className="absolute z-10 ltr:2xl:right-[48px] rtl:2xl:left-[48px] ltr:right-8 rtl:left-8 2xl:top-[48px] top-8 dark:text-white text-black hover:text-gray-300"
+          className="absolute z-10 ltr:2xl:right-[48px] rtl:2xl:left-[48px] ltr:3xl:right-[80px] rtl:3xl:left-[80px] ltr:right-8 rtl:left-8 2xl:top-[48px] 3xl:top-[80px] top-8 dark:text-white text-black hover:text-gray-300"
           aria-label="Close"
         >
           <Image
@@ -689,16 +689,20 @@ export default function CarSelectionTesla({ isOpen, onClose, onSubmit, block }: 
         {step === "car" && (
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
             <div className="flex flex-col md:min-w-[560px] gap-6">
-              <h2 className="dark:text-white text-black font-host font-extrabold text-[32px] md:text-[40px] leading-[1.1] uppercase">
+              <h2 className="dark:text-white text-black font-host font-extrabold leading-[1.1]">
                 <span>{block?.teslaForm?.whiteHeading}</span>{" "}
                 <span className="text-[#FF3300]">{block?.teslaForm?.redHeading}</span>
               </h2>
 
               <form autoComplete="off" onSubmit={carFormik.handleSubmit} className="space-y-6">
                 {/* Phone row with Country code integrated */}
-                <div className="border border-[#D9D9D9] dark:border-white/20 rounded-[20px] h-[92px] flex items-center w-full overflow-hidden">
+                <div className={`border rounded-[20px] h-[90px] flex items-center w-full overflow-hidden transition-colors ${
+                  carFormik.errors.phoneNumber && carFormik.touched.phoneNumber
+                    ? "border-[#FF3300]"
+                    : "border-[#D9D9D9] dark:border-white/20"
+                }`}>
                   {/* Country Code Selection */}
-                  <div className="w-[124px] h-full flex flex-col justify-center px-[24px] relative border-r border-[#D9D9D9] dark:border-white/20 selectReact no-border">
+                  <div className="w-[124px] h-full flex flex-col justify-center px-[24px] pr-[15px] relative border-r border-[#D9D9D9] dark:border-white/20 selectReact no-border">
                     <label htmlFor="countryCode" className="block font-host font-medium opacity-60 text-[10px] md:text-[12px] uppercase dark:text-white text-black">
                       {block?.teslaForm?.stepOne?.countryLabel || "COUNTRY"}
                     </label>
@@ -730,14 +734,20 @@ export default function CarSelectionTesla({ isOpen, onClose, onSubmit, block }: 
                       onBlur={carFormik.handleBlur}
                       className="w-full bg-transparent font-host text-[16px] md:text-[20px] dark:text-white text-black placeholder:text-black/30 dark:placeholder:text-white/30 focus:outline-none"
                     />
+                    {carFormik.errors.phoneNumber && carFormik.touched.phoneNumber && (
+                      <div className="text-xs text-[#FF3300] font-host mt-0.5 leading-none">
+                        {carFormik.errors.phoneNumber}
+                      </div>
+                    )}
                   </div>
                 </div>
-                {carFormik.errors.phoneNumber && carFormik.touched.phoneNumber && (
-                  <div className="mt-1 text-sm text-[#FF3300] font-host">{carFormik.errors.phoneNumber}</div>
-                )}
 
                 {/* Model Row */}
-                <div className="border border-[#D9D9D9] dark:border-white/20 rounded-[20px] px-[24px] py-[20px] flex flex-col justify-center selectReact w-full">
+                <div className={`border rounded-[20px] px-[24px] h-[90px] flex flex-col justify-center selectReact w-full transition-colors ${
+                  carFormik.errors.model && carFormik.touched.model
+                    ? "border-[#FF3300]"
+                    : "border-[#D9D9D9] dark:border-white/20"
+                }`}>
                   <label htmlFor="model" className="block font-host font-medium opacity-60 text-[12px] uppercase dark:text-white text-black">
                     {block?.teslaForm?.stepOne?.modelLabel || "SELECT YOUR TESLA MODEL"}
                   </label>
@@ -756,13 +766,19 @@ export default function CarSelectionTesla({ isOpen, onClose, onSubmit, block }: 
                     classNames={selectClassNames}
                     className="font-host text-[16px] md:text-[20px]"
                   />
+                  {carFormik.errors.model && carFormik.touched.model && (
+                    <div className="text-xs text-[#FF3300] font-host mt-1 leading-none">
+                      {carFormik.errors.model}
+                    </div>
+                  )}
                 </div>
-                {carFormik.errors.model && carFormik.touched.model && (
-                  <div className="mt-1 text-sm text-[#FF3300] font-host">{carFormik.errors.model}</div>
-                )}
 
                 {/* Year Row */}
-                <div className="border border-[#D9D9D9] dark:border-white/20 rounded-[20px] px-[24px] py-[20px] flex flex-col justify-center selectReact w-full">
+                <div className={`border rounded-[20px] px-[24px] h-[90px] flex flex-col justify-center selectReact w-full transition-colors ${
+                  carFormik.errors.year && carFormik.touched.year
+                    ? "border-[#FF3300]"
+                    : "border-[#D9D9D9] dark:border-white/20"
+                }`}>
                   <label htmlFor="year" className="block font-host font-medium opacity-60 text-[12px] uppercase dark:text-white text-black">
                     {block?.teslaForm?.stepOne?.yearLabel || "SELECT YOUR TESLA YEAR"}
                   </label>
@@ -779,13 +795,19 @@ export default function CarSelectionTesla({ isOpen, onClose, onSubmit, block }: 
                     isSearchable={false}
                     className="font-host text-[16px] md:text-[20px]"
                   />
+                  {carFormik.errors.year && carFormik.touched.year && (
+                    <div className="text-xs text-[#FF3300] font-host mt-1 leading-none">
+                      {carFormik.errors.year}
+                    </div>
+                  )}
                 </div>
-                {carFormik.errors.year && carFormik.touched.year && (
-                  <div className="mt-1 text-sm text-[#FF3300] font-host">{carFormik.errors.year}</div>
-                )}
 
                 {/* Vehicle Plate Row */}
-                <div className="border border-[#D9D9D9] dark:border-white/20 rounded-[20px] px-[24px] py-[20px] flex flex-col justify-center w-full">
+                <div className={`border rounded-[20px] px-[24px] h-[90px] flex flex-col justify-center w-full transition-colors ${
+                  carFormik.errors.plateNumber && carFormik.touched.plateNumber
+                    ? "border-[#FF3300]"
+                    : "border-[#D9D9D9] dark:border-white/20"
+                }`}>
                   <label htmlFor="plateNumber" className="block font-host font-medium opacity-60 text-[12px] uppercase dark:text-white text-black">
                     {block?.teslaForm?.stepOne?.plateNumberLabel || "VEHICLE PLATE NUMBER"}
                   </label>
@@ -799,10 +821,12 @@ export default function CarSelectionTesla({ isOpen, onClose, onSubmit, block }: 
                     onBlur={carFormik.handleBlur}
                     className="w-full bg-transparent font-host text-[16px] md:text-[20px] dark:text-white text-black placeholder:text-black/30 dark:placeholder:text-white/30 focus:outline-none"
                   />
+                  {carFormik.errors.plateNumber && carFormik.touched.plateNumber && (
+                    <div className="text-xs text-[#FF3300] font-host mt-1 leading-none">
+                      {carFormik.errors.plateNumber}
+                    </div>
+                  )}
                 </div>
-                {carFormik.errors.plateNumber && carFormik.touched.plateNumber && (
-                  <div className="mt-1 text-sm text-[#FF3300] font-host">{carFormik.errors.plateNumber}</div>
-                )}
 
                 <Button
                   type="submit"
@@ -843,83 +867,90 @@ export default function CarSelectionTesla({ isOpen, onClose, onSubmit, block }: 
               <div className="flex items-center">
                 <button
                   onClick={handleBack}
-                  className="ltr:mr-4 rtl:ml-4 dark:text-white text-black hover:text-gray-300"
+                  className="ltr:mr-4 rtl:ml-4"
                   aria-label="Back"
                 >
-                  <ArrowLeft className="h-6 w-6" />
+                  <Image
+                    src={theme === "light" ? "/images/lightthemeArrow.svg" : "/images/backIcon.svg"}
+                    alt="back icon"
+                    width={17}
+                    height={23}
+                    className="mb-0 rtl:scale-x-[-1]"
+                  />
                 </button>
-                <h2 className="dark:text-white text-black font-host font-extrabold text-[32px] md:text-[40px] leading-[1.1] uppercase">
+                <h2 className="dark:text-white text-black font-host font-extrabold leading-[1.1]">
                   <span>{block?.teslaForm?.whiteHeading}</span>{" "}
                   <span className="text-[#FF3300]">{block?.teslaForm?.redHeading}</span>
                 </h2>
               </div>
 
-              <form autoComplete="off" onSubmit={appointmentFormik.handleSubmit} className="space-y-6 min-h-[400px]">
-                <div className="border border-[#D9D9D9] dark:border-white/20 rounded-[20px] px-[24px] py-[20px] flex flex-col justify-center selectReact w-full">
-                  <label htmlFor="location" className="block font-host font-medium opacity-60 text-[12px] uppercase dark:text-white text-black">
-                    {block?.teslaForm?.stepTwo?.workshopLabel || "Select Workshop Location"}
-                  </label>
-                  <Select
-                    id="location"
-                    name="appointment.location"
-                    options={
-                      workshopLocations &&
-                      workshopLocations.map((location) => ({
-                        value: location.name,
-                        label: location.name,
-                      }))
-                    }
-                    value={
-                      appointmentFormik.values.appointment.location
-                        ? {
-                          value: appointmentFormik.values.appointment.location,
-                          label: appointmentFormik.values.appointment.location,
-                        }
-                        : null
-                    }
-                    onChange={(option) => handleWorkshopChange(option?.value || "")}
-                    onBlur={appointmentFormik.handleBlur}
-                    placeholder={block?.teslaForm?.stepTwo?.workshopPlaceholder || "Select Workshop Location"}
-                    styles={selectStyles}
-                    classNames={selectClassNames}
-                    className="font-host text-[16px] md:text-[20px]"
-                  />
-                </div>
-                {appointmentFormik.errors.appointment?.location &&
-                  appointmentFormik.touched.appointment?.location && (
-                    <div className="mt-1 text-sm text-[#FF3300] font-host">
-                      {appointmentFormik.errors.appointment.location}
+              <form autoComplete="off" onSubmit={appointmentFormik.handleSubmit} className="flex flex-col gap-[40px] items-start w-full max-w-[670px] min-h-[400px]">
+                <div className="flex flex-col gap-[24px] items-start w-full">
+                  <div className={`border rounded-[20px] px-[24px] h-[90px] flex flex-col justify-center selectReact w-full transition-colors ${
+                    appointmentFormik.errors.appointment?.location && appointmentFormik.touched.appointment?.location
+                      ? "border-[#FF3300]"
+                      : "border-[#D9D9D9] dark:border-white/20"
+                  }`}>
+                    <label htmlFor="location" className="block font-host font-medium opacity-60 text-[12px] uppercase dark:text-white text-black">
+                      {block?.teslaForm?.stepTwo?.workshopLabel || "Select Workshop Location"}
+                    </label>
+                    <Select
+                      id="location"
+                      name="appointment.location"
+                      options={
+                        workshopLocations &&
+                        workshopLocations.map((location) => ({
+                          value: location.name,
+                          label: location.name,
+                        }))
+                      }
+                      value={
+                        appointmentFormik.values.appointment.location
+                          ? {
+                            value: appointmentFormik.values.appointment.location,
+                            label: appointmentFormik.values.appointment.location,
+                          }
+                          : null
+                      }
+                      onChange={(option) => handleWorkshopChange(option?.value || "")}
+                      onBlur={appointmentFormik.handleBlur}
+                      placeholder={block?.teslaForm?.stepTwo?.workshopPlaceholder || "Select Workshop Location"}
+                      styles={selectStyles}
+                      classNames={selectClassNames}
+                      className="font-host text-[16px] md:text-[20px]"
+                    />
+                    {appointmentFormik.errors.appointment?.location &&
+                      appointmentFormik.touched.appointment?.location && (
+                        <div className="text-xs text-[#FF3300] font-host mt-1 leading-none">
+                          {appointmentFormik.errors.appointment.location}
+                        </div>
+                      )}
+                  </div>
+
+                  {workshopSelected && isLoadingDates && (
+                    <div className="flex justify-center py-8 w-full">
+                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#FF3300]"></div>
                     </div>
                   )}
 
-                {workshopSelected && isLoadingDates && (
-                  <div className="flex justify-center py-8">
-                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#FF3300]"></div>
-                  </div>
-                )}
+                  {/* Date Selection - Only show when workshop is selected and dates are loaded */}
+                  {workshopSelected && !isLoadingDates && dateOptions.length > 0 && (
+                    <div className="flex items-center gap-[40px] w-full relative px-[12px]">
+                      {/* Left navigation button */}
+                      <button
+                        type="button"
+                        onClick={() => swiperRef.current?.slidePrev()}
+                        className="flex items-center justify-center text-black/60 dark:text-white/60 hover:text-[#FF3300] transition-colors disabled:opacity-30 disabled:cursor-not-allowed shrink-0"
+                        aria-label="Previous dates"
+                      >
+                        <ChevronLeft className="h-[20px] w-[20px]" />
+                      </button>
 
-                {/* Date Selection - Only show when workshop is selected and dates are loaded */}
-                {workshopSelected && !isLoadingDates && dateOptions.length > 0 && (
-                  <div>
-                    <div className="flex justify-between items-center mb-1">
-                      <div className="text-center text-sm uppercase w-full dark:text-[#FAEADC] text-black">
-                        {selectedDate && dateOptions.find((d) => d.date === selectedDate)
-                          ? `${dateOptions.find((d) => d.date === selectedDate)?.month} ${dateOptions.find((d) => d.date === selectedDate)?.year}`
-                          : visibleMonth
-                            ? `${visibleMonth.month.toUpperCase()} ${visibleMonth.year}`
-                            : ""}
-                      </div>
-                    </div>
-                    <div className="relative dateSwiperContainer">
+                      {/* Swiper */}
                       <Swiper
                         modules={[Navigation]}
-                        spaceBetween={6}
-                        slidesPerView="auto"
-                        navigation={{
-                          prevEl: ".swiper-button-prev",
-                          nextEl: ".swiper-button-next",
-                        }}
-                        className="dateSwiper"
+                        spaceBetween={16}
+                        slidesPerView={7}
                         onSlideChange={(swiper) => {
                           const currentIndex = swiper.activeIndex
                           const currentDateOption = dateOptions[currentIndex]
@@ -936,184 +967,188 @@ export default function CarSelectionTesla({ isOpen, onClose, onSubmit, block }: 
                             }
                           }
                         }}
-                        onInit={(swiper) => {
-                          if (dateOptions.length > 0) {
-                            setVisibleMonth({
-                              month: dateOptions[0].month,
-                              year: dateOptions[0].year,
-                            })
-                          }
-                        }}
                         onSwiper={(swiper) => {
                           swiperRef.current = swiper
                         }}
+                        className="dateSwiper flex-grow max-w-[480px]"
                         breakpoints={{
                           320: {
                             slidesPerView: 3,
-                            spaceBetween: 8,
+                            spaceBetween: 10,
                           },
                           480: {
                             slidesPerView: 4,
-                            spaceBetween: 8,
+                            spaceBetween: 12,
                           },
                           640: {
                             slidesPerView: 5,
-                            spaceBetween: 8,
+                            spaceBetween: 14,
                           },
                           768: {
-                            slidesPerView: 8,
-                            spaceBetween: 8,
-                          },
-                          1024: {
-                            slidesPerView: 6,
-                            spaceBetween: 7,
+                            slidesPerView: 7,
+                            spaceBetween: 16,
                           },
                         }}
                       >
                         {dateOptions.map((dateOption) => {
                           const dayNumber = new Date(dateOption.date).getDate()
+                          const isSelected = selectedDate === dateOption.date
                           return (
-                            <SwiperSlide key={dateOption.date} className="!w-auto px-2">
+                            <SwiperSlide key={dateOption.date} className="!w-auto">
                               <button
+                                type="button"
                                 disabled={dateOption?.isHoliday}
                                 onClick={() => handleDateSelect(dateOption.date)}
-                                className={`${dateOption?.isHoliday ? ' bg-gray-300 dark:bg-neutral-800 opacity-40' : ''} flex flex-col items-center leading-[1] justify-center py-3 px-4 rounded-lg transition-colors ${selectedDate === dateOption.date
-                                  ? "bg-[#FF3300] text-white font-semibold"
-                                  : "bg-black/60 text-white hover:bg-[#FF3300]/20"
-                                  }`}
+                                className={`flex flex-col items-center justify-center w-[66px] h-[57px] transition-all duration-200 ${
+                                  dateOption?.isHoliday 
+                                    ? 'opacity-30 cursor-not-allowed text-[#211D1D] dark:text-white/60' 
+                                    : isSelected
+                                      ? "bg-[#FF3300] text-white rounded-[12px] shadow-sm"
+                                      : "text-[#211D1D] dark:text-white/90 hover:bg-[#FF3300]/10 rounded-[12px]"
+                                }`}
                               >
-                                <span className="text-[2.1rem] font-shoulders font-light">{dayNumber}</span>
-                                <span className="text-xs">{dateOption.day}</span>
-                                <span className="text-[10px] opacity-75 min-h-[10px]">{`${dateOption?.isHoliday ? '' : dateOption.availableSlots + ' slots'}`}</span>
+                                <span className={`text-[24px] font-host leading-[1.2] ${isSelected ? "font-bold" : "font-normal"}`}>
+                                  {dayNumber}
+                                </span>
+                                <span className={`text-[14px] font-host leading-[1.2] ${isSelected ? "font-normal" : "font-normal opacity-50"}`}>
+                                  {dateOption.day.toLowerCase()}
+                                </span>
                               </button>
                             </SwiperSlide>
                           )
                         })}
                       </Swiper>
 
-                      {/* Custom navigation buttons */}
+                      {/* Right navigation button */}
                       <button
-                        onClick={() => swiperRef.current?.slidePrev()}
-                        className="absolute left-0 top-[30%] z-10 flex items-center justify-center w-8 h-8 bg-black/60 rounded-full cursor-pointer"
-                        aria-label="Previous models"
-                      >
-                        <Image src="/images/angle-left.svg" alt="back icon" width={16} height={16} className="mb-0" />
-                      </button>
-
-                      <button
+                        type="button"
                         onClick={() => swiperRef.current?.slideNext()}
-                        className="absolute right-0 top-[30%] z-10 flex items-center justify-center w-8 h-8 bg-black/60 rounded-full cursor-pointer"
-                        aria-label="Next models"
+                        className="flex items-center justify-center text-black/60 dark:text-white/60 hover:text-[#FF3300] transition-colors disabled:opacity-30 disabled:cursor-not-allowed shrink-0"
+                        aria-label="Next dates"
                       >
-                        <Image src="/images/angle-right.svg" alt="back icon" width={16} height={16} className="mb-0" />
+                        <ChevronRight className="h-[20px] w-[20px]" />
                       </button>
                     </div>
-                  </div>
-                )}
+                  )}
 
-                {workshopSelected && !isLoadingDates && dateOptions.length === 0 && (
-                  <div className="text-center py-4">
-                    <p className="dark:text-[#FAEADC] text-black">No available dates for this location.</p>
+                  {workshopSelected && !isLoadingDates && dateOptions.length === 0 && (
+                    <div className="text-center py-4 w-full">
+                      <p className="dark:text-[#FAEADC] text-black">No available dates for this location.</p>
+                    </div>
+                  )}
+                </div>
+
+                {/* Divider & Month Pill - Only show when date is selected */}
+                {selectedDate && (
+                  <div className="relative flex items-center justify-center w-full max-w-[558px] mx-auto shrink-0 my-2">
+                    <div className="w-full border-t border-[#D9D9D9] dark:border-white/20"></div>
+                    <div className="absolute bg-[#211D1D] dark:bg-white text-[#FCF3ED] dark:text-[#211D1D] px-[12px] py-[8px] rounded-[8px] text-[12px] font-bold font-host uppercase tracking-wider">
+                      {selectedDate && dateOptions.find((d) => d.date === selectedDate)
+                        ? `${dateOptions.find((d) => d.date === selectedDate)?.month} ${dateOptions.find((d) => d.date === selectedDate)?.year}`
+                        : visibleMonth
+                          ? `${visibleMonth.month} ${visibleMonth.year}`
+                          : ""}
+                    </div>
                   </div>
                 )}
 
                 {/* Time Selection - Only show when date is selected */}
                 {selectedDate && (
-                  <>
+                  <div className="w-full">
                     {isLoadingTimeSlots ? (
-                      <div className="flex justify-center py-8">
+                      <div className="flex justify-center py-8 w-full">
                         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#FF3300]"></div>
                       </div>
                     ) : timeSlots.length > 0 ? (
-                      <div className="mt-8">
-                        <h3 className="font-shoulders hidden text-xl dark:text-white text-black mb-4">
-                          SELECT TIME SLOT
-                        </h3>
-                        <div className="relative dateSwiperContainer">
-                          <Swiper
-                            modules={[Navigation]}
-                            spaceBetween={8}
-                            slidesPerView={2}
-                            navigation={{
-                              prevEl: ".swiper-time-prev",
-                              nextEl: ".swiper-time-next",
-                            }}
-                            className="dateSwiper"
-                            onSwiper={(swiper) => {
-                              swiperRef2.current = swiper
-                            }}
-                            breakpoints={{
-                              640: {
-                                slidesPerView: 3,
-                              },
-                              768: {
-                                slidesPerView: 3,
-                                spaceBetween: 14,
-                              },
-                            }}
-                          >
-                            {timeSlots.map((slot, index) => (
+                      <div className="flex items-center gap-[40px] w-full relative px-[12px]">
+                        {/* Left navigation button */}
+                        <button
+                          type="button"
+                          onClick={() => swiperRef2.current?.slidePrev()}
+                          className="flex items-center justify-center text-black/60 dark:text-white/60 hover:text-[#FF3300] transition-colors disabled:opacity-30 disabled:cursor-not-allowed shrink-0"
+                          aria-label="Previous times"
+                        >
+                          <ChevronLeft className="h-[20px] w-[20px]" />
+                        </button>
+
+                        {/* Swiper */}
+                        <Swiper
+                          modules={[Navigation]}
+                          spaceBetween={16}
+                          slidesPerView={5}
+                          onSwiper={(swiper) => {
+                            swiperRef2.current = swiper
+                          }}
+                          className="timeSwiper flex-grow max-w-[558px]"
+                          breakpoints={{
+                            320: {
+                              slidesPerView: 2,
+                              spaceBetween: 10,
+                            },
+                            480: {
+                              slidesPerView: 3,
+                              spaceBetween: 12,
+                            },
+                            640: {
+                              slidesPerView: 4,
+                              spaceBetween: 14,
+                            },
+                            768: {
+                              slidesPerView: 5,
+                              spaceBetween: 16,
+                            },
+                          }}
+                        >
+                          {timeSlots.map((slot, index) => {
+                            const isSelected = selectedTime === slot.time;
+                            const timeDisplay = slot.time.split(" - ")[0].replace(":", ".");
+                            return (
                               <SwiperSlide key={`${slot.time}-${index}`} className="!w-auto">
                                 <button
+                                  type="button"
+                                  disabled={!slot.available}
                                   onClick={() =>
                                     handleTimeSelect(
                                       slot.time,
                                       Array.isArray(slot.available_agents) ? slot.available_agents[0] : "",
                                     )
                                   }
-                                  disabled={!slot.available}
-                                  className={`flex flex-col items-center justify-center py-3 px-4 rounded-lg border transition-colors ${selectedTime === slot.time
-                                    ? "border-[#FF3300] bg-[#FF3300]/10 dark:text-white text-black"
-                                    : slot.available
-                                      ? "border-gray-700 dark:text-white text-black hover:bg-gray-800 hover:text-white"
-                                      : "border-gray-700 text-gray-500 opacity-50 cursor-not-allowed"
-                                    }`}
+                                  className={`flex flex-col items-center justify-center w-[98px] h-[58px] rounded-[12px] border transition-all duration-200 ${
+                                    isSelected
+                                      ? "border-[#FF3300] bg-[#FF3300]/9 text-[#FF3300]"
+                                      : slot.available
+                                        ? "border-[#D9D9D9] dark:border-white/20 text-[#211D1D] dark:text-white/90 hover:border-[#FF3300] hover:bg-[#FF3300]/5"
+                                        : "border-gray-200 dark:border-neutral-800 text-gray-400 dark:text-neutral-600 opacity-40 cursor-not-allowed"
+                                  }`}
                                 >
-                                  <span className="text-[20px] font-shoulders">{slot.time}</span>
-                                  <span className="font-urbanist text-xs text-gray-400">
-                                    {slot.available ? `available - ${slot.availableSlots}` : "unavailable"}
+                                  <span className={`text-[16px] font-host leading-[1.2] ${isSelected ? "font-bold" : "font-normal"}`}>
+                                    {timeDisplay}
+                                  </span>
+                                  <span className="text-[12px] font-host leading-[1.2] opacity-80 mt-0.5">
+                                    {slot.available ? "available" : "unavailable"}
                                   </span>
                                 </button>
                               </SwiperSlide>
-                            ))}
-                          </Swiper>
+                            );
+                          })}
+                        </Swiper>
 
-                          {/* Custom navigation buttons */}
-                          <button
-                            onClick={() => swiperRef2.current?.slidePrev()}
-                            className="absolute left-0 top-[30%] z-10 flex items-center justify-center w-8 h-8 bg-black/60 rounded-full cursor-pointer"
-                            aria-label="Previous models"
-                          >
-                            <Image
-                              src="/images/angle-left.svg"
-                              alt="back icon"
-                              width={16}
-                              height={16}
-                              className="mb-0"
-                            />
-                          </button>
-
-                          <button
-                            onClick={() => swiperRef2.current?.slideNext()}
-                            className="absolute right-0 top-[30%] z-10 flex items-center justify-center w-8 h-8 bg-black/60 rounded-full cursor-pointer"
-                            aria-label="Next models"
-                          >
-                            <Image
-                              src="/images/angle-right.svg"
-                              alt="back icon"
-                              width={16}
-                              height={16}
-                              className="mb-0"
-                            />
-                          </button>
-                        </div>
+                        {/* Right navigation button */}
+                        <button
+                          type="button"
+                          onClick={() => swiperRef2.current?.slideNext()}
+                          className="flex items-center justify-center text-black/60 dark:text-white/60 hover:text-[#FF3300] transition-colors disabled:opacity-30 disabled:cursor-not-allowed shrink-0"
+                          aria-label="Next times"
+                        >
+                          <ChevronRight className="h-[20px] w-[20px]" />
+                        </button>
                       </div>
                     ) : (
-                      <div className="text-center py-4">
+                      <div className="text-center py-4 w-full">
                         <p className="dark:text-[#FAEADC] text-black">No time slots available for this date.</p>
                       </div>
                     )}
-                  </>
+                  </div>
                 )}
 
                 {/* Continue Button */}
@@ -1122,7 +1157,7 @@ export default function CarSelectionTesla({ isOpen, onClose, onSubmit, block }: 
                   variant={selectedTime ? "orange" : "disabled"}
                   onClick={handleSubmitAppointment}
                   disabled={!selectedTime}
-                  className="w-fit mt-4"
+                  className="w-fit mt-0"
                 >
                   {block?.teslaForm?.stepTwo?.selectAndProceed}
                 </Button>
@@ -1165,14 +1200,18 @@ export default function CarSelectionTesla({ isOpen, onClose, onSubmit, block }: 
                     className="mb-0"
                   />
                 </button>
-                <h2 className="dark:text-white text-black font-host font-extrabold text-[32px] md:text-[40px] leading-[1.1] uppercase">
+                <h2 className="dark:text-white text-black font-host font-extrabold leading-[1.1]">
                   <span>{block?.teslaForm?.whiteHeading}</span>{" "}
                   <span className="text-[#FF3300]">{block?.teslaForm?.redHeading}</span>
                 </h2>
               </div>
 
               <form autoComplete="off" onSubmit={personalInfoFormik.handleSubmit} className="space-y-6">
-                <div className="border border-[#D9D9D9] dark:border-white/20 rounded-[20px] px-[24px] py-[20px] flex flex-col justify-center w-full">
+                <div className={`border rounded-[20px] px-[24px] h-[90px] flex flex-col justify-center w-full transition-colors ${
+                  personalInfoFormik.errors.personalInfo?.fullName && personalInfoFormik.touched.personalInfo?.fullName
+                    ? "border-[#FF3300]"
+                    : "border-[#D9D9D9] dark:border-white/20"
+                }`}>
                   <label htmlFor="fullName" className="block font-host font-medium opacity-60 text-[12px] uppercase dark:text-white text-black">
                     {block?.teslaForm?.stepThree?.fullNameLabel || "YOUR FULL NAME"}
                   </label>
@@ -1186,15 +1225,19 @@ export default function CarSelectionTesla({ isOpen, onClose, onSubmit, block }: 
                     onBlur={personalInfoFormik.handleBlur}
                     className="w-full bg-transparent font-host text-[16px] md:text-[20px] dark:text-white text-black placeholder:text-black/30 dark:placeholder:text-white/30 focus:outline-none"
                   />
+                  {personalInfoFormik.errors.personalInfo?.fullName &&
+                    personalInfoFormik.touched.personalInfo?.fullName && (
+                      <div className="text-xs text-[#FF3300] font-host mt-1 leading-none">
+                        {personalInfoFormik.errors.personalInfo.fullName}
+                      </div>
+                    )}
                 </div>
-                {personalInfoFormik.errors.personalInfo?.fullName &&
-                  personalInfoFormik.touched.personalInfo?.fullName && (
-                    <div className="mt-1 text-sm text-[#FF3300] font-host">
-                      {personalInfoFormik.errors.personalInfo.fullName}
-                    </div>
-                  )}
 
-                <div className="border border-[#D9D9D9] dark:border-white/20 rounded-[20px] px-[24px] py-[20px] flex flex-col justify-center w-full">
+                <div className={`border rounded-[20px] px-[24px] h-[90px] flex flex-col justify-center w-full transition-colors ${
+                  personalInfoFormik.errors.personalInfo?.email && personalInfoFormik.touched.personalInfo?.email
+                    ? "border-[#FF3300]"
+                    : "border-[#D9D9D9] dark:border-white/20"
+                }`}>
                   <label htmlFor="email" className="block font-host font-medium opacity-60 text-[12px] uppercase dark:text-white text-black">
                     {block?.teslaForm?.stepThree?.emailLabel || "YOUR EMAIL ADDRESS"}
                   </label>
@@ -1208,12 +1251,12 @@ export default function CarSelectionTesla({ isOpen, onClose, onSubmit, block }: 
                     onBlur={personalInfoFormik.handleBlur}
                     className="w-full bg-transparent font-host text-[16px] md:text-[20px] dark:text-white text-black placeholder:text-black/30 dark:placeholder:text-white/30 focus:outline-none"
                   />
+                  {personalInfoFormik.errors.personalInfo?.email && personalInfoFormik.touched.personalInfo?.email && (
+                    <div className="text-xs text-[#FF3300] font-host mt-1 leading-none">
+                      {personalInfoFormik.errors.personalInfo.email}
+                    </div>
+                  )}
                 </div>
-                {personalInfoFormik.errors.personalInfo?.email && personalInfoFormik.touched.personalInfo?.email && (
-                  <div className="mt-1 text-sm text-[#FF3300] font-host">
-                    {personalInfoFormik.errors.personalInfo.email}
-                  </div>
-                )}
 
                 <div className="mt-6">
                   <label className="flex items-start cursor-pointer">

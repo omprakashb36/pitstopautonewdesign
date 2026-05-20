@@ -16,7 +16,7 @@
   @screen xl { h1,.h1 { font-size: 54px; } }
   @screen 3xl { h1,.h1 { font-size: 60px; } }
   
-  h2,.h2 { font-size: 28px; font-weight: 800; line-height: 1.1; }
+  h2,.h2,.offersPage .richTextTitle h2 { font-size: 28px; font-weight: 800; line-height: 1.1; }
   @screen md { h2,.h2 { font-size: 32px; } }
   @screen lg { h2,.h2 { font-size: 36px; } }
   @screen xl { h2,.h2 { font-size: 38px; } }
@@ -208,10 +208,10 @@ margin-top: 1px !important;
 }
 
 .offersPage .richTextTitle h2{
-   @apply dark:text-[#FAEADC] text-black font-urbanist font-extrabold md:text-[33px] text-[20px] tracking-[0px] leading-[100%]
+   @apply dark:text-[#FAEADC] text-black font-host font-extrabold
 }
 .offersPage .richTextTitle p{
-    @apply font-urbanist font-normal dark:text-[#FAEADC] text-black opacity-80 md:text-[18px] text-[15px] leading-[130%] tracking-[0%]
+    @apply font-host font-normal dark:text-[#FAEADC] text-black opacity-80 md:text-[18px] text-[15px] leading-[150%]
 }
 
 .offersPage .richTextTitle li{
@@ -395,9 +395,9 @@ background: rgb(194 0 52);
 .serviceCart .swiper-button-next{
     right: 0px!important;
 }
-.dateSwiper,.timeSwiper{
+/*.dateSwiper,.timeSwiper{
     margin: 0 30px!important;
-}
+}*/
 .offerText p{
     margin: 0!important;
 }

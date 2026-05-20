@@ -24,6 +24,7 @@ import { urlForImage } from "@/sanity/lib/utils"
 import { selectStyles, selectClassNames } from "@/app/utils/formStyles";
 import { useTheme } from "next-themes";
 import { getSiteSettingData } from "@/app/actions/common/sanityData";
+import { Button } from "../ui/Button";
 
 
 interface CarSelectorModalProps {
@@ -85,6 +86,21 @@ const personalDetailsValidationSchema = Yup.object({
     .matches(/^\d{9}$/, "Phone number must be 9 digits"),
   email: Yup.string().email("Invalid email address").required("Email is required"),
 })
+
+// Helper function to split service title for modern design styling
+const splitServiceTitle = (title: string) => {
+  if (title.includes("&")) {
+    const idx = title.indexOf("&")
+    return [title.substring(0, idx + 1).trim(), title.substring(idx + 1).trim()]
+  }
+  // Try splitting by space
+  const words = title.split(" ")
+  if (words.length > 1) {
+    const mid = Math.ceil(words.length / 2)
+    return [words.slice(0, mid).join(" "), words.slice(mid).join(" ")]
+  }
+  return [title, ""]
+}
 
 export default function CarSelectorModal({ isOpen, onClose, siteSettingData, initialData }: CarSelectorModalProps) {
   const [step, setStep] = useState<"car" | "personal" | "services">("car")
@@ -192,6 +208,13 @@ export default function CarSelectorModal({ isOpen, onClose, siteSettingData, ini
     }
     fetchServices()
   }, [currentLocale])
+
+  // Select the first service by default when serviceData loads
+  useEffect(() => {
+    if (serviceData.length > 0 && !activeService) {
+      setActiveService(serviceData[0]._id)
+    }
+  }, [serviceData, activeService])
 
   useEffect(() => {
     if (initialData && isOpen) {
@@ -406,8 +429,16 @@ export default function CarSelectorModal({ isOpen, onClose, siteSettingData, ini
     <div
       className="fixed inset-0 z-50 flex items-center rounded-[35px] justify-center backdropBlur-40 overflow-y-auto"
     >
-      <div className="relative carModalPopup max-h-[90vh] min-h-[500px] overflow-y-auto custom-scrollbar w-full max-w-[1130px] rounded-[30px] dark:bg-[#0f0f0f] bg-[#F7F7F7] p-8 2xl:p-[66px] md:p-12 ltr:md:pr-0 rtl:md:pl-0 my-4 mx-4">
-        <button onClick={onClose} className="absolute z-10 ltr:2xl:right-[66px] rtl:2xl:left-[66px] ltr:right-8 rtl:left-8 2xl:top-[86px] top-8 text-white hover:text-gray-300" aria-label="Close">
+      <div className={`relative max-w-[1200px] 3xl:max-w-[1360px] rounded-3xl  2xl:rounded-[60px] carModalPopup max-h-[90vh] min-h-[500px] overflow-y-auto custom-scrollbar w-full dark:bg-[#0f0f0f] bg-[#F7F7F7] p-8 md:p-[60px] 3xl:p-[80px] ltr:md:pr-0 rtl:md:pl-0 my-4 mx-4 transition-all duration-300`}>
+        <button
+          onClick={onClose}
+          className={`absolute z-10 text-white hover:text-gray-300 transition-colors
+            ${step === "services"
+              ? "ltr:right-8 rtl:left-8 top-8 md:ltr:right-[80px] md:rtl:left-[80px] md:top-[80px]"
+              : "ltr:2xl:right-[66px] rtl:2xl:left-[66px] ltr:right-8 rtl:left-8 2xl:top-[86px] top-8"
+            }`}
+          aria-label="Close"
+        >
           <Image
             src={theme === "light" ? "/images/lightThemeClose.svg" : "/images/formCloseIcon.svg"}
             alt="Form close icon"
@@ -419,13 +450,18 @@ export default function CarSelectorModal({ isOpen, onClose, siteSettingData, ini
         {step === "car" && (
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
             <div className="flex flex-col gap-6 max-w-[490px]">
-              <h2 className="font-shoulders text-3xl 2xl:text-[50px] md:text-4xl 2xl:mb-[36px] md:mb-2 mb-0">
-                <span className="dark:text-white text-black">{String(siteSettingData?.serviceBookForm?.stepOne?.whiteHeading) || ''}</span> <span className="text-[#c00034]">{String(siteSettingData?.serviceBookForm?.stepOne?.redHeading) || ''}</span>
+              <h2 className="font-host font-extrabold mb-4">
+                <span className="dark:text-white text-black">{String(siteSettingData?.serviceBookForm?.stepOne?.whiteHeading) || ''}</span>{" "}
+                <span className="text-[#FF3300]">{String(siteSettingData?.serviceBookForm?.stepOne?.redHeading) || ''}</span>
               </h2>
 
               <form autoComplete="off" onSubmit={carFormik.handleSubmit} className="space-y-6">
-                <div className="formLabel selectReact  border  border-black/15 dark:border-white/20 rounded-[15px] space-y-2">
-                  <label htmlFor="brand" className="block font-urbanist sandDrift text-xs uppercase">
+                <div className={`border rounded-[20px] px-[24px] h-[90px] flex flex-col justify-center selectReact w-full transition-colors ${
+                  carFormik.errors.brand && carFormik.touched.brand
+                    ? "border-[#FF3300]"
+                    : "border-[#D9D9D9] dark:border-white/20"
+                }`}>
+                  <label htmlFor="brand" className="block font-host font-medium opacity-60 text-[12px] uppercase dark:text-white text-black">
                     {String(siteSettingData?.serviceBookForm?.stepOne?.brandLabel) || ''}
                   </label>
                   <Select
@@ -448,7 +484,7 @@ export default function CarSelectorModal({ isOpen, onClose, siteSettingData, ini
                     classNames={selectClassNames}
                     components={components}
                     isSearchable={!isMobileDevice}
-                    className="font-urbanist"
+                    className="font-host text-[16px] md:text-[20px]"
                     formatOptionLabel={(option: any) => (
                       <div className="flex items-center gap-2">
                         {option.image?.image?.asset?._ref && (
@@ -466,12 +502,16 @@ export default function CarSelectorModal({ isOpen, onClose, siteSettingData, ini
                   />
 
                   {carFormik.errors.brand && carFormik.touched.brand && (
-                    <div className="mt-1 text-sm text-[#c00034] font-urbanist">{carFormik.errors.brand}</div>
+                    <div className="text-xs text-[#FF3300] font-host mt-1 leading-none">{carFormik.errors.brand}</div>
                   )}
                 </div>
 
-                <div className="formLabel selectReact border dark:border-white/20  border-black/20 rounded-[15px] space-y-2">
-                  <label htmlFor="model" className="block font-urbanist sandDrift text-xs uppercase">
+                <div className={`border rounded-[20px] px-[24px] h-[90px] flex flex-col justify-center selectReact w-full transition-colors ${
+                  carFormik.errors.model && carFormik.touched.model
+                    ? "border-[#FF3300]"
+                    : "border-[#D9D9D9] dark:border-white/20"
+                }`}>
+                  <label htmlFor="model" className="block font-host font-medium opacity-60 text-[12px] uppercase dark:text-white text-black">
                     {String(siteSettingData?.serviceBookForm?.stepOne?.modelLabel) || ''}
                   </label>
                   <Select
@@ -482,21 +522,24 @@ export default function CarSelectorModal({ isOpen, onClose, siteSettingData, ini
                     onChange={(option) => carFormik.setFieldValue("model", option?.value || "")}
                     onBlur={carFormik.handleBlur}
                     placeholder={String(isLoading ? "Loading models..." : siteSettingData?.serviceBookForm?.stepOne?.modelPlaceholder || '')}
-                    // styles={customStyles}
                     styles={customSelectStyles}
                     classNames={selectClassNames}
                     components={components}
                     isDisabled={!carFormik.values.brand || isLoading}
                     isSearchable={isMobileDevice ? false : true}
-                    className="font-urbanist"
+                    className="font-host text-[16px] md:text-[20px]"
                   />
                   {carFormik.errors.model && carFormik.touched.model && (
-                    <div className="mt-1 text-sm text-[#c00034] font-urbanist">{carFormik.errors.model}</div>
+                    <div className="text-xs text-[#FF3300] font-host mt-1 leading-none">{carFormik.errors.model}</div>
                   )}
                 </div>
 
-                <div className="formLabel selectReact border dark:border-white/20  border-black/20 rounded-[15px] space-y-2">
-                  <label htmlFor="year" className="block font-urbanist sandDrift text-xs uppercase">
+                <div className={`border rounded-[20px] px-[24px] h-[90px] flex flex-col justify-center selectReact w-full transition-colors ${
+                  carFormik.errors.year && carFormik.touched.year
+                    ? "border-[#FF3300]"
+                    : "border-[#D9D9D9] dark:border-white/20"
+                }`}>
+                  <label htmlFor="year" className="block font-host font-medium opacity-60 text-[12px] uppercase dark:text-white text-black">
                     {String(siteSettingData?.serviceBookForm?.stepOne?.yearLabel) || ''}
                   </label>
                   <Select
@@ -511,17 +554,19 @@ export default function CarSelectorModal({ isOpen, onClose, siteSettingData, ini
                     classNames={selectClassNames}
                     components={components}
                     isSearchable={isMobileDevice ? false : true}
-                    className="font-urbanist"
+                    className="font-host text-[16px] md:text-[20px]"
                   />
                   {carFormik.errors.year && carFormik.touched.year && (
-                    <div className="mt-1 text-sm text-[#c00034] font-urbanist">{carFormik.errors.year}</div>
+                    <div className="text-xs text-[#FF3300] font-host mt-1 leading-none">{carFormik.errors.year}</div>
                   )}
                 </div>
 
-
-
-                <div className="formLabel border dark:border-white/20  border-black/20 rounded-[15px] space-y-2">
-                  <label htmlFor="plateNumber" className="block font-urbanist sandDrift text-xs uppercase">
+                <div className={`border rounded-[20px] px-[24px] h-[90px] flex flex-col justify-center w-full transition-colors ${
+                  carFormik.errors.plateNumber && carFormik.touched.plateNumber
+                    ? "border-[#FF3300]"
+                    : "border-[#D9D9D9] dark:border-white/20"
+                }`}>
+                  <label htmlFor="plateNumber" className="block font-host font-medium opacity-60 text-[12px] uppercase dark:text-white text-black">
                     {String(siteSettingData?.serviceBookForm?.stepOne?.numberPlateLabel) || ''}
                   </label>
                   <input
@@ -532,23 +577,20 @@ export default function CarSelectorModal({ isOpen, onClose, siteSettingData, ini
                     value={carFormik.values.plateNumber}
                     onChange={carFormik.handleChange}
                     onBlur={carFormik.handleBlur}
-                    className={`w-full rounded-lg border ${carFormik.errors.plateNumber && carFormik.touched.plateNumber
-                      ? "border-[#c00034]"
-                      : "border-white/20 focus:border-white/40"
-                      } bg-transparent px-4 py-3 font-urbanist dark:text-white text-black placeholder:text-black/50 dark:placeholder:text-white/50 focus:outline-none`}
+                    className="w-full bg-transparent font-host text-[16px] md:text-[20px] dark:text-white text-black placeholder:text-black/30 dark:placeholder:text-white/30 focus:outline-none"
                   />
                   {carFormik.errors.plateNumber && carFormik.touched.plateNumber && (
-                    <div className="mt-1 text-sm text-[#c00034] font-urbanist">{carFormik.errors.plateNumber}</div>
+                    <div className="text-xs text-[#FF3300] font-host mt-1 leading-none">{carFormik.errors.plateNumber}</div>
                   )}
                 </div>
-                <Squircle cornerRadius={10}>
-                  <button
-                    type="submit"
-                    className="mt-2 2xl:mt-8 rounded-lg px-[26px] leading-[1] py-[13px] gradientBG font-urbanist text-white transition-colors hover:bg-[#a00029]"
-                  >
-                    {String(siteSettingData?.serviceBookForm?.stepOne?.proceedBtn) || ''}
-                  </button>
-                </Squircle>
+
+                <Button
+                  type="submit"
+                  variant="orange"
+                  className="w-fit mt-4"
+                >
+                  {String(siteSettingData?.serviceBookForm?.stepOne?.proceedBtn) || ''}
+                </Button>
               </form>
             </div>
 
@@ -579,14 +621,19 @@ export default function CarSelectorModal({ isOpen, onClose, siteSettingData, ini
                     className="mb-0"
                   />
                 </button>
-                <h2 className="font-shoulders text-3xl 2xl:text-[50px] md:text-4xl">
-                  <span className="dark:text-white text-black">{String(siteSettingData?.serviceBookForm?.stepTwo?.whiteHeading)}</span> <span className="text-[#c00034]">{String(siteSettingData?.serviceBookForm?.stepTwo?.redHeading)}</span>
+                <h2 className="font-host font-extrabold">
+                  <span className="dark:text-white text-black">{String(siteSettingData?.serviceBookForm?.stepTwo?.whiteHeading)}</span>{" "}
+                  <span className="text-[#FF3300]">{String(siteSettingData?.serviceBookForm?.stepTwo?.redHeading)}</span>
                 </h2>
               </div>
 
-              <form autoComplete="off" onSubmit={personalFormik.handleSubmit} className="space-y-6 ">
-                <div className="formLabel border dark:border-white/20  border-black/20 rounded-[15px] space-y-2">
-                  <label htmlFor="fullName" className="block font-urbanist text-xs uppercase sandDrift">
+              <form autoComplete="off" onSubmit={personalFormik.handleSubmit} className="space-y-6">
+                <div className={`border rounded-[20px] px-[24px] h-[90px] flex flex-col justify-center w-full transition-colors ${
+                  personalFormik.errors.fullName && personalFormik.touched.fullName
+                    ? "border-[#FF3300]"
+                    : "border-[#D9D9D9] dark:border-white/20"
+                }`}>
+                  <label htmlFor="fullName" className="block font-host font-medium opacity-60 text-[12px] uppercase dark:text-white text-black">
                     {String(siteSettingData?.serviceBookForm?.stepTwo?.nameLabel) || ''}
                   </label>
                   <input
@@ -597,20 +644,23 @@ export default function CarSelectorModal({ isOpen, onClose, siteSettingData, ini
                     value={personalFormik.values.fullName}
                     onChange={personalFormik.handleChange}
                     onBlur={personalFormik.handleBlur}
-                    className={`w-full rounded-lg border ${personalFormik.errors.fullName && personalFormik.touched.fullName
-                      ? "border-[#c00034]"
-                      : "border-white/20 focus:border-white/40"
-                      } bg-transparent px-4 py-3 font-urbanist dark:text-white text-black placeholder:text-black/50 dark:placeholder:text-white/50 focus:outline-none`}
+                    className="w-full bg-transparent font-host text-[16px] md:text-[20px] dark:text-white text-black placeholder:text-black/30 dark:placeholder:text-white/30 focus:outline-none"
                   />
                   {personalFormik.errors.fullName && personalFormik.touched.fullName && (
-                    <div className="mt-1 text-sm text-[#c00034] font-urbanist">{personalFormik.errors.fullName}</div>
+                    <div className="text-xs text-[#FF3300] font-host mt-1 leading-none">{personalFormik.errors.fullName}</div>
                   )}
                 </div>
 
-                <div className="md:grid md:grid-cols-3 gap-4">
-                  <div className="formLabel border dark:border-white/20  border-black/20rounded-[15px] md:mb-0 mb-5 space-y-2">
-                    <label htmlFor="countryCode" className="block font-urbanist text-xs uppercase sandDrift">
-                      {String(siteSettingData?.serviceBookForm?.stepTwo?.countryLabel) || ''}
+                {/* Phone row with Country code integrated */}
+                <div className={`border rounded-[20px] h-[90px] flex items-center w-full overflow-hidden transition-colors ${
+                  (personalFormik.errors.phoneNumber && personalFormik.touched.phoneNumber) || (personalFormik.errors.countryCode && personalFormik.touched.countryCode)
+                    ? "border-[#FF3300]"
+                    : "border-[#D9D9D9] dark:border-white/20"
+                }`}>
+                  {/* Country Code Selection */}
+                  <div className="w-[124px] h-full flex flex-col justify-center px-[24px] pr-[15px] relative border-r border-[#D9D9D9] dark:border-white/20 selectReact no-border">
+                    <label htmlFor="countryCode" className="block font-host font-medium opacity-60 text-[10px] md:text-[12px] uppercase dark:text-white text-black">
+                      {String(siteSettingData?.serviceBookForm?.stepTwo?.countryLabel) || 'COUNTRY'}
                     </label>
                     <Select
                       id="countryCode"
@@ -622,16 +672,13 @@ export default function CarSelectorModal({ isOpen, onClose, siteSettingData, ini
                       placeholder="Code"
                       styles={selectStyles}
                       classNames={selectClassNames}
-                      className="font-urbanist"
+                      className="font-host text-[16px] md:text-[20px]"
                     />
-                    {personalFormik.errors.countryCode && personalFormik.touched.countryCode && (
-                      <div className="mt-1 text-sm text-[#c00034] font-urbanist">{personalFormik.errors.countryCode}</div>
-                    )}
                   </div>
-
-                  <div className="formLabel border col-span-2 dark:border-white/20  border-black/20 rounded-[15px]  space-y-2">
-                    <label htmlFor="phoneNumber" className="block font-urbanist text-xs uppercase sandDrift">
-                      {String(siteSettingData?.serviceBookForm?.stepTwo?.phoneLabel) || ''}
+                  {/* Phone Number Input */}
+                  <div className="flex-1 h-full flex flex-col justify-center px-[24px] selectReact">
+                    <label htmlFor="phoneNumber" className="block font-host font-medium opacity-60 text-[10px] md:text-[12px] uppercase dark:text-white text-black">
+                      {String(siteSettingData?.serviceBookForm?.stepTwo?.phoneLabel) || 'PHONE NUMBER'}
                     </label>
                     <input
                       id="phoneNumber"
@@ -641,19 +688,22 @@ export default function CarSelectorModal({ isOpen, onClose, siteSettingData, ini
                       value={personalFormik.values.phoneNumber}
                       onChange={personalFormik.handleChange}
                       onBlur={personalFormik.handleBlur}
-                      className={`w-full rounded-lg border ${personalFormik.errors.phoneNumber && personalFormik.touched.phoneNumber
-                        ? "border-[#c00034]"
-                        : "border-white/20 focus:border-white/40"
-                        } bg-transparent px-4 py-3 font-urbanist dark:text-white text-black placeholder:text-black/50 dark:placeholder:text-white/50 focus:outline-none`}
+                      className="w-full bg-transparent font-host text-[16px] md:text-[20px] dark:text-white text-black placeholder:text-black/30 dark:placeholder:text-white/30 focus:outline-none"
                     />
                     {personalFormik.errors.phoneNumber && personalFormik.touched.phoneNumber && (
-                      <div className="mt-1 text-sm text-[#c00034] font-urbanist">{personalFormik.errors.phoneNumber}</div>
+                      <div className="text-xs text-[#FF3300] font-host mt-0.5 leading-none">
+                        {personalFormik.errors.phoneNumber}
+                      </div>
                     )}
                   </div>
                 </div>
 
-                <div className="formLabel border dark:border-white/20  border-black/20 rounded-[15px] space-y-2">
-                  <label htmlFor="email" className="block font-urbanist text-xs uppercase sandDrift">
+                <div className={`border rounded-[20px] px-[24px] h-[90px] flex flex-col justify-center w-full transition-colors ${
+                  personalFormik.errors.email && personalFormik.touched.email
+                    ? "border-[#FF3300]"
+                    : "border-[#D9D9D9] dark:border-white/20"
+                }`}>
+                  <label htmlFor="email" className="block font-host font-medium opacity-60 text-[12px] uppercase dark:text-white text-black">
                     {String(siteSettingData?.serviceBookForm?.stepTwo?.emailLabel) || ''}
                   </label>
                   <input
@@ -664,32 +714,32 @@ export default function CarSelectorModal({ isOpen, onClose, siteSettingData, ini
                     value={personalFormik.values.email}
                     onChange={personalFormik.handleChange}
                     onBlur={personalFormik.handleBlur}
-                    className={`w-full rounded-lg border ${personalFormik.errors.email && personalFormik.touched.email
-                      ? "border-[#c00034]"
-                      : "border-white/20 focus:border-white/40"
-                      } bg-transparent px-4 py-3 font-urbanist dark:text-white text-black placeholder:text-black/50 dark:placeholder:text-white/50 focus:outline-none`}
+                    className="w-full bg-transparent font-host text-[16px] md:text-[20px] dark:text-white text-black placeholder:text-black/30 dark:placeholder:text-white/30 focus:outline-none"
                   />
                   {personalFormik.errors.email && personalFormik.touched.email && (
-                    <div className="mt-1 text-sm text-[#c00034] font-urbanist">{personalFormik.errors.email}</div>
+                    <div className="text-xs text-[#FF3300] font-host mt-1 leading-none">{personalFormik.errors.email}</div>
                   )}
                 </div>
-                <Squircle cornerRadius={10}>
-                  <button
-                    type="submit"
-                    className={`${submitting ? "cursor-not-allowed opacity-65" : ""} mt-2 2xl:mt-8 rounded-lg px-[26px] leading-[1] py-[13px] gradientBG font-urbanist text-white transition-colors hover:bg-[#a00029]`}
-                  >
+
+                <Button
+                  type="submit"
+                  variant={submitting ? "disabled" : "orange"}
+                  disabled={submitting}
+                  className="w-fit mt-4"
+                >
+                  <span className="flex items-center gap-2">
                     {String(siteSettingData?.serviceBookForm?.stepTwo?.proceedBtn) || ''}
                     {submitting && (
                       <Image
                         src="/images/infinite-spinner.svg"
-                        alt="arrow right"
+                        alt="loader"
                         width={30}
                         height={15}
                         className="loaderImage inline-block"
                       />
                     )}
-                  </button>
-                </Squircle>
+                  </span>
+                </Button>
               </form>
             </div>
 
@@ -708,66 +758,82 @@ export default function CarSelectorModal({ isOpen, onClose, siteSettingData, ini
         )}
 
         {step === "services" && (
-          <div className="flex flex-col ltr:md:pr-12 rtl:md:pl-12 step3Services">
-            <div className="flex items-center mb-8">
-              <button onClick={handleBack} className="ltr:mr-4 rtl:ml-4 text-white hover:text-gray-300" aria-label="Back">
-                <Image
-                  src={theme === "light" ? "/images/lightthemeArrow.svg" : "/images/backIcon.svg"}
-                  alt="back icon"
-                  width={17}
-                  height={23}
-                  className="mb-0"
-                />
-              </button>
-              <h2 className="font-shoulders text-3xl md:text-4xl">
-                <span className="dark:text-white text-black">BROWSE</span> <span className="text-[#c00034]">SERVICES</span>
-              </h2>
+          <div className="flex flex-col step3Services w-full">
+            <div className="flex items-center justify-between w-full mb-[40px]">
+              <div className="flex items-center gap-[40px]">
+                <button
+                  onClick={handleBack}
+                  className="w-[30px] h-[30px] flex items-center justify-center hover:opacity-80 transition-opacity"
+                  aria-label="Back"
+                >
+                  <Image
+                    src={theme === "light" ? "/images/lightthemeArrow.svg" : "/images/backIcon.svg"}
+                    alt="back icon"
+                    width={17}
+                    height={23}
+                    className="mb-0 rtl:scale-x-[-1]"
+                  />
+                </button>
+                <h2 className="font-host font-extrabold">
+                  <span className="dark:text-white text-[#211D1D]">Browse</span>{" "}
+                  <span className="text-[#FF3300]">Services</span>
+                </h2>
+              </div>
             </div>
 
-            <div className="grid gridColPopup grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-[24px] w-full">
               {serviceData?.map((service) => {
                 const isActive = service._id === activeService
+                const [line1, line2] = splitServiceTitle(service.title || "")
 
                 return (
-                  <Link
-                    href={`/${currentLocale}/services/${service.slug?.current?.replace(/^ar\//, "")}`}
+                  <div
                     key={service._id}
-                    className={`relative rounded-2xl md:p-6 p-3 flex flex-col items-center justify-center gap-4 cursor-pointer transition-all
-              ${isActive ? "bg-[#c00034]/20 border border-[#c00034]" : "dark:bg-black/30 border dark:border-gray-700 border-black"}`}
+                    className={`relative rounded-[40px] p-[24px] flex flex-col justify-between items-start cursor-pointer transition-all duration-300 w-full aspect-square max-w-[180px] mx-auto border
+                      ${isActive
+                        ? "bg-[#FF3300]/[0.05] border-[#FF3300]"
+                        : "bg-transparent border-[#898989] dark:border-white/20 hover:border-[#FF3300]/50"
+                      }`}
                     onClick={() => setActiveService(service._id)}
                   >
-                    <div className={isActive ? "text-[#c00034]" : "dark:text-white text-black"}>
-
+                    <div className="w-[60px] h-[60px] relative">
                       {service?.serviceIcon?.altText && (
                         <ImageComp
                           block={service?.serviceIcon}
-                          imageClassName="w-12 h-12 object-contain"
-                          width={50}
-                          height={50}
+                          imageClassName="w-[60px] h-[60px] object-contain"
+                          width={60}
+                          height={60}
                         />
                       )}
                     </div>
-                    <div className="text-center">
-                      <p className={`${isActive ? "text-[#c00034]" : "dark:text-gray-300 text-black"} font-medium`}>{service.title}</p>
+                    <div className="[word-break:break-word] flex flex-col font-host font-bold items-start leading-[1.5] text-[16px] w-full mt-auto">
+                      <div className={isActive ? "text-[#FF3300]" : "text-[#393D45] dark:text-gray-300"}>
+                        {line1}
+                      </div>
+                      {line2 && (
+                        <div className={isActive ? "text-[#801B01]" : "text-[#393D45] dark:text-gray-300"}>
+                          {line2}
+                        </div>
+                      )}
                     </div>
-                  </Link>
+                  </div>
                 )
               })}
             </div>
-            <Squircle cornerRadius={10} className="flex md:absolute hidden top-[-20px] ltr:right-20 rtl:left-20">
-              <button
+
+            <div className="mt-8 flex justify-start w-full">
+              <Button
+                variant="orange"
                 onClick={() => {
                   const selectedService = serviceData.find((service) => service._id === activeService);
                   if (selectedService) {
                     handleServiceSelection(selectedService);
                   }
                 }}
-                className={`${activeService ? 'block' : 'hidden'} mt-12 m-w-52 mx-auto rounded-lg px-[26px] py-[13px] gradientBG inline-block font-shoulders text-white transition-colors hover:bg-[#a00029]`}
               >
-                VIEW {serviceData.find((service) => service._id === activeService)?.title} SERVICE
-              </button>
-            </Squircle>
-
+                VIEW {serviceData.find((service) => service._id === activeService)?.title || "SERVICE"}
+              </Button>
+            </div>
           </div>
         )}
       </div>
