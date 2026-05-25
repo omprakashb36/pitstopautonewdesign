@@ -205,29 +205,51 @@ margin-top: 1px !important;
 
 .pageBg .richTextTitle h1 strong{
     @apply text-[#C00034]
+
+    
 }
 
+.offersPage .richTextTitle{
+    @apply p-4 xl:p-[24px] 3xl:p-10
+}
+.offersPage .richTextTitle li::marker{
+		color:#211D1D;
+	}
+
 .offersPage .richTextTitle h2{
-   @apply dark:text-[#FAEADC] text-black font-urbanist font-extrabold md:text-[33px] text-[20px] tracking-[0px] leading-[100%]
+   @apply dark:text-[#FAEADC] text-black font-host font-extrabold md:text-[33px] text-[20px] tracking-[0px] leading-[100%]
 }
 .offersPage .richTextTitle p{
-    @apply font-urbanist font-normal dark:text-[#FAEADC] text-black opacity-80 md:text-[18px] text-[15px] leading-[130%] tracking-[0%]
+    @apply font-host font-normal dark:text-[#FAEADC]  text-[#211D1D] md:text-[18px] text-[15px]
 }
 
 .offersPage .richTextTitle li{
-    @apply font-urbanist font-normal md:text-[18px] text-[15px] dark:text-[#FAEADC] text-black opacity-80 leading-[130%] tracking-[0%] 
-}
-.offersPage .richTextTitle li strong{
-    @apply font-bold dark:text-[#FAEADC] text-black 
+    @apply font-host font-normal md:text-[18px] text-[15px] dark:text-[#FAEADC] list-disc text-[#211D1D]  leading-[150%] tracking-[0%] 
 }
 
+.offersPage .richTextTitle li strong{
+    @apply font-host font-bold dark:text-[#FAEADC] text-[#211D1D] md:text-[18px] text-[15px]
+}
+
+
 .offersPage .richTextTitle h3{
-    @apply text-[#C00034] md:text-[33px] text-[20px] uppercase font-shoulders  tracking-[0px] leading-[100%] font-semibold
+    @apply text-[#FF3300] md:text-[33px] text-[20px] font-host capitalize tracking-[0px] leading-[100%] font-extrabold
 }
 .offersPage .richTextTitle h3 strong{
     @apply font-semibold
 }
-
+.offersPage .richTextTitle h2 strong{
+    @apply text-[#FF3300] xl:text-[33px] text-[20px] 3xl:text-[40px] font-host capitalize tracking-[0px] leading-[110%] font-extrabold
+}
+.offersPage .richTextTitle h2 {
+    @apply mb-6 text-[#211D1D] xl:text-[33px] text-[20px] 3xl:text-[40px] font-host capitalize tracking-[0px] leading-[110%] font-extrabold
+}
+.richTextImage h2{
+    @apply mb-0  text-[#211D1D] xl:text-[33px] text-[20px] 3xl:text-[40px] font-host capitalize tracking-[0px] leading-[110%] font-extrabold !p-0
+}
+.richTextImage p{
+    @apply !p-0 font-host font-normal dark:text-[#FAEADC] text-black md:text-[18px] text-[15px] 
+}
 .pageBg .richTextTitle h1,.pageBg .richTextTitle h1 strong {
     font-weight: 800!important;
 }
