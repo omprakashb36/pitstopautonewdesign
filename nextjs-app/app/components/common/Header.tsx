@@ -49,7 +49,7 @@ export default function Header({ fragment, siteSettingData, services }: HeaderPr
         <ThemeToggle />
       }
       {shouldShowButton && isMobileDevice && !isMenuOpen &&
-        <button className="h-10 md:hidden w-10 absolute z-[49] top-12 ltr:right-[62px] rtl:left-[62px]" onClick={() => { dispatch(setCartPopup(true)); }}>
+        <button className="h-10 md:hidden w-10 absolute z-[49] top-[28px] ltr:right-[62px] rtl:left-[62px]" onClick={() => { dispatch(setCartPopup(true)); }}>
           <Image
             src={`${theme === 'dark' ? '/images/icons/cart-icon.svg' : '/images/icons/cart-icon-light.svg'}`}
             alt="cart icon"
@@ -60,10 +60,10 @@ export default function Header({ fragment, siteSettingData, services }: HeaderPr
         </button>
       }
       <div
-        className="absolute overflow-hidden z-[48]  top-0 grid w-full grid-cols-3 items-center justify-center gap-4 space-y-0 pt-4 lg:space-y-0 lg:pt-[45px]"
+        className="absolute overflow-hidden z-[48]  top-0 grid w-full grid-cols-3 items-center justify-center gap-4 space-y-0 pt-4 lg:space-y-0 lg:pt-[40px]"
         style={{ opacity: 1, transform: "none" }}
       >
-        <div className="w-[100vw]">
+        <div className="w-[100vw] py-[10px]">
           <div className="container-grid mx-auto w-full">
             <div className="flex items-center 3xl:gap-[40px] gap-5">
               <div>
@@ -344,21 +344,21 @@ export default function Header({ fragment, siteSettingData, services }: HeaderPr
 
               <div className="space-y-1 items-center callBtn justify-center  gap-[33px] hidden lg:flex">
                 <div>
-                  <p className="font-urbanist dark:text-[#FAEADC] text-black text-sm lg:text-[15px] opacity-50 font-semibold">
+                  <p className="font-host dark:text-[#FAEADC] text-black text-sm lg:text-[18px] opacity-50 font-semibold">
                     {fragment?.header?.callUs}
                   </p>
-                  <p className="font-shoulders font-semibold dark:text-[#FAEADC] text-black text-eyebrow-lg leading-none lg:text-[33px]">
+                  <p className="font-host font-extrabold dark:text-[#FAEADC] text-black text-eyebrow-lg leading-none lg:text-[32px]">
                     {fragment?.header?.contact}
                   </p>
                 </div>
                 <div className="langbtn">
                   {currentLocale === "en" && (
-                    <button onClick={() => switchLanguage("ar")} className="font-urbanist font-bold dark:text-[#FAEADC] text-black text-sm lg:text-[15px] border dark:border-[#FAEADC] border-black rounded-[10px] px-[26px] py-[13px] transition-colors duration-200 ease-in-out">
+                    <button onClick={() => switchLanguage("ar")} className="font-cairo font-bold dark:text-[#FAEADC] text-black text-sm lg:text-[15px] border dark:border-[#FAEADC] border-black rounded-[10px] px-[26px] py-[13px] transition-colors duration-200 ease-in-out">
                       العربية
                     </button>
                   )}
                   {currentLocale === "ar" && (
-                    <button onClick={() => switchLanguage("en")} className="font-urbanist font-bold dark:text-[#FAEADC] text-black text-sm lg:text-[15px] border dark:border-[#FAEADC] border-black rounded-[10px] px-[26px] py-[13px] transition-colors duration-200 ease-in-out">
+                    <button onClick={() => switchLanguage("en")} className="font-host font-bold dark:text-[#FAEADC] text-black text-sm lg:text-[15px] border dark:border-[#FAEADC] border-black rounded-[10px] px-[26px] py-[13px] transition-colors duration-200 ease-in-out">
                       English
                     </button>
                   )}
@@ -381,19 +381,19 @@ export default function Header({ fragment, siteSettingData, services }: HeaderPr
               />
             )}
             <Image
-              src="/images/darkLogo.svg"
+              src="/images/logo-new.svg"
               alt="logo dark icon"
-              width={101}
-              height={106}
+              width={318}
+              height={41}
               className="logoInner"
             />
           </Link>
         </div>
       </div>
-      <div className="md:absolute fixed bottom-0 topBtnFixed z-50 w-full ltr:md:max-w-[227px] rtl:md:max-w-[240px] md:h-[61px] h-[51px] max-w-[190px] lg:bottom-auto lg:top-[41px] ltr:right-0 rtl:left-0">
-        <Link href={`/${currentLocale}/contact-us`} className="w-full md:h-auto h-[51px]">
+      <div className="md:absolute fixed bottom-0 topBtnFixed z-50 w-full ltr:md:max-w-[227px] rtl:md:max-w-[240px] h-[51px] 3xl:h-[74px] max-w-[190px] lg:bottom-auto 3xl:top-[40px] top-[47px] ltr:right-0 rtl:left-0">
+        <Link href={`/${currentLocale}/contact-us`} className="w-full md:h-auto h-[51px] 3xl:h-[74px]">
           <div className="flex">
-            <svg className="mr-[-6px] shrink  md:h-[61px] h-[51px] rtl:scale-x-[-1] rtl:transform text-[#801B01]" width="58" height="74" viewBox="0 0 58 74" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg className="3xl:mr-[-1px] mr-[-10px] shrink h-[51px] 3xl:h-[74px] rtl:scale-x-[-1] rtl:transform text-[#801B01]" width="58" height="74" viewBox="0 0 58 74" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M28.5801 0.78495L8.52956 73.215H1.00891L20.2432 0.78495H28.5801ZM29.6001 0H19.6513L9.72748e-05 74H9.11497L29.6001 0Z" fill="#801B01" />
               <path d="M42.2 0L21.7172 74H12.6L32.2522 0H42.2Z" fill="#801B01" />
               <path d="M54.8 0L34.3173 74H25.2L44.8523 0H54.8Z" fill="#801B01" />
@@ -401,7 +401,7 @@ export default function Header({ fragment, siteSettingData, services }: HeaderPr
             </svg>
 
 
-            <p className="flex grow md:h-auto h-[55px] items-center text-white font-extralight justify-center whitespace-nowrap text-[20px] uppercase leading-none tracking-wide lg:text-[22px] bg-[#FF3300]">
+            <p className="flex grow md:h-auto h-[55px] items-center text-white font-extrabold justify-center whitespace-nowrap text-[20px] uppercase leading-none tracking-wide lg:text-[22px] bg-[#FF3300]">
               {fragment?.header?.cornerLogo}
             </p>
 

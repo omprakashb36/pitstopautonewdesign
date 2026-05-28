@@ -40,11 +40,11 @@ export default function BlogPageContent({
     return isArabic ? formatted : formatted
   }
   return (
-    <div className="main_page mt-[150px] lg:mt-[180px] innerPage">
+    <div className="main_page mt-[100px] lg:mt-[180px] innerPage">
       <Header services={services} siteSettingData={siteSettingData} locale={locale} fragment={headerData} />
       <div className="blogDetail">
       <div className="dark:text-[#FAEADC] text-black mt-[180px] min-h-screen pageBg">
-        <div className="container">
+        <div className="container-grid">
           <div className="flex flex-wrap items-center gap-2 text-[15px] mb-6">
             <Link href={`/${locale}`}>Home</Link>
             <span>/</span>
@@ -52,19 +52,20 @@ export default function BlogPageContent({
             <span>/</span>
             <span className="opacity-60">{blogDetail?.title}</span>
           </div>
-          <h1 className="font-shoulders font-semibold uppercase leading-[110%] text-[26px] sm:text-[32px] md:text-[38px] lg:text-[44px] xl:text-[50px] 2xl:text-[56px] 3xl:text-[60px]">
+          <h1>
             {blogDetail?.title}
           </h1>
 
           {blogDetail?.blogImage && (
             <ImageComp
               block={blogDetail?.blogImage}
-              imageClassName="w-full max-h-[550px] block md:mt-[60px] mt-6 md:mb-10 mb-6"
+              imageClassName="w-full max-h-[550px] block md:mt-[50px] mt-6 md:mb-10 mb-6"
               width={1200}
               height={600}
             />
           )}
-          <div className="containerInner">
+          <div className="md:grid grid-cols-12">
+            <div className="col-span-10 col-start-2">
           <div className="flex items-center gap-3 text-sm mb-4">
             <time className="text-[16px] font-bold">{formatDate(blogDetail?.blogDate)}</time>
             <div className="text-muted-foreground items-center flex gap-3">
@@ -96,6 +97,7 @@ export default function BlogPageContent({
               </div>
             </div>
           )}
+          </div>
           </div>
 
           {relatedBlogs && relatedBlogs.length > 0 && (

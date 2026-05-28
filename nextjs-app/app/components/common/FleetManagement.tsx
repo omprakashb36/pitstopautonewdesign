@@ -34,6 +34,49 @@ function FleetManagement({ block, index }: FleetManagementProps) {
         preferredGarage: Yup.string().required("Preferred garage is required"),
     })
 
+
+    const customSelectStyles = {
+        ...selectStyles,
+        menuList: (provided: any) => ({
+            ...provided,
+            maxHeight: "200px",
+            overflowY: "auto",
+        }),
+        menu: (provided: any) => ({
+            ...provided,
+            zIndex: 9999,
+        }),
+    }
+
+    const CustomMenuList = (props: any) => {
+        const handleWheel = (e: any) => {
+            e.stopPropagation()
+            const target = e.currentTarget as HTMLElement
+            const { scrollTop, scrollHeight, clientHeight } = target
+
+            // Only prevent default if we're not at the boundaries
+            if ((e.deltaY < 0 && scrollTop > 0) || (e.deltaY > 0 && scrollTop < scrollHeight - clientHeight)) {
+                e.preventDefault()
+            }
+        }
+
+        return (
+            <div
+                {...props}
+                onWheel={handleWheel}
+                style={{
+                    ...props.style,
+                    maxHeight: "200px",
+                    overflowY: "auto",
+                }}
+            />
+        )
+    }
+
+    const components = {
+        MenuList: CustomMenuList,
+    }
+
     const [fleetFormData, setFleetFormData] = useState<FleetData>({
         sender: '',
         message: '',
@@ -119,87 +162,99 @@ function FleetManagement({ block, index }: FleetManagementProps) {
 
     return (
         <div>
-            <form autoComplete="off" className="md:w-[920px] px-5 md:px-0 m-auto mt-7 space-y-10 fleetForm" onSubmit={fleetForm.handleSubmit} action="">
+            <form autoComplete="off" className="md:w-[845px] 3xl:w-[1080px] px-5 md:px-0 m-auto mt-7 space-y-10 fleetForm" onSubmit={fleetForm.handleSubmit} action="">
                 <div>
                     <h3 className="mb-6 font-urbanist font-bold text-[20px] dark:text-[#faeadc] text-black">{block.companyAndFleetDetails?.heading}</h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <div className="formLabel border dark:border-white/20  border-black/20 rounded-[15px] space-y-2">
-                            <label className="block font-fustat dark:text-[#faeadc] text-black text-xs uppercase" htmlFor="companyName">
+                        <div className={`border rounded-[20px] px-[24px] h-[90px] flex flex-col justify-center w-full transition-colors ${
+                            fleetForm.errors.companyName && fleetForm.touched.companyName
+                                ? "border-[#FF3300]"
+                                : "border-[#D9D9D9] dark:border-white/20"
+                        }`}>
+                            <label className="block font-fustat dark:text-[#faeadc] text-black text-[12px] uppercase opacity-60 font-medium" htmlFor="companyName">
                                 {block.companyAndFleetDetails?.companyNameLabel}
                             </label>
                             <input
                                 onChange={fleetForm.handleChange}
                                 onBlur={fleetForm.handleBlur}
                                 value={fleetForm.values.companyName}
-                                className="bg-transparent w-full px-4 py-3 font-fustat dark:text-[#faeadc] text-black placeholder:text-black/50 dark:placeholder:text-white/50 focus:outline-none"
+                                className="bg-transparent w-full font-host text-[16px] md:text-[20px] dark:text-[#faeadc] text-black placeholder:text-black/30 dark:placeholder:text-white/30 focus:outline-none"
                                 type="text"
                                 name="companyName"
                                 id="companyName"
                                 placeholder={block.companyAndFleetDetails?.companyNamePlaceholder}
                             />
                             {fleetForm.errors.companyName && fleetForm.touched.companyName ? (
-                                <p className="mt-1 text-sm text-[#c00034] font-fustat">{fleetForm.errors.companyName}</p>
+                                <div className="text-xs text-[#FF3300] font-host mt-1 leading-none">{fleetForm.errors.companyName}</div>
                             ) : null}
                         </div>
 
-                        <div className="formLabel border dark:border-white/20  border-black/20 rounded-[15px] space-y-2">
-                            <label className="block font-fustat dark:text-[#faeadc] text-black text-xs uppercase" htmlFor="fleetManagerFirstName">
+                        <div className={`border rounded-[20px] px-[24px] h-[90px] flex flex-col justify-center w-full transition-colors ${
+                            fleetForm.errors.fleetManagerName && fleetForm.touched.fleetManagerName
+                                ? "border-[#FF3300]"
+                                : "border-[#D9D9D9] dark:border-white/20"
+                        }`}>
+                            <label className="block font-fustat dark:text-[#faeadc] text-black text-[12px] uppercase opacity-60 font-medium" htmlFor="fleetManagerName">
                                 {block.companyAndFleetDetails?.managerFirstNameLabel}
                             </label>
                             <input
                                 onChange={fleetForm.handleChange}
                                 onBlur={fleetForm.handleBlur}
                                 value={fleetForm.values.fleetManagerName}
-                                className="bg-transparent w-full px-4 py-3 font-fustat dark:text-[#FAEADC] text-black placeholder:text-black/50 dark:placeholder:text-white/50 focus:outline-none"
+                                className="bg-transparent w-full font-host text-[16px] md:text-[20px] dark:text-[#FAEADC] text-black placeholder:text-black/30 dark:placeholder:text-white/30 focus:outline-none"
                                 type="text"
                                 name="fleetManagerName"
                                 id="fleetManagerName"
                                 placeholder={block.companyAndFleetDetails?.managerFirstNamePlaceholder}
                             />
                             {fleetForm.errors.fleetManagerName && fleetForm.touched.fleetManagerName ? (
-                                <p className="mt-1 text-sm text-[#c00034] font-fustat">{fleetForm.errors.fleetManagerName}</p>
+                                <div className="text-xs text-[#FF3300] font-host mt-1 leading-none">{fleetForm.errors.fleetManagerName}</div>
                             ) : null}
                         </div>
 
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-5">
 
-
-
-
-
-
-                        <div className="formLabel border dark:border-white/20  border-black/20 rounded-[15px] space-y-2">
-                            <label className="block font-fustat dark:text-[#faeadc] text-black text-xs uppercase" htmlFor="email">
+                        <div className={`border rounded-[20px] px-[24px] h-[90px] flex flex-col justify-center w-full transition-colors ${
+                            fleetForm.errors.email && fleetForm.touched.email
+                                ? "border-[#FF3300]"
+                                : "border-[#D9D9D9] dark:border-white/20"
+                        }`}>
+                            <label className="block font-fustat dark:text-[#faeadc] text-black text-[12px] uppercase opacity-60 font-medium" htmlFor="email">
                                 {block.companyAndFleetDetails?.emailLabel}
                             </label>
                             <input
                                 onChange={fleetForm.handleChange}
                                 onBlur={fleetForm.handleBlur}
                                 value={fleetForm.values.email}
-                                className="bg-transparent w-full px-4 py-3 font-fustat dark:text-[#FAEADC] text-black placeholder:text-black/50 dark:placeholder:text-white/50 focus:outline-none"
+                                className="bg-transparent w-full font-host text-[16px] md:text-[20px] dark:text-[#FAEADC] text-black placeholder:text-black/30 dark:placeholder:text-white/30 focus:outline-none"
                                 type="email"
                                 name="email"
                                 id="email"
                                 placeholder={block.companyAndFleetDetails?.emailPlaceholder}
                             />
                             {fleetForm.errors.email && fleetForm.touched.email ? (
-                                <p className="mt-1 text-sm text-[#c00034] font-fustat">{fleetForm.errors.email}</p>
+                                <div className="text-xs text-[#FF3300] font-host mt-1 leading-none">{fleetForm.errors.email}</div>
                             ) : null}
                         </div>
 
-                        <div className="flex gap-4">
-                            <div className="formLabel border dark:border-white/20  border-black/20 rounded-[15px] space-y-2 w-1/3">
-                                <label className="block font-fustat dark:text-[#faeadc] text-black text-xs uppercase" htmlFor="country">
-                                    {block.companyAndFleetDetails?.countryLabel}
+                        <div className={`border rounded-[20px] h-[90px] flex items-center w-full overflow-hidden transition-colors ${
+                            (fleetForm.errors.contactNumber && fleetForm.touched.contactNumber) || (fleetForm.errors.country && fleetForm.touched.country)
+                                ? "border-[#FF3300]"
+                                : "border-[#D9D9D9] dark:border-white/20"
+                        }`}>
+                            {/* Country Code Selection */}
+                            <div className="w-[124px] h-full flex flex-col justify-center px-[24px] pr-[15px] relative border-r border-[#D9D9D9] dark:border-white/20 selectReact no-border">
+                                <label className="block font-fustat dark:text-[#faeadc] text-black text-[12px] uppercase opacity-60 font-medium" htmlFor="country">
+                                    {block.companyAndFleetDetails?.countryLabel || "COUNTRY"}
                                 </label>
                                 <Select
                                     name="country"
                                     id="country"
                                     options={countryCodes}
-                                    // styles={customStyles}
-                                    styles={selectStyles}
+                                    styles={customSelectStyles}
                                     classNames={selectClassNames}
+                                    components={components}
                                     value={countryCodes.find((option) => option.value === fleetForm.values.country)}
                                     onChange={(newValue: unknown, _actionMeta: any) => {
                                         const option = newValue as { value: string; label: string } | null
@@ -209,28 +264,26 @@ function FleetManagement({ block, index }: FleetManagementProps) {
                                     placeholder="+971"
                                     isSearchable={false}
                                 />
-                                {fleetForm.errors.country && fleetForm.touched.country ? (
-                                    <p className="mt-1 text-sm text-[#c00034] font-fustat">{fleetForm.errors.country}</p>
-                                ) : null}
                             </div>
 
-                            <div className="formLabel border dark:border-white/20  border-black/20 rounded-[15px] space-y-2 flex-1">
-                                <label className="block font-fustat dark:text-[#faeadc] text-black text-xs uppercase" htmlFor="contactNumber">
+                            {/* Contact Number Input */}
+                            <div className="flex-1 h-full flex flex-col justify-center px-[24px] selectReact">
+                                <label className="block font-fustat dark:text-[#faeadc] text-black text-[12px] uppercase opacity-60 font-medium" htmlFor="contactNumber">
                                     {block.companyAndFleetDetails?.contactNumberLabel}
                                 </label>
                                 <input
                                     onChange={fleetForm.handleChange}
                                     onBlur={fleetForm.handleBlur}
                                     value={fleetForm.values.contactNumber}
-                                    className="bg-transparent w-full px-4 py-3 font-fustat dark:text-[#FAEADC]  text-black placeholder:text-black/50 dark:placeholder:text-white/50 focus:outline-none"
+                                    className="bg-transparent w-full font-host text-[16px] md:text-[20px] dark:text-[#FAEADC] text-black placeholder:text-black/30 dark:placeholder:text-white/30 focus:outline-none"
                                     type="text"
                                     name="contactNumber"
                                     id="contactNumber"
                                     placeholder={block.companyAndFleetDetails?.contactNumberPlaceholder}
                                 />
-                                {fleetForm.errors.contactNumber && fleetForm.touched.contactNumber ? (
-                                    <p className="mt-1 text-sm text-[#c00034] font-fustat">{fleetForm.errors.contactNumber}</p>
-                                ) : null}
+                                {fleetForm.errors.contactNumber && fleetForm.touched.contactNumber && (
+                                    <div className="text-xs text-[#FF3300] font-host mt-0.5 leading-none">{fleetForm.errors.contactNumber}</div>
+                                )}
                             </div>
                         </div>
                     </div>
@@ -239,36 +292,44 @@ function FleetManagement({ block, index }: FleetManagementProps) {
                 <div>
                     <h3 className="mb-6 font-urbanist font-bold text-[20px] dark:text-[#faeadc] text-black">{block.fleetDetails?.heading}</h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <div className="formLabel border dark:border-white/20  border-black/20 rounded-[15px] space-y-2">
-                            <label className="block font-fustat dark:text-[#faeadc] text-black text-xs uppercase" htmlFor="numberOfVehicles">
+                        <div className={`border rounded-[20px] px-[24px] h-[90px] flex flex-col justify-center w-full transition-colors ${
+                            fleetForm.errors.numberOfVehicles && fleetForm.touched.numberOfVehicles
+                                ? "border-[#FF3300]"
+                                : "border-[#D9D9D9] dark:border-white/20"
+                        }`}>
+                            <label className="block font-fustat dark:text-[#faeadc] text-black text-[12px] uppercase opacity-60 font-medium" htmlFor="numberOfVehicles">
                                 {block.fleetDetails?.numberOfVehicleLabel}
                             </label>
                             <input
                                 onChange={fleetForm.handleChange}
                                 onBlur={fleetForm.handleBlur}
                                 value={fleetForm.values.numberOfVehicles}
-                                className="bg-transparent w-full px-4 py-3 font-fustat dark:text-[#FAEADC]  text-black placeholder:text-black/50 dark:placeholder:text-white/50 focus:outline-none"
+                                className="bg-transparent w-full font-host text-[16px] md:text-[20px] dark:text-[#FAEADC] text-black placeholder:text-black/30 dark:placeholder:text-white/30 focus:outline-none"
                                 type="number"
                                 name="numberOfVehicles"
                                 id="numberOfVehicles"
                                 placeholder={block.fleetDetails?.numberOfVehiclePlaceholder}
                             />
                             {fleetForm.errors.numberOfVehicles && fleetForm.touched.numberOfVehicles ? (
-                                <p className="mt-1 text-sm text-[#c00034] font-fustat">{fleetForm.errors.numberOfVehicles}</p>
+                                <div className="text-xs text-[#FF3300] font-host mt-1 leading-none">{fleetForm.errors.numberOfVehicles}</div>
                             ) : null}
                         </div>
 
-                        <div className="formLabel border dark:border-white/20  border-black/20 rounded-[15px] space-y-2">
-                            <label className="block font-fustat dark:text-[#faeadc] text-black text-xs uppercase" htmlFor="preferredGarage">
+                        <div className={`border rounded-[20px] px-[24px] h-[90px] flex flex-col justify-center selectReact w-full transition-colors ${
+                            fleetForm.errors.preferredGarage && fleetForm.touched.preferredGarage
+                                ? "border-[#FF3300]"
+                                : "border-[#D9D9D9] dark:border-white/20"
+                        }`}>
+                            <label className="block font-fustat dark:text-[#faeadc] text-black text-[12px] uppercase opacity-60 font-medium" htmlFor="preferredGarage">
                                 {block.fleetDetails?.prferedGarageLabel}
                             </label>
                             <Select
                                 id="preferredGarage"
                                 name="preferredGarage"
                                 options={garages}
-                                // styles={customStyles}
-                                styles={selectStyles}
+                                styles={customSelectStyles}
                                 classNames={selectClassNames}
+                                components={components}
                                 value={garages.find((option) => option.value === fleetForm.values.preferredGarage) || null}
                                 onChange={(newValue: unknown) => {
                                     const option = newValue as { value: string; label: string } | null;
@@ -276,10 +337,10 @@ function FleetManagement({ block, index }: FleetManagementProps) {
                                 }}
                                 onBlur={() => fleetForm.setFieldTouched("preferredGarage", true)}
                                 placeholder={block.fleetDetails?.prferedGaragePlaceholder}
-                                className="font-fustat"
+                                className="font-fustat text-[16px] md:text-[20px]"
                             />
                             {fleetForm.errors.preferredGarage && fleetForm.touched.preferredGarage ? (
-                                <p className="mt-1 text-sm text-[#c00034] font-fustat">{fleetForm.errors.preferredGarage}</p>
+                                <div className="text-xs text-[#FF3300] font-host mt-1 leading-none">{fleetForm.errors.preferredGarage}</div>
                             ) : null}
                         </div>
                     </div>

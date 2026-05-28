@@ -290,18 +290,13 @@ export default function CarSelectorModal({ isOpen, onClose, siteSettingData, ini
         personalDetails: values,
         selectedService: pathSegments[3], // Provide a default or actual value for selectedService
       }
-      /*console.log(pathSegments[3]);*/
-      const response = await fetchLead(values?.countryCode + values?.phoneNumber, values?.email);
-      /*console.log("fetchLead response: ", response);*/
-      if (response?.status && response?.data?.data && response?.data?.data.length > 0) {
-        console.log(response?.data.data[0]);
-        dispatch(setLeadId(response?.data.data[0]?.name));
+      if (values?.fullName) {
         dispatch(setAppointmentData({
           personalDetails: {
-            fullName: response?.data.data[0]?.lead_name || values?.fullName || '',
+            fullName: values?.fullName || '',
             countryCode: '+971',
             phoneNumber: values?.phoneNumber || '',
-            email: response?.data.data[0]?.email_id || values?.email || '',
+            email:values?.email || '',
           },
           brand: combinedData.brand || "",
           model: combinedData.model || "",
@@ -427,9 +422,9 @@ export default function CarSelectorModal({ isOpen, onClose, siteSettingData, ini
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center rounded-[35px] justify-center backdropBlur-40 overflow-y-auto"
+      className="fixed inset-0 z-[150] flex items-center rounded-[35px] justify-center backdropBlur-40 overflow-y-auto"
     >
-      <div className={`relative max-w-[1200px] 3xl:max-w-[1360px] rounded-3xl  2xl:rounded-[60px] carModalPopup max-h-[90vh] min-h-[500px] overflow-y-auto custom-scrollbar w-full dark:bg-[#0f0f0f] bg-[#F7F7F7] p-8 md:p-[60px] 3xl:p-[80px] ltr:md:pr-0 rtl:md:pl-0 my-4 mx-4 transition-all duration-300`}>
+      <div className={`relative max-w-[1200px] 3xl:max-w-[1360px] rounded-3xl  2xl:rounded-[60px] carModalPopup max-h-[90vh] min-h-[500px] overflow-y-auto custom-scrollbar w-full dark:bg-[#0f0f0f] bg-[#F7F7F7] p-8 md:p-[60px] 3xl:p-[80px] my-4 mx-4 transition-all duration-300`}>
         <button
           onClick={onClose}
           className={`absolute z-10 text-white hover:text-gray-300 transition-colors
@@ -806,7 +801,7 @@ export default function CarSelectorModal({ isOpen, onClose, siteSettingData, ini
                         />
                       )}
                     </div>
-                    <div className="[word-break:break-word] flex flex-col font-host font-bold items-start leading-[1.5] text-[16px] w-full mt-auto">
+                    <div className="[word-break:break-word] ltr:text-left flex flex-col font-host font-bold items-start leading-[1.5] text-[16px] w-full mt-auto">
                       <div className={isActive ? "text-[#FF3300]" : "text-[#393D45] dark:text-gray-300"}>
                         {line1}
                       </div>

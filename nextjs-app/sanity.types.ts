@@ -475,6 +475,7 @@ export type HomeHeroSlider = {
 export type RichTextTitle = {
   _type: "richTextTitle";
   aboutsection?: BlockContent;
+  isFullWidth?: boolean;
 };
 
 export type HomeCta = {
@@ -1133,6 +1134,7 @@ export type Page = {
   _rev: string;
   title?: string;
   slug?: Slug;
+  layoutType?: "containerGrid" | "fullWidth" | "centerText";
   pageBuilder?: Array<{
     _key: string;
   } & CallToAction | {
@@ -1484,13 +1486,14 @@ export type SettingsQueryResult = {
   whatsAppNumber?: string;
 } | null;
 // Variable: getPageQuery
-// Query: *[_type == 'page' && slug.current == $slug][0]{    _id,    _type,    name,    slug,    heading,    subheading,    "pageBuilder": pageBuilder[]{      ...,      _type == "callToAction" => {          link {      ...,        _type == "link" => {    "page": page->slug.current,    "post": post->slug.current  }      },      },      _type == "location" => {      ...,      locations[]{         ...,        "relatedServices": relatedServices[]->{            _id,            title,            slug,            _type          }      }      },      _type == "infoSection" => {        content[]{          ...,          markDefs[]{            ...,              _type == "link" => {    "page": page->slug.current,    "post": post->slug.current  }          }        }      },    },  }
+// Query: *[_type == 'page' && slug.current == $slug][0]{    _id,    _type,    name,    slug,    heading,    layoutType,    subheading,    "pageBuilder": pageBuilder[]{      ...,      _type == "callToAction" => {          link {      ...,        _type == "link" => {    "page": page->slug.current,    "post": post->slug.current  }      },      },      _type == "location" => {      ...,      locations[]{         ...,        "relatedServices": relatedServices[]->{            _id,            title,            slug,            _type          }      }      },      _type == "infoSection" => {        content[]{          ...,          markDefs[]{            ...,              _type == "link" => {    "page": page->slug.current,    "post": post->slug.current  }          }        }      },    },  }
 export type GetPageQueryResult = {
   _id: string;
   _type: "page";
   name: null;
   slug: Slug | null;
   heading: null;
+  layoutType: "centerText" | "containerGrid" | "fullWidth" | null;
   subheading: null;
   pageBuilder: Array<{
     _key: string;
@@ -1814,6 +1817,7 @@ export type GetPageQueryResult = {
     _key: string;
     _type: "richTextTitle";
     aboutsection?: BlockContent;
+    isFullWidth?: boolean;
   } | {
     _key: string;
     _type: "scrollContent";
@@ -2714,7 +2718,7 @@ import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
     "*[_type == \"settings\"][0]": SettingsQueryResult;
-    "\n  *[_type == 'page' && slug.current == $slug][0]{\n    _id,\n    _type,\n    name,\n    slug,\n    heading,\n    subheading,\n    \"pageBuilder\": pageBuilder[]{\n      ...,\n      _type == \"callToAction\" => {\n        \n  link {\n      ...,\n      \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"post\": post->slug.current\n  }\n\n      }\n,\n      },\n      _type == \"location\" => {\n      ...,\n      locations[]{\n         ...,\n        \"relatedServices\": relatedServices[]->{\n            _id,\n            title,\n            slug,\n            _type\n          }\n      }\n      \n},\n      _type == \"infoSection\" => {\n        content[]{\n          ...,\n          markDefs[]{\n            ...,\n            \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"post\": post->slug.current\n  }\n\n          }\n        }\n      },\n    },\n  }\n": GetPageQueryResult;
+    "\n  *[_type == 'page' && slug.current == $slug][0]{\n    _id,\n    _type,\n    name,\n    slug,\n    heading,\n    layoutType,\n    subheading,\n    \"pageBuilder\": pageBuilder[]{\n      ...,\n      _type == \"callToAction\" => {\n        \n  link {\n      ...,\n      \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"post\": post->slug.current\n  }\n\n      }\n,\n      },\n      _type == \"location\" => {\n      ...,\n      locations[]{\n         ...,\n        \"relatedServices\": relatedServices[]->{\n            _id,\n            title,\n            slug,\n            _type\n          }\n      }\n      \n},\n      _type == \"infoSection\" => {\n        content[]{\n          ...,\n          markDefs[]{\n            ...,\n            \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"post\": post->slug.current\n  }\n\n          }\n        }\n      },\n    },\n  }\n": GetPageQueryResult;
     "*[_type == 'faq' ]{\n  ...,\n  \"question\" : question.en,\n  \"answer\" : answer.en,\n}": FaqEnQueryResult;
     "*[_type == 'faq' ]{\n  ...,\n  \"question\" : question.ar,\n  \"answer\" : answer.ar,\n}": FaqArQueryResult;
     "*[_type == 'testimonials' ]{\n  ...,\n  \"review\" : review.en,\n  \"name\" : name.en,\n}": TestimonialEnQueryResult;

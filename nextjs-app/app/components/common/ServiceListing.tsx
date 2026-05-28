@@ -206,10 +206,11 @@ export default function ServiceListing({ allServiceList, browseServiceList, site
 
   return (
     <>
-      <div className="dark:text-[#FAEADC] text-black mt-[180px] min-h-screen pageBg relative">
-        <div className="px-4 xl:px-[60px] 2xl:px-[116px] py-8 md:pb-0 md:py-12 md:pt-0">
+      <div className="dark:text-[#FAEADC] text-black md:mt-[180px] mt-[100px] min-h-screen pageBg relative">
+        <div className="py-8 md:pb-0 md:py-12 pt-0 md:pt-0">
+          <div className="container-grid">
           {/* Breadcrumb */}
-          <div className="flex items-center gap-2 text-[15px] mb-6">
+          <div className="flex items-center gap-2 text-[15px] mb-6 md:mb-0">
             <Link href={`/${currentLocale}/services`}>{t("serviceBreadcrumbs")}</Link>
             <span>/</span>
             <span className="opacity-60">{allServiceList?.title || "Periodic Services"}</span>
@@ -218,16 +219,16 @@ export default function ServiceListing({ allServiceList, browseServiceList, site
 
 
           {/* Services Grid */}
-          <div className="lg:flex flex flex-wrap lg:flex-nowrap gap-8 relative">
+          <div className="lg:grid grid-cols-1 gap-10 lg:grid-cols-12 relative">
             {/* Service Cards */}
-            <div className="space-y-6 w-full xl:min-w-[60%] lg:min-w-[60%] xl:w-[55%] lg:w-[60%]">
+            <div className="w-full lg:col-span-7">
               {/* Left side - Title and Browse button */}
-              <div className="flex justify-between flex-col md:flex-row md:mb-[53px]  md:items-center gap-4 md:gap-8 w-full">
-                <h1 className="text-[30px] md:text-5xl font-bold">
-                  <span className="dark:text-[#FAEADC] text-black uppercase font-shoulders">
+              <div className="flex justify-between flex-col md:flex-row md:mb-[40px]  md:items-center gap-4 md:gap-8 w-full">
+                <h1 className="md:mb-0 mb-10">
+                  <span className="dark:text-[#FAEADC] text-black">
                     {allServiceList?.title?.split(" ")[0] || "PERIODIC"}
                   </span>{" "}
-                  <span className="text-[#C00034] uppercase font-shoulders">
+                  <span className="text-[#C00034]">
                     {allServiceList?.title?.split(" ").slice(1).join(" ") || "SERVICES"}
                   </span>
                 </h1>
@@ -235,166 +236,147 @@ export default function ServiceListing({ allServiceList, browseServiceList, site
 
                 <button
                   onClick={() => setServiceIsModalOpen(true)}
-                  className="gradientBG mhidden gradientBGTrans text-[#FAEADC] px-[26px] py-[13.33px] leading-[1] rounded-[10px] transition-colors"
+                  className="gradientBG mhidden gradientBGTrans text-[#FAEADC] lg:min-w-[240px] 3xl:min-w-[280px] px-[20px] 3xl:px-[40px] py-[16px] leading-[1] rounded-[10px] transition-colors"
                 >
                   {allServiceList?.browseServiceCtaLabel || "BROWSE OTHER SERVICES"}
                 </button>
 
               </div>
 
-              {services.map((service) => (
-                <div key={service.id} className="">
-                  {/* Service Card */}
-                  <div className="dark:bg-black/80 bg-white border-black/[8%] dark:border-[1px] dark:border-[#FAEADC33] rounded-[33px] mb-12 overflow-hidden shadow-2xl">
-                    <div className="md:flex">
-                      {/* Service Image */}
-                      <div className="relative md:w-1/3 md:max-w-[200px] w-full">
+              {services.map((service) => {
+                const isInCart = isServiceInCart(service.serviceCode)
+                const hasDiscount = !!(service.discount && appointmentData?.brand)
+
+                return (
+                  <div
+                    key={service.id}
+                    className="bg-white dark:bg-[#161616] border border-[#d9d9d9] dark:border-white/20 rounded-[40px] overflow-hidden flex flex-col justify-between mb-12 shadow-2xl relative w-full"
+                  >
+                    {/* Top Section */}
+                    <div className="flex flex-col md:flex-row items-stretch gap-[24px] w-full pt-[40px] pr-4 md:pr-[30px] relative">
+                      
+                      {/* Left: Service Image */}
+                      <div className="relative w-full md:w-[240px] h-[200px] md:h-[246px] rounded-br-[40px] rounded-tr-[40px] bg-neutral-900 shrink-0">
                         <Image
                           src={urlForImage(service?.image)?.url() || ""}
                           alt={service?.name || "Service Image"}
-                          width={200}
-                          height={205}
-                          className="md:h-full object-cover max-h-[205px] rtl:scale-x-[-1]  md:mt-[2.1rem] w-full md:w-[200px] h-[205px] rounded-tr-[2.2rem] md:rounded-br-[2.2rem]"
+                          width={240}
+                          height={246}
+                          className="object-cover w-full h-full rtl:scale-x-[-1]"
                         />
                         {service.recommended && (
-                          /* Custom badge instead of importing Badge component */
-                          <div className="absolute letterSpacing top-[20px] font-urbanist md:left-[40px] left-[20px] bg-[#1DAF65] text-[#FAEADC] text-[11.67px] font-bold py-[6.67px] px-[10px] md:rounded-[6.67px]  rounded-lg">
-                            {siteSettingData?.recommended?.toString() ?? ""}
+                          <div className="absolute bg-[#1daf65] text-white text-[12px] md:text-[14px] font-host font-bold px-[12px] py-[8px] rounded-[8px] top-[-16px] left-[16px] md:left-[48px] z-10 shadow-md">
+                            {siteSettingData?.recommended?.toString() ?? "RECOMMENDED"}
                           </div>
                         )}
                       </div>
 
-                      {/* Service Details */}
-                      <div className="flex-1 p-4 md:p-6 md:pt-[44px]">
-                        <h3 className="text-[18px] dark:text-[#FAEADC] text-black font-urbanist lg:text-[20px] font-extrabold">{service.name}</h3>
-                        {service.description && <p className="dark:text-[#FAEADC]/70 text-black/70 mt-1 text-[10px]">{service.description}</p>}
-
-                        {/* Service Interval */}
-                        <div className="flex gap-2 md:gap-4 mt-[10px] md:mb-[33.3px] mb-4">
-                          {service?.interval &&
-                            <div className="dark:bg-[#202020] bg-[#EFEFEF] text-black dark:text-[#FAEADC] rounded-md font-urbanist font-bold px-3 leading-[1] lg:px-[10px] py-[6.6px] text-[10px] uppercase">
-                              {service.interval}
+                      {/* Right: Service Details */}
+                      <div className="flex-1 flex flex-col gap-[24px] md:gap-[30px] 3xl:gap-[40px] px-6 md:px-0">
+                        {/* Title and Description */}
+                        <div className="flex flex-col gap-[12px] w-full">
+                          <h3 className="text-[24px] font-host font-bold text-[#211D1D] dark:text-[#FAEADC] leading-[1.3]">
+                            {service.name}
+                          </h3>
+                          {service.description && (
+                            <p className="text-[14px] text-black/70 dark:text-[#FAEADC]/70 leading-[1.5]">
+                              {service.description}
+                            </p>
+                          )}
+                          
+                          {/* Tags */}
+                          <div className="flex flex-wrap gap-[16px] items-center">
+                            {service?.interval && (
+                              <div className="bg-[#eaeaea] dark:bg-white/10 px-[12px] py-[8px] rounded-[8px] text-[12px] font-host font-bold text-[#211d1d] dark:text-[#FAEADC] leading-none uppercase">
+                                {service.interval}
+                              </div>
+                            )}
+                            <div className="bg-[#eaeaea] dark:bg-white/10 px-[12px] py-[8px] rounded-[8px] text-[12px] font-host font-bold text-[#211d1d] dark:text-[#FAEADC] leading-none uppercase flex items-center gap-[8px]">
+                              <Clock className="w-[14px] h-[14px] text-[#211d1d] dark:text-[#FAEADC]" />
+                              <span>{service.duration}</span>
                             </div>
-                          }
-                          <div className="dark:bg-[#202020] bg-[#EFEFEF] text-black dark:text-[#FAEADC]  font-urbanist font-bold px-3 lg:px-[10px] leading-[1] rounded-md py-[6.6px] text-[10px] uppercase flex justify-center items-center gap-2">
-                            <Image
-                              src="/images/time-fast.svg"
-                              alt={service?.name || "Service Image"}
-                              width={12}
-                              height={12}
-                              className=""
-                            />
-                            <span>{service.duration}</span>
                           </div>
                         </div>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3 md:mb-[13.3px] mb-1">
-                          {!isMobileDevice && (expandedServiceIds.includes(service.id) ? service.features : service.features.slice(0, 4)).map((feature, index) => (
-                            <div key={index} className="flex items-start gap-1">
-                              <Image
-                                src="/images/tick.svg"
-                                alt="right tick"
-                                width={16.7}
-                                height={16.7}
-                                className="mt-[2px] dark:flex hidden"
-                              />
-                              <Image
-                                src="/images/tick-icon.svg"
-                                alt="right tick"
-                                width={16.7}
-                                height={16.7}
-                                className="mt-[2px] dark:hidden flex"
-                              />
-                              <span className="text-[13.33px] text-black dark:text-[#FAEADC] font-urbanist font-medium">{feature}</span>
+
+                        {/* Checklist Features */}
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-[40px] md:gap-x-[30px] 3xl:gap-x-[60px] gap-y-[16px] pb-6 md:pb-0">
+                          {(!isMobileDevice 
+                            ? (expandedServiceIds.includes(service.id) ? service.features : service.features.slice(0, 4))
+                            : []
+                          ).map((feature, index) => (
+                            <div key={index} className="flex items-center gap-[8px]">
+                              <div className="bg-[#eaeaea] dark:bg-white/10 rounded-[6px] p-[4px] w-[20px] h-[20px] flex items-center justify-center shrink-0">
+                                <Check className="w-[12px] h-[12px] text-[#211d1d] dark:text-white" />
+                              </div>
+                              <span className="text-[16px] text-[#211d1d] dark:text-[#FAEADC] font-host font-medium">
+                                {feature}
+                              </span>
                             </div>
                           ))}
 
                           {service.features.length > 4 && !isMobileDevice && (
                             <button
                               onClick={() => toggleServiceFeatures(service.id)}
-                              className="text-emerald-500 text-sm flex items-center mt-2 hover:underline"
+                              className="text-[#1DAF65] font-host font-bold text-[16px] flex items-center mt-2 hover:opacity-80 transition-opacity"
                             >
                               {expandedServiceIds.includes(service.id) ? "Show less" : `+ ${t("view")} ${service.features.length - 4} ${t("more")}`}
                             </button>
                           )}
-                          {
-                            isMobileDevice && (
-                              <button id="view-detail" onClick={() => viewDetailPopup(service?.serviceCode)} className="text-emerald-500 text-sm flex items-center mt-2 hover:underline">
-                                + {t("viewInfo")}
-                              </button>
-                            )
-                          }
+                          {isMobileDevice && (
+                            <button 
+                              onClick={() => viewDetailPopup(service?.serviceCode)} 
+                              className="text-[#1DAF65] font-host font-bold text-[16px] flex items-center mt-2 hover:opacity-80 transition-opacity"
+                            >
+                              + {t("viewInfo")}
+                            </button>
+                          )}
                         </div>
                       </div>
                     </div>
 
-                    {/* Price and CTA */}
-                    <div className="md:flex items-center justify-end pb-5 p-4 pt-0">
-                      <div className="flex items-center gap-3 hidden">
-                        {service.originalPrice && (
-                          <span
-                            className={`${appointmentData?.brand ? "line-through text-sm text-[#FAEADC]/60" : "text-[18px] font-bold text-[#FAEADC]"}`}
+                    {/* Bottom Cost Strip & CTA Row */}
+                    <div className="w-full flex flex-col sm:flex-row items-stretch sm:items-center justify-end gap-[20px] mt-6 md:mt-[30px] ltr:pr-4 ltr:sm:pr-[30px] rtl:pl-4 rtl:sm:pl-[30px] pb-4 sm:pb-[30px]">
+                     
+
+                      {/* Right: CTA Button */}
+                      <div className="flex items-center justify-end px-4 sm:px-0 shrink-0">
+                        {isInCart ? (
+                          <button className="bg-[#1DAF65] leading-none uppercase text-white text-[14px] sm:text-[16px] font-host font-bold px-[24px] sm:px-[32px] py-[14px] sm:py-[16px] rounded-[12px] justify-center flex items-center gap-2 hover:opacity-90 transition-opacity">
+                            {siteSettingData?.serviceAdded as any || "Added"}
+                            <ShoppingCart className="w-[16px] h-[16px]" />
+                          </button>
+                        ) : (
+                          <button
+                            onClick={() => {
+                              if (!appointmentData?.brand) {
+                                setIsModalOpen(true)
+                              } else {
+                                handleAddService(service.serviceCode)
+                              }
+                            }}
+                            className={`uppercase font-host font-bold text-[14px] sm:text-[16px] px-[24px] sm:px-[32px] py-[14px] sm:py-[16px] rounded-[12px] transition-colors leading-none
+                              ${!appointmentData?.brand 
+                                ? "bg-[#eaeaea] text-[#898989] hover:bg-neutral-200" 
+                                : "bg-[#C00034] text-white hover:bg-[#C00034]/90"
+                              }`}
                           >
-                            {appointmentData?.brand ? `AED ${service.originalPrice}` : "Starting from:"}
-                          </span>
-                        )}
-                        <span className="text-2xl font-bold">AED {service.price}</span>
-                        {service.discount && appointmentData?.brand && (
-                          <div className="bg-[#FAEADC] text-[#121212] rounded-tr-[2rem] font-bold p-[13px] pr-[19px] text-center">
-                            <div className="text-lg">{service.discount}%</div>
-                            <div className="text-xs">OFF</div>
-                          </div>
+                            {!appointmentData?.brand 
+                              ? (siteSettingData?.addVehicleToContinue as any || "Add Vehicle") 
+                              : (siteSettingData?.addThisService as any || "Add This Service")
+                            }
+                          </button>
                         )}
                       </div>
-
-                      {/* Custom button instead of importing Button component */}
-
-                      {isServiceInCart(service?.serviceCode) ? (
-                        <Squircle cornerRadius={10}>
-                          <button className="dark:bg-[#02331A] bg-[#1DAF65] leading-1 uppercase text-[#FAEADC] text-[11.67px] font-urbanist md:w-auto w-full font-bold px-[26.66px] py-[13.33px] rounded-[10px] justify-center flex items-center gap-2">
-
-                            {siteSettingData?.serviceAdded as any}
-                            <ShoppingCart size={14} />
-                          </button>
-                        </Squircle>
-                      ) : (
-                        <Squircle cornerRadius={10}>
-                          {isMobileDevice && !appointmentData?.brand && service?.serviceCode &&
-                            <button
-                              onClick={() => setIsModalOpen(true)}
-                              className={`bg-[#C00034] md:w-auto w-full gradientBG text-[#FAEADC] px-[26px] py-[13px] rounded hover:bg-[#C00034]/90 transition-colors md:mt-0`}
-                            >
-                              {!appointmentData?.brand ? (siteSettingData?.addVehicleToContinue as any) : (siteSettingData?.addThisService as any)}
-                            </button>
-                          }
-                          {isMobileDevice && appointmentData?.brand && service?.serviceCode &&
-                            <button
-                              onClick={() => handleAddService(service.serviceCode)}
-                              disabled={appointmentData?.brand ? false : true}
-                              className={`${!appointmentData?.brand ? 'cursor-not-allowed bg-[#EAEAEA] text-[#000]' : 'bg-[#C00034] text-[#FAEADC]'}  font-urbanist font-bold md:w-auto w-full text-[11.67px] px-[26px] uppercase py-[13px] rounded md:mt-0`}
-                            >
-                              {!appointmentData?.brand ? (siteSettingData?.addVehicleToContinue as any) : (siteSettingData?.addThisService as any)}
-                            </button>
-                          }
-                          {!isMobileDevice && service?.serviceCode &&
-                            <button
-                              onClick={() => handleAddService(service.serviceCode)}
-                              disabled={appointmentData?.brand ? false : true}
-                              className={`${!appointmentData?.brand ? 'cursor-not-allowed bg-[#EAEAEA] text-[#000]' : 'bg-[#C00034] text-[#FAEADC]'} md:w-auto font-urbanist font-bold w-full px-[26px] text-[11.67px] uppercase py-[13px] rounded  md:mt-0`}
-                            >
-                              {!appointmentData?.brand ? (siteSettingData?.addVehicleToContinue as any) : (siteSettingData?.addThisService as any)}
-                            </button>
-                          }
-                        </Squircle>
-                      )}
                     </div>
+
                   </div>
-                </div>
-              ))}
+                )
+              })}
             </div>
 
             {/* Cart Section */}
             <div
-              className={`min-w-[38%] md:w-[38%] ${!appointmentData?.brand ? 'md:mt-[55px]' : 'mt-0'} w-full ${!CartOpen && isMobileDevice ? 'hidden' : ''} ${isMobileDevice ? 'fixed bottom-0  inset-0 z-50 backdropBlur-40 overflow-y-auto  w-full h-full flex flex-col justify-end' : 'sticky top-10'} self-start`}
+              className={`lg:col-span-5 ${!appointmentData?.brand ? 'md:mt-[55px]' : 'mt-0'} w-full ${!CartOpen && isMobileDevice ? 'hidden' : ''} ${isMobileDevice ? 'fixed bottom-0  inset-0 z-50 backdropBlur-40 overflow-y-auto  w-full h-full flex flex-col justify-end' : 'sticky top-10'} self-start`}
             >
               {/* Right side - Vehicle info and Change button */}
               {appointmentData?.brand && (
@@ -425,23 +407,20 @@ export default function ServiceListing({ allServiceList, browseServiceList, site
 
               )}
               {!appointmentData?.brand && !isMobileDevice && (
-                <>
-                  <div className="flex p-4 px-[30px] gap-[10px] -z-10 top-[-55px] pb-14 pt-6 items-center absolute w-full left-0 dark:bg-[#C000344D] bg-[#C00034] rounded-t-[30px]">
-                    <Image
-                      src="/images/alertIcon.svg"
-                      alt="alert icon"
-                      width={30}
-                      height={30}
-                      className="mb-0"
-                    />
-                    <p className="font-urbanist font-bold text-[1rem] dark:text-[#FAEADC] text-white"> {siteSettingData?.serviceAlert?.toString() ?? ""}</p>
+                <div className="flex p-4 px-[30px] gap-[10px] -z-10 top-[-55px] pb-14 pt-6 items-center absolute w-full left-0 bg-[#801b01] rounded-t-[40px] shadow-lg">
+                  <div className="w-[30px] h-[30px] rounded-full bg-white flex items-center justify-center text-[#801b01] font-bold text-[20px] shrink-0">
+                    !
                   </div>
-                </>
+                  <p className="font-host font-bold text-[18px] sm:text-[20px] text-white">
+                    {siteSettingData?.serviceAlert?.toString() ?? "Add the vehicle to get the estimates"}
+                  </p>
+                </div>
               )}
 
-
-
-              <div className={`${isMobileDevice ? 'rounded-t-[30px] mt-3' : 'rounded-[40px]'} bg-[#F9F9F9] dark:bg-[#161616]  md:border-[1px] border-[#FAEADC33] md:p-8 pb-6 md:pb-0 ${cartItems.length === 0 ? 'ltr:md:pr-[60px] rtl:md:pl-[60px]' : 'ltr:md:pr-[0px] rtl:md:pl-[0px]'}  md:mt-5 ltr:md:pl-0 rtl:md:pr-0 h-fit relative`}>
+              <div className={cartItems.length === 0
+                ? "md:mt-5 h-fit relative w-full"
+                : `${isMobileDevice ? 'rounded-t-[30px] mt-3' : 'rounded-[40px]'} bg-[#F9F9F9] dark:bg-[#161616] md:border-[1px] border-[#FAEADC33] md:p-8 pb-6 md:pb-0 md:mt-5 ltr:md:pl-0 rtl:md:pr-0 h-fit relative`
+              }>
                 <div className={`${!isMobileDevice ? 'hidden' : ''} absolute ltr:right-[32px] rtl:left-[32px] top-[32px]`} onClick={() => dispatch(setCartPopup(false))}>
                   <Image
                     src={`${theme === 'dark' ? '/images/icons/cross-icon.svg' : '/images/lightThemeClose.svg'}`}
@@ -451,62 +430,89 @@ export default function ServiceListing({ allServiceList, browseServiceList, site
                     className=""
                   />
                 </div>
-                {isMobileDevice && !appointmentData?.brand &&
-                  <div className="flex p-4 px-[30px] gap-[10px] -z-10 top-[-75px] pb-14 pt-6 items-center absolute w-full left-0 bg-[rgba(192,0,52,0.7)] rounded-t-[30px]">
-                    <Image
-                      src="/images/alertIcon.svg"
-                      alt="alert icon"
-                      width={30}
-                      height={30}
-                      className="mb-0"
-                    />
-                    <p className="font-urbanist font-bold text-[1rem] text-[#FAEADC] opacity-80">{siteSettingData?.serviceAlert?.toString() ?? ""}</p>
-                  </div>
-                }
-
-                <h2 className="text-[26px] dark:text-[#FAEADC] text-black font-shoulders uppercase max-md:p-6  ltr:md:pl-8 rtl:md:pr-8 pb-0 font-semibold mb-0">
-                  {allServiceList?.cartLabel || "CART"}
-                </h2>
-                {cartItems.length === 0 ? (
-                  <div className="md:flex flex-row items-center gap-5 justify-center pb-0">
-                    <Image
-                      src={`${isMobileDevice ? '/images/car-image-mobile.png' : '/images/no-cart-image.png'}`}
-                      alt="Car illustration"
-                      width={260}
-                      height={150}
-                      className={`mb-0 m-auto md:min-w-[58%] min-w-[50%] rtl:scale-x-[-1]`}
-                    />
-                    <div className="w-[85%] md:w-full md:flex max-md:mx-6 ltr:max-md:pl-5 rtl:max-md:pr-5 borderLeft items-end flex-col relative before:absolute before:[content:''] before:w-[2px] before:h-[89%] before:bg-[#C00034] before:top-0">
-                      <h3 className="text-[18px] font-urbanist font-semibold mb-2 md:text-right dark:text-[#FAEADC] text-black max-w-[160px]">
-                        {siteSettingData?.bookService?.toString() ?? ""}
-                      </h3>
-                      <p className="text-black dark:text-[#FAEADC] text-[10px] md:text-right md:mb-4">
-                        {siteSettingData?.bookServiceDes?.toString() ?? ""}
-                      </p>
-                      {!appointmentData?.brand &&
-                        <Squircle cornerRadius={10}>
-                          <button
-                            onClick={() => setIsModalOpen(true)}
-                            className="w-full gradientBG bg-[#C00034] text-[#FAEADC] mb-5 mhidden px-[15px] py-[13px] rounded-md font-medium"
-                          >
-                            {siteSettingData?.addVehicle?.toString() ?? ""}
-                          </button>
-                        </Squircle>
-                      }
+                {isMobileDevice && !appointmentData?.brand && (
+                  <div className="flex p-4 px-[30px] gap-[10px] -z-10 top-[-75px] pb-14 pt-6 items-center absolute w-full left-0 bg-[#801b01] rounded-t-[30px] shadow-lg">
+                    <div className="w-[30px] h-[30px] rounded-full bg-white flex items-center justify-center text-[#801b01] font-bold text-[20px] shrink-0">
+                      !
                     </div>
-                    {isMobileDevice && !appointmentData?.brand && (
-                      <Squircle cornerRadius={10}>
+                    <p className="font-host font-bold text-[1rem] text-white opacity-90">
+                      {siteSettingData?.serviceAlert?.toString() ?? "Add the vehicle to get the estimates"}
+                    </p>
+                  </div>
+                )}
+
+                {cartItems.length === 0 ? (
+                  isMobileDevice ? (
+                    <div className="flex flex-col items-center p-6 bg-[#fafafa] dark:bg-[#161616] rounded-[30px] border border-[#FAEADC33] w-full">
+                      <Image
+                        src="/images/car-image-mobile.png"
+                        alt="Car illustration"
+                        width={260}
+                        height={150}
+                        className="mb-4 rtl:scale-x-[-1]"
+                      />
+                      <div className="flex flex-col items-center text-center gap-2 mb-6">
+                        <h3 className="text-[18px] font-urbanist font-bold dark:text-[#FAEADC] text-black">
+                          {siteSettingData?.bookService?.toString() ?? "Ready to Book a Service?"}
+                        </h3>
+                        <p className="text-black/75 dark:text-[#FAEADC]/75 text-[12px] max-w-[280px]">
+                          {siteSettingData?.bookServiceDes?.toString() ?? "Looks like you haven’t added any services yet. Browse our offerings and book a service to keep your car running smoothly!"}
+                        </p>
+                      </div>
+                      {!appointmentData?.brand && (
                         <button
                           onClick={() => setIsModalOpen(true)}
-                          className="gradientMobileBtn gradientBG bg-[#C00034] text-[#FAEADC] m-5 mb-0 px-[26px] py-[13px] rounded-md font-medium"
+                          className="w-full bg-[#f30] hover:bg-[#f30]/95 text-white font-host font-bold py-[13px] rounded-xl transition-colors uppercase text-[15px]"
                         >
-                           {siteSettingData?.addVehicle?.toString() ?? ""}
+                          {siteSettingData?.addVehicle?.toString() ?? "Add Vehicle"}
                         </button>
-                      </Squircle>
-                    )}
-                  </div>
+                      )}
+                    </div>
+                  ) : (
+                    <div className="relative w-full">
+                      {/* Empty Cart Card */}
+                      <div className="bg-[#fafafa] dark:bg-[#161616] border border-[#d9d9d9] dark:border-white/20 rounded-[40px] h-[340px] relative overflow-hidden w-full p-[40px] flex flex-col justify-between shadow-2xl">
+                        {/* Car Image on Left (overflows left & bottom) */}
+                        <div className="absolute ltr:left-[-20px] rtl:right-[-20px] bottom-[-20px] 3xl:w-[330px] 3xl:h-[265px] w-[200px] h-[175px] pointer-events-none z-0">
+                          <Image
+                            src="/images/no-cart-image.png"
+                            alt="Car illustration"
+                            fill
+                            className="object-contain rtl:scale-x-[-1]"
+                          />
+                        </div>
+
+                        {/* Cart Title */}
+                        <h2 className="text-[32px] font-host font-extrabold text-[#211d1d] dark:text-[#FAEADC] leading-none relative z-10">
+                          Cart
+                        </h2>
+
+                        {/* Right content box */}
+                        <div className="flex gap-[24px] items-center justify-end ltr:ml-auto mt-auto mb-2 relative z-10">
+                          <div className="flex flex-col gap-[16px] items-end text-right max-w-[230px] 3xl:max-w-[270px]">
+                            <h3 className="text-[22px] font-host font-bold text-[#211d1d] dark:text-[#FAEADC] leading-[1.3] capitalize">
+                              {siteSettingData?.bookService?.toString() ?? "Ready to Book a Service?"}
+                            </h3>
+                            <p className="text-[12px] opacity-80 text-[#211d1d] dark:text-[#FAEADC] leading-[1.5]">
+                              {siteSettingData?.bookServiceDes?.toString() ?? "Looks like you haven’t added any services yet. Browse our offerings and book a service to keep your car running smoothly!"}
+                            </p>
+                            {!appointmentData?.brand && (
+                              <button
+                                onClick={() => setIsModalOpen(true)}
+                                className="bg-[#f30] hover:bg-[#f30]/90 text-white font-host font-extrabold uppercase px-[40px] py-[16px] rounded-[12px] transition-colors text-[16px] leading-none"
+                              >
+                                {siteSettingData?.addVehicle?.toString() ?? "Add Vehicle"}
+                              </button>
+                            )}
+                          </div>
+                          {/* Vertical Red Line */}
+                          <div className="w-[2px] h-[120px] bg-[#f30] shrink-0" />
+                        </div>
+                      </div>
+                    </div>
+                  )
                 ) : (
-                  <div className="space-y-6  md:pl-8 md:pb-8 p-6 ">
+                  <div className="space-y-6 md:pb-8 p-6 pt-[70px] md:pt-[24px]">
                     {/* Cart Items */}
                     <div className="space-y-4">
                       {cartItemData.map((item) => (
@@ -593,6 +599,7 @@ export default function ServiceListing({ allServiceList, browseServiceList, site
               </div>
 
             </div>
+          </div>
           </div>
         </div>
       </div>

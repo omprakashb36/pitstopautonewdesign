@@ -2807,6 +2807,13 @@
             "name": "blockContent"
           },
           "optional": true
+        },
+        "isFullWidth": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "boolean"
+          },
+          "optional": true
         }
       }
     }
@@ -6933,6 +6940,27 @@
         "value": {
           "type": "inline",
           "name": "slug"
+        },
+        "optional": true
+      },
+      "layoutType": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "union",
+          "of": [
+            {
+              "type": "string",
+              "value": "containerGrid"
+            },
+            {
+              "type": "string",
+              "value": "fullWidth"
+            },
+            {
+              "type": "string",
+              "value": "centerText"
+            }
+          ]
         },
         "optional": true
       },

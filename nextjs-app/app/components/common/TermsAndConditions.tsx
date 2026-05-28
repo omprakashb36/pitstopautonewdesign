@@ -12,7 +12,7 @@ type termsAndConditionSectionProps = {
 export default function TermsAndConditions({ block }: termsAndConditionSectionProps) {
   return (
     <>
-      <div className="max-w-[880px] mx-auto px-4 pb-24 centerAlignRichText">
+      <div className="mx-auto pb-24 centerAlignRichText">
         <div className="font-urbanist space-y-8">
            {block?.richText?.length && (
                     <PortableText

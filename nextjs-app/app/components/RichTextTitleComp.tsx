@@ -9,8 +9,8 @@ type RichTextTitleProps = {
 
 export default function RichTextTitleComp({ block }: RichTextTitleProps) {
   return (
- <div className="max-w-[1080px] richTextTitle mx-auto px-4 py-16 pb-6">
-      <div className="md:mb-8 max-w-[580px]">
+ <div className={`${block?.isFullWidth ? "container-grid" : "max-w-[845px] 3xl:max-w-[1080px]"}  richTextTitle mx-auto pb-0`}>
+      <div className="max-w-[628px] 3xl:max-w-[800px]">
         {block?.aboutsection?.length && (
           <PortableText
             className=""

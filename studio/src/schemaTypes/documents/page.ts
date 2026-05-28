@@ -1,5 +1,5 @@
-import {defineField, defineType} from 'sanity'
-import {DocumentIcon} from '@sanity/icons'
+import { defineField, defineType } from 'sanity'
+import { DocumentIcon } from '@sanity/icons'
 import { i18n } from '../../../language'
 
 /**
@@ -36,36 +36,61 @@ export const page = defineType({
       group: 'basic',
     }),
     defineField({
+      name: 'layoutType',
+      title: 'Layout Type',
+      type: 'string',
+      initialValue: 'containerGrid',
+
+      options: {
+        list: [
+          {
+            title: 'Container Grid',
+            value: 'containerGrid',
+          },
+          {
+            title: 'Full Width',
+            value: 'fullWidth',
+          },
+          {
+            title: 'Col-span-10',
+            value: 'centerText',
+          },
+        ],
+
+        layout: 'radio',
+      },
+    }),
+    defineField({
       name: 'pageBuilder',
       title: 'Page builder',
       type: 'array',
-      of : [  
-        {type: 'callToAction'}, 
-        {type: 'infoSection'} , 
-        {type: 'homeTesla'} , 
-        {type: 'homeIntro'} , 
-        {type: 'homeFleet'},
-        {type: 'scrollContent'},
-        {type: 'imageRichText'},
-        {type: 'richTextTitle'},
-        {type: 'homeCta'},
-        {type: 'homeWorkFlow'},
-        {type: 'homeHeroSlider'}, 
-        {type: 'termsAndConditionSection'},
-        {type: 'carServicesList'},
-        {type: 'logoList'},
-        {type: 'testimonial'},
-        {type: 'faqSection'},
-        {type : 'serviceListing'},
-        {type : 'serviceBooked'},
-        {type : 'serviceBookedTesla'},
-        {type : 'serviceCart'},
-        {type : 'location'},
-        {type : 'extendedWarrantyForm'},
-        {type : 'contactUsForm'},
-        {type : 'fleetManagement'},
-        {type: 'teslaForm'},
-        {type : 'homeBlog'},
+      of: [
+        { type: 'callToAction' },
+        { type: 'infoSection' },
+        { type: 'homeTesla' },
+        { type: 'homeIntro' },
+        { type: 'homeFleet' },
+        { type: 'scrollContent' },
+        { type: 'imageRichText' },
+        { type: 'richTextTitle' },
+        { type: 'homeCta' },
+        { type: 'homeWorkFlow' },
+        { type: 'homeHeroSlider' },
+        { type: 'termsAndConditionSection' },
+        { type: 'carServicesList' },
+        { type: 'logoList' },
+        { type: 'testimonial' },
+        { type: 'faqSection' },
+        { type: 'serviceListing' },
+        { type: 'serviceBooked' },
+        { type: 'serviceBookedTesla' },
+        { type: 'serviceCart' },
+        { type: 'location' },
+        { type: 'extendedWarrantyForm' },
+        { type: 'contactUsForm' },
+        { type: 'fleetManagement' },
+        { type: 'teslaForm' },
+        { type: 'homeBlog' },
       ],
 
       options: {

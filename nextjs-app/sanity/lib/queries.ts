@@ -34,6 +34,7 @@ export const getPageQuery = defineQuery(`
     name,
     slug,
     heading,
+    layoutType,
     subheading,
     "pageBuilder": pageBuilder[]{
       ...,

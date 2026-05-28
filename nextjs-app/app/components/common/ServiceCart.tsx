@@ -5,7 +5,7 @@ import { useState, useEffect, useRef } from "react"
 import { useFormik } from "formik"
 import * as Yup from "yup"
 import Image from "next/image"
-import { Check, Minus, Plus, Trash2 } from "lucide-react"
+import { Check, Minus, Plus, Trash2, ChevronLeft, ChevronRight } from "lucide-react"
 import { Swiper, SwiperSlide } from "swiper/react"
 import { Navigation } from "swiper/modules"
 import "swiper/css"
@@ -229,6 +229,49 @@ export default function ServiceCart({ block }: serviceCartProps) {
       display: "none",
     }),
   };
+
+  const customSelectStyles = {
+    ...selectStyles,
+    menuList: (provided: any) => ({
+      ...provided,
+      maxHeight: "200px",
+      overflowY: "auto",
+    }),
+    menu: (provided: any) => ({
+      ...provided,
+      zIndex: 9999,
+    }),
+  }
+
+  const CustomMenuList = (props: any) => {
+    const handleWheel = (e: any) => {
+      e.stopPropagation()
+      const target = e.currentTarget as HTMLElement
+      const { scrollTop, scrollHeight, clientHeight } = target
+
+      // Only prevent default if we're not at the boundaries
+      if ((e.deltaY < 0 && scrollTop > 0) || (e.deltaY > 0 && scrollTop < scrollHeight - clientHeight)) {
+        e.preventDefault()
+      }
+    }
+
+    return (
+      <div
+        {...props}
+        onWheel={handleWheel}
+        style={{
+          ...props.style,
+          maxHeight: "200px",
+          overflowY: "auto",
+        }}
+      />
+    )
+  }
+
+  const components = {
+    MenuList: CustomMenuList,
+  }
+
 
   useEffect(() => {
     const fetchServices = async () => {
@@ -499,8 +542,8 @@ export default function ServiceCart({ block }: serviceCartProps) {
 
         // Format helper
         const formatDate = (date: Date) => {
-  return `${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}-${date.getFullYear()}`
-}
+          return `${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}-${date.getFullYear()}`
+        }
 
         const fromDateFormatted = formatDate(fromDate)
         const toDateFormatted = formatDate(toDate)
@@ -1038,14 +1081,9 @@ export default function ServiceCart({ block }: serviceCartProps) {
 
   return (
     <>
-      <div className="text-[#FAEADC] md:mt-[180px] min-h-[400px] serviceCart">
-        <div className="px-4 xl:px-[60px] 2xl:px-[116px] py-8 md:py-12 md:pt-0">
-          {/* Breadcrumb */}
-          <div className="flex items-center gap-2 text-[15px] mb-6">
-            <Link className="dark:text-[#C00034] text-black" href={`/${currentLocale}/services`}>{block?.serviceTitle}</Link>
-            <span className="dark:text-[#C00034] text-black">/</span>
-            <span className="dark:text-[#C00034] text-black opacity-60">{block.heading} {block?.subHeading}</span>
-          </div>
+      <div className="text-[#FAEADC] min-h-[400px] serviceCart">
+        <div className="py-8 md:py-12 md:pt-0">
+
           {/* Main Content */}
           <div className="lg:flex flex flex-wrap lg:flex-nowrap gap-8 relative">
             {/* Left Column - Form Steps */}
@@ -1056,199 +1094,29 @@ export default function ServiceCart({ block }: serviceCartProps) {
 
               {/* Left side - Title and Browse button */}
               <div className="flex justify-between flex-col md:flex-row md:mb-[53px]  md:items-center gap-4 md:gap-8 w-full">
-                <h1 className="text-4xl md:text-5xl font-bold uppercase">
-                  <span className="dark:text-[#FAEADC] text-black font-shoulders">{block?.heading}</span>{" "}
-                  <span className="text-[#C00034] font-shoulders">{block?.subHeading}</span>
+                <h1>
+                  <span className="dark:text-[#FAEADC] text-black">{block?.heading}</span>{" "}
+                  <span className="text-[#C00034]">{block?.subHeading}</span>
                 </h1>
 
                 <button
                   onClick={() => setServiceIsModalOpen(true)}
-                  className="gradientBG mhidden font-urbanist gradientBGTrans text-[#FAEADC] px-[26px] py-[13.33px] leading-[1] rounded-[10px] transition-colors"
+                  className="gradientBG mhidden gradientBGTrans text-[#FAEADC] lg:min-w-[240px] 3xl:min-w-[280px] px-[20px] 3xl:px-[40px] py-[16px] leading-[1] rounded-[10px] transition-colors"
                 >
                   {block.browseServiceLabel}
                 </button>
               </div>
 
               {block?.verifySection && block?.verifySection.length > 0 && block.verifySection?.slice(0, 1).map(verify => (
-                <Squircle key={verify._key} cornerRadius={33}>
-                  <div className="dark:bg-[#0f0f0f] bg-[#F9F9F9] rounded-[33.3px]">
-                    <div className="md:p-[2.1rem] px-5 py-6 shadow-2xl">
-                      <div className="flex justify-between items-center">
-                        <h2 className="md:text-[26.6px] text-[20px] uppercase font-shoulders dark:text-[#FAEADC] text-black font-semibold">
-                          {verify.verify}
-                        </h2>
-                        {verificationCompleted && (
-                          <div className="flex items-center gap-4">
-                            <div className="flex min-w-[100px] items-center p-2 rounded-md gap-2 dark:bg-[#0C1B13] bg-white">
-                              <div className="p-0">
-                                <Image
-                                  src="/images/verified.svg"
-                                  alt="verified icon"
-                                  width={20}
-                                  height={20}
-                                  className="mb-0"
-                                />
-                              </div>
-                              <span className="text-[#1DAF65] text-[12px]">
-                                {formik.values.countryCode + formik.values.phoneNumber || appointmentData?.personalDetails?.phoneNumber} Verified
-                              </span>
-                            </div>
-                            <button
-                              onClick={handleEditVerification}
-                              className="border border-[#C00034] font-urbanist font-bold text-[11.67px] rounded-lg text-[#C00034] px-4 pt-[5px] py-1 hover:bg-[#C00034]/10 transition-colors"
-                            >
-                              {verify.editBtnLabel}
-                            </button>
-                          </div>
-                        )}
-                      </div>
-
-                      {activeStep === "verify" && (
-                        <form autoComplete="off" className="paymentForm pt-0 mt-6" onSubmit={formik.handleSubmit}>
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                            {/* Phone Number Field */}
-                            <div className="formLabel selectReact phoneNoCol border dark:border-white/20  border-black/20 rounded-[15px] space-y-2">
-                              <label htmlFor="phoneNumber" className="block font-urbanist sandDrift text-xs uppercase">
-                                {verify.countryLabel}
-                              </label>
-                              <div className="flex otpSection justify-center items-center">
-                                <Select
-                                  id="countryCode"
-                                  name="countryCode"
-                                  options={[
-                                    { value: "+971", label: "+971" },
-                                    { value: "+1", label: "+1" },
-                                    { value: "+44", label: "+44" },
-                                    { value: "+91", label: "+91" },
-                                  ]}
-                                  value={{ value: formik.values.countryCode, label: formik.values.countryCode }}
-                                  onChange={(option) => formik.setFieldValue("countryCode", option?.value || "")}
-                                  onBlur={() => formik.setFieldTouched("countryCode", true)}
-                                  isDisabled={otpSent}
-                                  styles={selectStyles}
-                                  classNames={selectClassNames}
-                                  isSearchable={false}
-                                />
-                                <input
-                                  type="text"
-                                  id="phoneNumber"
-                                  name="phoneNumber"
-                                  placeholder="800 7727"
-                                  value={formik.values.phoneNumber}
-                                  onChange={(e) => {
-                                    formik.handleChange(e)
-                                    setIsPhoneValid(validatePhoneNumber(e.target.value))
-                                  }}
-                                  onBlur={formik.handleBlur}
-                                  className={`bg-black/60 dark:text-[#FAEADC] text-[#000] otpInput rounded-r px-3 py-2 pt-0 ltr:ml-3 rtl:mr-3 border ${formik.errors.phoneNumber && formik.touched.phoneNumber
-                                    ? "border-red-500"
-                                    : "border-[#333333]"
-                                    } focus:outline-none focus:border-[#C00034] w-full`}
-                                />
-                              </div>
-                              {formik.touched.phoneNumber && formik.errors.phoneNumber ? (
-                                <div className="text-red-500 text-xs mt-1">{formik.errors.phoneNumber}</div>
-                              ) : null}
-                            </div>
-
-                            {/* OTP Field - Only show when OTP is sent */}
-                            {otpSent && (
-                              <div className="formLabel border dark:border-white/20  border-black/20 rounded-[15px]">
-                                <label
-                                  htmlFor="oneTimePassword"
-                                  className="block text-xs uppercase mb-2 font-urbanist sandDrift"
-                                >
-                                  {verify.otpLabel}
-                                </label>
-                                <input
-                                  type="text"
-                                  id="oneTimePassword"
-                                  name="oneTimePassword"
-                                  placeholder="123456"
-                                  value={formik.values.oneTimePassword}
-                                  onChange={formik.handleChange}
-                                  onBlur={formik.handleBlur}
-                                  className={`bg-black/60 dark:text-[#FAEADC] text-[#000] rounded px-3 py-2 border ${formik.errors.oneTimePassword && formik.touched.oneTimePassword
-                                    ? "border-red-500"
-                                    : "border-[#333333]"
-                                    } focus:outline-none focus:border-[#C00034] w-full`}
-                                />
-                                {formik.touched.oneTimePassword && formik.errors.oneTimePassword ? (
-                                  <div className="text-red-500 text-xs mt-1">{formik.errors.oneTimePassword}</div>
-                                ) : null}
-                              </div>
-                            )}
-                          </div>
-
-                          <div className="flex justify-between">
-                            {!otpSent ? (
-
-                              <button
-                                type="button"
-                                onClick={handleSendOTP}
-                                disabled={!isPhoneValid || submitting}
-                                className="gradientBG text-[#FAEADC] md:w-[calc(50%-8px)] px-6 py-3 rounded-[10px] font-medium w-full disabled:opacity-50"
-                              >
-                                {submitting ? "PROCESSING..." : verify.sendOtpButtonLabel}
-                              </button>
-
-                            ) : (
-                              <>
-
-                                <button
-                                  type="submit"
-                                  disabled={
-                                    submitting ||
-                                    !formik.values.oneTimePassword ||
-                                    formik.values.oneTimePassword.length !== 6
-                                  }
-                                  className="gradientBG text-[#FAEADC] px-6 py-3 rounded-[10px] font-medium w-full md:w-[calc(50%-8px)] disabled:opacity-50"
-                                >
-                                  {submitting ? "PROCESSING..." : verify.verifyBtnLabel}
-                                </button>
-
-
-                                <button
-                                  type="button"
-                                  onClick={handleResendOTP}
-                                  disabled={timerActive}
-                                  className={`border border-[#C00034] text-[#C00034] uppercase px-4 py-2 rounded-[10px] transition-colors hidden md:block ${timerActive ? "opacity-50 cursor-not-allowed" : "hover:bg-[#C00034]/10"
-                                    }`}
-                                >
-                                  {timerActive ? `RESEND OTP IN ${otpTimer}S` : verify?.sendOtpLabel}
-                                </button>
-                              </>
-                            )}
-                          </div>
-
-                          {otpSent && (
-                            <button
-                              type="button"
-                              onClick={handleResendOTP}
-                              disabled={timerActive}
-                              className={`border border-[#C00034] text-[#C00034] uppercase px-4 py-2 rounded transition-colors w-full md:hidden mt-4 ${timerActive ? "opacity-50 cursor-not-allowed" : "hover:bg-[#C00034]/10"
-                                }`}
-                            >
-                              {timerActive ? `RESEND OTP IN ${otpTimer}S` : verify?.sendOtpLabel}
-                            </button>
-                          )}
-                        </form>
-                      )}
-                    </div>
-                  </div>
-                </Squircle>
-              ))}
-
-              {/* Schedule Appointment Step */}
-
-              {block?.appointmentSection && block?.appointmentSection?.length > 0 && block?.appointmentSection?.slice(0, 1).map(appoint => (
-                <div key={appoint._key} className={`dark:bg-[#0f0f0f] bg-[#F9F9F9]  rounded-[33px] ${!verificationCompleted ? "opacity-70" : ""}`}>
-                  <div className="md:p-[33px] px-5 py-6">
+                <div key={verify._key} className="bg-white dark:bg-[#0A0A0A] border border-[#d9d9d9] dark:border-white/10 overflow-hidden rounded-[40px] shadow-sm">
+                  <div className="p-6 md:p-[40px]">
                     <div className="flex justify-between items-center">
-                      <h2 className="md:text-[26.6px] dark:text-[#FAEADC] text-[#000] text-[20px] w-full uppercase font-shoulders relative font-semibold">{appoint.appointment} {!scheduleCompleted && <span className="bg-[#202020] mhidden absolute ltr:right-0 rtl:left-0 top-2 text-[#FAEADC] rounded-md font-urbanist font-bold px-3 leading-[1] lg:px-[10px] py-[6.6px] text-[10px] uppercase">{appoint?.availableTimeSlotLabel}</span>}</h2>
-                      {scheduleCompleted && (
+                      <h2 className="text-[32px] font-host font-extrabold text-[#211d1d] dark:text-[#FAEADC] uppercase">
+                        {verify.verify || "Verify"}
+                      </h2>
+                      {verificationCompleted && (
                         <div className="flex items-center gap-4">
-                          <div className="flex items-center md:min-w-[215px] p-2 rounded-md gap-2 dark:bg-[#0C1B13] bg-white">
+                          <div className="flex min-w-[100px] items-center p-2 rounded-md gap-2 dark:bg-[#0C1B13] bg-white">
                             <div className="p-0">
                               <Image
                                 src="/images/verified.svg"
@@ -1258,327 +1126,158 @@ export default function ServiceCart({ block }: serviceCartProps) {
                                 className="mb-0"
                               />
                             </div>
-                            <span className="text-[#1DAF65] text-[13px]">
-                              {selectedDateObj
-                                ? `${selectedDateObj.day}, ${selectedDateObj.date}${getDaySuffix(
-                                  parseInt(selectedDateObj.date, 10),
-                                )}  `
-                                : ""}{" "}
-                              - {formik.values.appointmentTime.split(" - ")[0] || ""}
+                            <span className="text-[#1DAF65] text-[12px]">
+                              {formik.values.countryCode + formik.values.phoneNumber || appointmentData?.personalDetails?.phoneNumber} Verified
                             </span>
                           </div>
                           <button
-                            onClick={handleEditSchedule}
-                            className="border border-[#C00034] font-urbanist font-bold text-[11.67px] rounded-lg text-[#C00034] px-4 pt-[5px] py-1 hover:bg-[#C00034]/10 transition-colors"
+                            type="button"
+                            onClick={handleEditVerification}
+                            className="border border-[#C00034] font-host font-bold text-[12px] rounded-lg text-[#C00034] px-4 py-1.5 hover:bg-[#C00034]/10 transition-colors uppercase"
                           >
-                            {appoint.editBtnLabel}
+                            {verify.editBtnLabel}
                           </button>
                         </div>
                       )}
                     </div>
 
-                    {activeStep === "schedule" && (
-                      <div className="space-y-6 pt-8 md:max-w-[75%] m-auto">
-                        {/* Workshop Location */}
-                        <div className="formLabel selectReact border dark:border-white/20  border-black/20 rounded-[15px]">
-                          <label className="block font-urbanist sandDrift text-xs uppercase">
-                            {appoint.selectWorkShopLabel}
-                          </label>
-                          <Select
-                            id="workshopLocation"
-                            name="workshopLocation"
-                            options={
-                              workshopLocations &&
-                              workshopLocations.map((location) => ({
-                                value: location.name,
-                                label: location.name,
-                              }))
-                            }
-                            value={
-                              formik.values.workshopLocation
-                                ? {
-                                  value: formik.values.workshopLocation,
-                                  label: formik.values.workshopLocation,
-                                }
-                                : null
-                            }
-                            onChange={(option) => handleWorkshopChange(option?.value || "")}
-                            placeholder={appoint.workshopPlaceholder}
-                            styles={selectStyles}
-                            classNames={selectClassNames}
-                          />
+                    {activeStep === "verify" && (
+                      <form autoComplete="off" className="paymentForm pt-0 mt-6" onSubmit={formik.handleSubmit}>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                          {/* Phone Number Field */}
+                          <div className={`border rounded-[20px] h-[90px] flex items-center w-full overflow-hidden transition-colors ${!otpSent ? "md:col-span-2" : ""
+                            } ${formik.errors.phoneNumber && formik.touched.phoneNumber
+                              ? "border-[#FF3300]"
+                              : "border-[#D9D9D9] dark:border-white/20"
+                            }`}>
+                            {/* Country Code Selection */}
+                            <div className="w-[124px] h-full flex flex-col justify-center px-[24px] pr-[15px] relative border-r border-[#D9D9D9] dark:border-white/20 selectReact no-border">
+                              <label htmlFor="countryCode" className="block font-host font-medium opacity-60 text-[10px] md:text-[12px] uppercase dark:text-[#FAEADC] text-black">
+                                {verify.countryLabel || "COUNTRY"}
+                              </label>
+                              <Select
+                                id="countryCode"
+                                name="countryCode"
+                                options={[
+                                  { value: "+971", label: "+971" },
+                                  { value: "+1", label: "+1" },
+                                  { value: "+44", label: "+44" },
+                                  { value: "+91", label: "+91" },
+                                ]}
+                                value={{ value: formik.values.countryCode, label: formik.values.countryCode }}
+                                onChange={(option) => formik.setFieldValue("countryCode", option?.value || "")}
+                                onBlur={() => formik.setFieldTouched("countryCode", true)}
+                                isDisabled={otpSent}
+                                styles={customSelectStyles}
+                                classNames={selectClassNames}
+                                components={components}
+                                isSearchable={false}
+                                className="font-host text-[16px] md:text-[20px]"
+                              />
+                            </div>
+                            {/* Phone Number Input */}
+                            <div className="flex-1 h-full flex flex-col justify-center px-[24px]">
+                              <label htmlFor="phoneNumber" className="block font-host font-medium opacity-60 text-[10px] md:text-[12px] uppercase dark:text-[#FAEADC] text-black">
+                                {"PHONE NUMBER"}
+                              </label>
+                              <input
+                                type="text"
+                                id="phoneNumber"
+                                name="phoneNumber"
+                                placeholder="555 8080 889"
+                                value={formik.values.phoneNumber}
+                                onChange={(e) => {
+                                  formik.handleChange(e)
+                                  setIsPhoneValid(validatePhoneNumber(e.target.value))
+                                }}
+                                onBlur={formik.handleBlur}
+                                className="w-full bg-transparent font-host text-[16px] md:text-[20px] dark:text-white text-black placeholder:text-black/30 dark:placeholder:text-white/30 focus:outline-none"
+                              />
+                            </div>
+                          </div>
+
+                          {/* OTP Field - Only show when OTP is sent */}
+                          {otpSent && (
+                            <div className={`border rounded-[20px] px-[24px] h-[90px] flex flex-col justify-center w-full transition-colors ${formik.errors.oneTimePassword && formik.touched.oneTimePassword
+                                ? "border-[#FF3300]"
+                                : "border-[#D9D9D9] dark:border-white/20"
+                              }`}>
+                              <label
+                                htmlFor="oneTimePassword"
+                                className="block font-host font-medium opacity-60 text-[12px] uppercase dark:text-[#FAEADC] text-black"
+                              >
+                                {verify.otpLabel || "ONE TIME PASSWORD"}
+                              </label>
+                              <input
+                                type="text"
+                                id="oneTimePassword"
+                                name="oneTimePassword"
+                                placeholder="78009"
+                                value={formik.values.oneTimePassword}
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                                className="w-full bg-transparent font-host text-[16px] md:text-[20px] dark:text-white text-black placeholder:text-black/30 dark:placeholder:text-white/30 focus:outline-none"
+                              />
+                            </div>
+                          )}
                         </div>
 
-                        {workshopSelected && isLoadingDates && (
-                          <div className="flex justify-center py-8">
-                            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#c00034]"></div>
-                          </div>
-                        )}
-
-                        {/* Date Selection - Only show when workshop is selected */}
-                        {workshopSelected && !isLoadingDates && dateOptions.length > 0 && (
-                          <div>
-                            <div className="flex justify-between items-center mb-4">
-                              <div className="text-center text-sm uppercase w-full dark:text-[#FAEADC] text-black">
-                                {visibleMonth && selectedDateObj
-                                  ? `${selectedDateObj.month} ${selectedDateObj.year}`
-                                  : visibleMonth
-                                    ? `${visibleMonth.month.toUpperCase()} ${visibleMonth.year}`
-                                    : ""}
-                              </div>
-                            </div>
-                            <div className="relative dateSwiperContainer">
-                              <Swiper
-                                modules={[Navigation]}
-                                spaceBetween={8}
-                                slidesPerView="auto"
-                                navigation={{
-                                  prevEl: ".swiper-button-prev",
-                                  nextEl: ".swiper-button-next",
-                                }}
-                                className="px-4 dateSwiper"
-                                onSlideChange={(swiper) => {
-                                  // Get the current visible slide index
-                                  const currentIndex = swiper.activeIndex
-                                  // Get the date option at this index
-                                  const currentDateOption = dateOptions[currentIndex]
-                                  if (currentDateOption) {
-                                    // Update the visible month if it's different
-                                    if (
-                                      !visibleMonth ||
-                                      visibleMonth.month !== currentDateOption.month ||
-                                      visibleMonth.year !== currentDateOption.year
-                                    ) {
-                                      setVisibleMonth({
-                                        month: currentDateOption.month,
-                                        year: currentDateOption.year,
-                                      })
-                                    }
-                                  }
-                                }}
-                                onInit={(swiper) => {
-                                  // Set initial month on component mount
-                                  if (dateOptions.length > 0) {
-                                    setVisibleMonth({
-                                      month: dateOptions[0].month,
-                                      year: dateOptions[0].year,
-                                    })
-                                  }
-                                }}
-                                onSwiper={(swiper) => {
-                                  swiperRef.current = swiper
-                                }}
-                                breakpoints={{
-                                  320: {
-                                    slidesPerView: 3,
-                                    spaceBetween: 8,
-                                  },
-                                  480: {
-                                    slidesPerView: 4,
-                                    spaceBetween: 8,
-                                  },
-                                  640: {
-                                    slidesPerView: 5,
-                                    spaceBetween: 8,
-                                  },
-                                  768: {
-                                    slidesPerView: 6,
-                                    spaceBetween: 8,
-                                  },
-                                  1024: {
-                                    slidesPerView: 5,
-                                    spaceBetween: 8,
-                                  },
-                                }}
-                              >
-                                {dateOptions.map((dateOption) => {
-                                  const dayNumber = new Date(dateOption.date).getDate()
-                                  return (
-                                    <SwiperSlide
-                                      key={dateOption.date + dateOption.month + dateOption.year}
-                                      className="!w-auto px-2"
-                                    >
-
-
-                                      <button
-                                        disabled={dateOption?.isHoliday}
-                                        onClick={() => handleDateSelect(dateOption.date)}
-                                        className={`${dateOption?.isHoliday ? ' bg-gray-300 opacity-40' : ''} flex flex-col items-center leading-[1] justify-center py-3 px-4 rounded-lg ${selectedDate === dateOption.date
-                                          ? "bg-[#c00034] text-white font-semibold"
-                                          : "bg-black/60 text-white hover:bg-[#c00034]/20"
-                                          }`}
-                                      >
-                                        <span className="text-[2.1rem] font-shoulders font-light">{dayNumber}</span>
-                                        <span className="text-xs">{dateOption.day}</span>
-                                        <span className="text-[10px] opacity-75 min-h-[10px]">{`${dateOption?.isHoliday ? '' : dateOption.availableSlots + ' slots'}`}</span>
-                                      </button>
-                                    </SwiperSlide>
-                                  )
-                                })}
-                              </Swiper>
-                              {/* Custom navigation buttons */}
+                        <div className="flex gap-4 flex-col sm:flex-row items-center">
+                          {!otpSent ? (
+                            <button
+                              type="button"
+                              onClick={handleSendOTP}
+                              disabled={!isPhoneValid || submitting}
+                              className="bg-[#801b01] text-[#fcf3ed] px-[40px] py-[16px] rounded-[12px] font-host font-extrabold uppercase text-[16px] leading-[1.5] w-full sm:w-[417px] disabled:opacity-50 transition-all text-center hover:opacity-90"
+                            >
+                              {submitting ? "PROCESSING..." : verify.sendOtpButtonLabel || "SEND OTP"}
+                            </button>
+                          ) : (
+                            <>
                               <button
-                                onClick={() => swiperRef.current?.slidePrev()}
-                                className="absolute left-0 top-[30%] z-10 flex items-center justify-center w-[20px] h-8 bg-black/60 rounded-full cursor-pointer"
-                                aria-label="Previous models"
+                                type="submit"
+                                disabled={
+                                  submitting ||
+                                  !formik.values.oneTimePassword ||
+                                  formik.values.oneTimePassword.length !== 6
+                                }
+                                className="bg-[#801b01] text-[#fcf3ed] px-[40px] py-[16px] rounded-[12px] font-host font-extrabold uppercase text-[16px] leading-[1.5] w-full sm:w-[417px] disabled:opacity-50 transition-all text-center hover:opacity-90"
                               >
-                                <Image
-                                  src="/images/angle-left.svg"
-                                  alt="back icon"
-                                  width={16}
-                                  height={16}
-                                  className="mb-0"
-                                />
+                                {submitting ? "PROCESSING..." : verify.verifyBtnLabel || "CONTINUE"}
                               </button>
 
                               <button
-                                onClick={() => swiperRef.current?.slideNext()}
-                                className="absolute right-0 top-[30%] z-10 flex items-center justify-center w-[20px] h-8 bg-black/60 rounded-full cursor-pointer"
-                                aria-label="Next models"
+                                type="button"
+                                onClick={handleResendOTP}
+                                disabled={timerActive}
+                                className={`border border-[#801b01] text-[#801b01] rounded-[12px] py-[16px] px-[40px] font-host font-extrabold uppercase text-[16px] leading-[1.5] transition-all hover:bg-[#801b01]/10 ${timerActive ? "opacity-50 cursor-not-allowed" : ""
+                                  }`}
                               >
-                                <Image
-                                  src="/images/angle-right.svg"
-                                  alt="back icon"
-                                  width={16}
-                                  height={16}
-                                  className="mb-0"
-                                />
+                                {timerActive ? `Resend OTP in ${otpTimer}s` : verify?.sendOtpLabel || "RESEND OTP"}
                               </button>
-                            </div>
-                          </div>
-                        )}
-
-                        {/* Time Selection - Only show when date is selected */}
-                        {selectedDate && (
-                          <>
-                            {isLoadingTimeSlots ? (
-                              <div className="flex justify-center py-8">
-                                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#C00034]"></div>
-                              </div>
-                            ) : timeSlots.length > 0 ? (
-                              <div className="relative timeSwiperContainer mt-6">
-                                <div className="text-center dark:text-[#FAEADC] text-black  text-sm uppercase w-full mb-4">{appoint.timeSlotLabel}</div>
-                                <Swiper
-                                  modules={[Navigation]}
-                                  spaceBetween={6}
-                                  slidesPerView={2}
-                                  navigation={{
-                                    prevEl: ".time-swiper-button-prev",
-                                    nextEl: ".time-swiper-button-next",
-                                  }}
-                                  className="px-4 timeSwiper"
-                                  breakpoints={{
-                                    320: {
-                                      slidesPerView: 2,
-                                      spaceBetween: 8,
-                                    },
-                                    480: {
-                                      slidesPerView: 3,
-                                      spaceBetween: 8,
-                                    },
-                                    640: {
-                                      slidesPerView: 4,
-                                      spaceBetween: 8,
-                                    },
-                                    768: {
-                                      slidesPerView: 5,
-                                      spaceBetween: 8,
-                                    },
-                                    1024: {
-                                      slidesPerView: 3,
-                                      spaceBetween: 12,
-                                    },
-                                  }}
-                                >
-                                  {timeSlots.map((slot) => (
-                                    <SwiperSlide key={slot.time} className="">
-                                      <button
-                                        onClick={() => handleTimeSelect(slot.time, Array.isArray(slot.available_agents) ? slot.available_agents[0] : '')}
-                                        disabled={!slot.available}
-                                        className={`flex flex-col w-full items-center justify-center py-2 px-2 rounded-lg border ${selectedTime === slot.time
-                                          ? "bg-[#C00034] border-[#c00034] dark:text-[#FAEADC] text-white"
-                                          : "dark:bg-black/60 dark:border-0 dark:text-[#FAEADC] bg-white text-[#000]  border border-solid border-black hover:bg-[#C00034]/20"
-                                          } ${!slot.available ? "opacity-50 cursor-not-allowed" : ""}`}
-                                      >
-                                        <span className="text-[20px] font-shoulders">{slot.time}</span>
-                                        <span className="text-xs dark:text-[#FAEADC]/70 text-black ">
-                                          {slot.available ? `Available (${slot.availableSlots})` : "Unavailable"}
-                                        </span>
-                                      </button>
-                                    </SwiperSlide>
-                                  ))}
-                                </Swiper>
-
-                                {/* Custom navigation buttons */}
-                                <button
-                                  className="time-swiper-button-prev bg-black/60 absolute left-0 top-[66px] z-10 flex items-center justify-center w-[20px] h-8 rounded-full cursor-pointer -translate-y-1/2"
-                                  aria-label="Previous time slots"
-                                >
-                                  <Image
-                                    src="/images/angle-left.svg"
-                                    alt="back icon"
-                                    width={16}
-                                    height={16}
-                                    className="mb-0"
-                                  />
-                                </button>
-
-                                <button
-                                  className="time-swiper-button-next bg-black/60 absolute right-0 top-[66px] z-10 flex items-center justify-center w-[20px] h-8 rounded-full cursor-pointer -translate-y-1/2"
-                                  aria-label="Next time slots"
-                                >
-                                  <Image
-                                    src="/images/angle-right.svg"
-                                    alt="back icon"
-                                    width={16}
-                                    height={16}
-                                    className="mb-0"
-                                  />
-                                </button>
-                              </div>
-                            ) : (
-                              <div className="text-center py-4 mt-4">
-                                <p className="dark:text-[#FAEADC] text-black">No time slots available for this date or this is holiday.</p>
-                              </div>
-                            )}
-                          </>
-                        )}
-
-                        {/* Continue Button */}
-                        {selectedDate && selectedTime && (
-                          <div>
-                            <Squircle cornerRadius={10} className="flex justify-end">
-                              <button
-                                onClick={handleContinueToPersonalDetails}
-                                className="rounded-lg px-[50px] py-[13px] ltr:mr-2 rtl:ml-2 gradientBG font-urbanist"
-                              >
-                                {appoint.continueBtnLabel}
-                              </button>
-                            </Squircle>
-                          </div>
-                        )}
-                      </div>
+                            </>
+                          )}
+                        </div>
+                      </form>
                     )}
                   </div>
                 </div>
               ))}
 
-              {/* Personal Details Step */}
-
-              {block?.personalDetailsSection && block?.personalDetailsSection?.length > 0 && block?.personalDetailsSection?.slice(0, 1).map(personal => (
-                <Squircle key={personal._key} cornerRadius={33}>
-                  <div
-                    className={`dark:bg-[#0f0f0f] bg-[#F9F9F9] rounded-lg overflow-hidden ${!verificationCompleted || !scheduleCompleted ? "opacity-70" : ""}`}
-                  >
-                    <div className="md:p-[33px] p-6">
-                      <div className="flex justify-between items-center">
-                        <h2 className="md:text-[26.6px] w-full uppercase text-[20px] dark:text-[#FAEADC] text-[#000] font-shoulders font-semibold relative">
-                          {personal.appointment} {!isLeadIdStep && <span className="bg-[#202020] absolute ltr:right-0 rtl:left-0 top-2 text-[#FAEADC] rounded-md font-urbanist font-bold px-3 leading-[1] lg:px-[10px] py-[6.6px] text-[10px] mhidden uppercase">{personal?.verifyYourNameLabel}</span>}
+              {/* Schedule Appointment Step */}
+              {block?.appointmentSection && block?.appointmentSection?.length > 0 && block?.appointmentSection?.slice(0, 1).map(appoint => {
+                const isStepActive = activeStep === "schedule";
+                return (
+                  <div key={appoint._key} className={`bg-white dark:bg-[#0A0A0A] border border-[#d9d9d9] dark:border-white/10 rounded-[40px] shadow-sm overflow-hidden transition-all duration-300 ${!verificationCompleted ? "opacity-70 pointer-events-none" : ""}`}>
+                    <div className="p-6 md:p-[40px]">
+                      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                        <h2 className="text-[32px] font-host font-extrabold text-[#211d1d] dark:text-[#FAEADC] uppercase">
+                          {appoint.appointment || "Schedule appointment"}
                         </h2>
-                        {isLeadIdStep && (
+                        {scheduleCompleted && (
                           <div className="flex items-center gap-4">
-                            <div className="flex items-center min-w-[100px] p-2 rounded-md gap-2 dark:bg-[#0C1B13] bg-white">
-                              <div className="p-0 min-w-5">
+                            <div className="flex items-center md:min-w-[215px] p-2 rounded-md gap-2 dark:bg-[#0C1B13] bg-white">
+                              <div className="p-0">
                                 <Image
                                   src="/images/verified.svg"
                                   alt="verified icon"
@@ -1587,97 +1286,375 @@ export default function ServiceCart({ block }: serviceCartProps) {
                                   className="mb-0"
                                 />
                               </div>
-                              <span className="text-[#1DAF65] uppercase text-[12px]">{personal.continueBtnLabel}</span>
+                              <span className="text-[#1DAF65] text-[13px]">
+                                {selectedDateObj
+                                  ? `${selectedDateObj.day}, ${selectedDateObj.date}${getDaySuffix(
+                                    parseInt(selectedDateObj.date, 10),
+                                  )}  `
+                                  : ""}{" "}
+                                - {formik.values.appointmentTime.split(" - ")[0] || ""}
+                              </span>
                             </div>
                             <button
-                              onClick={handleEditPersonalDetails}
-                              className="border uppercase border-[#C00034] font-urbanist font-bold text-[11.67px] rounded-lg text-[#C00034] px-4 pt-[5px] py-1 hover:bg-[#C00034]/10 transition-colors"
+                              type="button"
+                              onClick={handleEditSchedule}
+                              className="border border-[#C00034] font-host font-bold text-[12px] rounded-lg text-[#C00034] px-4 py-1.5 hover:bg-[#C00034]/10 transition-colors uppercase"
                             >
-                              {personal.editBtnLabel}
+                              {appoint.editBtnLabel}
                             </button>
+                          </div>
+                        )}
+                        {!scheduleCompleted && (
+                          <div className="bg-[#eaeaea] dark:bg-[#202020] text-[#211d1d] dark:text-[#FAEADC] rounded-[8px] font-host font-bold px-[12px] py-[8px] text-[12px] uppercase">
+                            {appoint?.availableTimeSlotLabel || "Select the available time slot"}
                           </div>
                         )}
                       </div>
 
-                      {activeStep === "personal" && (
-                        <form autoComplete="off" className="space-y-6 mt-6" onSubmit={formik.handleSubmit}>
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            {/* Full Name Field */}
-                            <div className="formLabel border dark:border-white/20  border-black/20 rounded-[15px]">
-                              <label htmlFor="fullName" className="block font-urbanist sandDrift text-xs uppercase mb-0">
-                                {personal.fullNameLabel}
-                              </label>
-                              <input
-                                type="text"
-                                id="fullName"
-                                name="fullName"
-                                placeholder="Your Name"
-                                value={formik.values.fullName}
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
-                                className={`bg-black/60 dark:text-[#FAEADC] text-[#000] font-urbanist rounded px-4 py-3 border border-[#333333] focus:outline-none focus:border-[#C00034] w-full ${formik.errors.fullName && formik.touched.fullName ? "border-red-500" : ""
-                                  }`}
-                              />
-                              {formik.touched.fullName && formik.errors.fullName ? (
-                                <div className="text-red-500 text-xs mt-1">{formik.errors.fullName}</div>
-                              ) : null}
-                            </div>
-
-                            {/* Email Field */}
-                            <div className="formLabel border dark:border-white/20  border-black/20 rounded-[15px]">
-                              <label htmlFor="email" className="block text-xs uppercase mb-0 font-urbanist sandDrift">
-                                {personal.emailLabel}
-                              </label>
-                              <input
-                                type="email"
-                                id="email"
-                                name="email"
-                                placeholder="mayank@bluup.in"
-                                value={formik.values.email}
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
-                                className={`bg-black/60 dark:text-[#FAEADC] text-[#000] font-urbanist rounded px-4 py-3 border border-[#333333] focus:outline-none focus:border-[#C00034] w-full ${formik.errors.email && formik.touched.email ? "border-red-500" : ""
-                                  }`}
-                              />
-                              {formik.touched.email && formik.errors.email ? (
-                                <div className="text-red-500 text-xs mt-1">{formik.errors.email}</div>
-                              ) : null}
-                            </div>
-                          </div>
-
-                          {/* Consent Checkbox */}
-                          <div className="flex items-start gap-2">
-                            <input
-                              type="checkbox"
-                              id="consentToComms"
-                              name="consentToComms"
-                              checked={formik.values.consentToComms}
-                              onChange={formik.handleChange}
-                              className="mt-1"
-                            />
-                            <label htmlFor="consentToComms" className="text-sm  dark:text-[#FAEADC]/80 text-[#000]">
-                              {personal.declaration}
+                      {isStepActive && (
+                        <div className="space-y-6 pt-6">
+                          {/* Workshop Location */}
+                          <div className={`border rounded-[20px] px-[24px] h-[90px] flex flex-col justify-center selectReact w-full transition-colors ${formik.errors.workshopLocation && formik.touched.workshopLocation
+                              ? "border-[#FF3300]"
+                              : "border-[#D9D9D9] dark:border-white/20"
+                            }`}>
+                            <label className="block font-host font-medium opacity-60 text-[12px] uppercase dark:text-[#FAEADC] text-black">
+                              {appoint.selectWorkShopLabel}
                             </label>
+                            <Select
+                              id="workshopLocation"
+                              name="workshopLocation"
+                              options={
+                                workshopLocations &&
+                                workshopLocations.map((location) => ({
+                                  value: location.name,
+                                  label: location.name,
+                                }))
+                              }
+                              value={
+                                formik.values.workshopLocation
+                                  ? {
+                                    value: formik.values.workshopLocation,
+                                    label: formik.values.workshopLocation,
+                                  }
+                                  : null
+                              }
+                              onChange={(option) => handleWorkshopChange(option?.value || "")}
+                              placeholder={appoint.workshopPlaceholder}
+                              styles={customSelectStyles}
+                              classNames={selectClassNames}
+                              components={components}
+                              isSearchable={!isMobileDevice}
+                              className="font-host text-[16px] md:text-[20px]"
+                            />
                           </div>
-                          {formik.touched.consentToComms && formik.errors.consentToComms ? (
-                            <div className="text-red-500 text-xs mt-1">{formik.errors.consentToComms}</div>
-                          ) : null}
+
+                          {workshopSelected && isLoadingDates && (
+                            <div className="flex justify-center py-8">
+                              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#FF3300]"></div>
+                            </div>
+                          )}
+
+                          {/* Date Selection - Only show when workshop is selected */}
+                          {workshopSelected && !isLoadingDates && dateOptions.length > 0 && (
+                            <div className="flex flex-col gap-6">
+                              <div className="flex items-center gap-[40px] w-full relative px-[12px]">
+                                {/* Left navigation button */}
+                                <button
+                                  type="button"
+                                  onClick={() => swiperRef.current?.slidePrev()}
+                                  className="flex items-center justify-center text-black/60 dark:text-white/60 hover:text-[#FF3300] transition-colors disabled:opacity-30 disabled:cursor-not-allowed shrink-0"
+                                  aria-label="Previous dates"
+                                >
+                                  <ChevronLeft className="h-[20px] w-[20px]" />
+                                </button>
+
+                                {/* Swiper */}
+                                <Swiper
+                                  modules={[Navigation]}
+                                  spaceBetween={16}
+                                  slidesPerView={7}
+                                  onSlideChange={(swiper) => {
+                                    const currentIndex = swiper.activeIndex;
+                                    const currentDateOption = dateOptions[currentIndex];
+                                    if (currentDateOption) {
+                                      if (
+                                        !visibleMonth ||
+                                        visibleMonth.month !== currentDateOption.month ||
+                                        visibleMonth.year !== currentDateOption.year
+                                      ) {
+                                        setVisibleMonth({
+                                          month: currentDateOption.month,
+                                          year: currentDateOption.year,
+                                        });
+                                      }
+                                    }
+                                  }}
+                                  onInit={(swiper) => {
+                                    if (dateOptions.length > 0) {
+                                      setVisibleMonth({
+                                        month: dateOptions[0].month,
+                                        year: dateOptions[0].year,
+                                      });
+                                    }
+                                  }}
+                                  onSwiper={(swiper) => {
+                                    swiperRef.current = swiper;
+                                  }}
+                                  className="dateSwiper flex-grow max-w-[480px]"
+                                  breakpoints={{
+                                    320: {
+                                      slidesPerView: 3,
+                                      spaceBetween: 10,
+                                    },
+                                    480: {
+                                      slidesPerView: 4,
+                                      spaceBetween: 12,
+                                    },
+                                    640: {
+                                      slidesPerView: 5,
+                                      spaceBetween: 14,
+                                    },
+                                    768: {
+                                      slidesPerView: 7,
+                                      spaceBetween: 16,
+                                    },
+                                  }}
+                                >
+                                  {dateOptions.map((dateOption) => {
+                                    const dayNumber = new Date(dateOption.date).getDate();
+                                    const isSelected = selectedDate === dateOption.date;
+                                    return (
+                                      <SwiperSlide key={dateOption.date} className="!w-auto">
+                                        <button
+                                          type="button"
+                                          disabled={dateOption?.isHoliday}
+                                          onClick={() => handleDateSelect(dateOption.date)}
+                                          className={`flex flex-col items-center justify-center w-[66px] h-[57px] transition-all duration-200 ${dateOption?.isHoliday
+                                              ? 'opacity-30 cursor-not-allowed text-[#211D1D] dark:text-white/60'
+                                              : isSelected
+                                                ? "bg-[#FF3300] text-white rounded-[12px] shadow-sm font-bold"
+                                                : "text-[#211D1D] dark:text-white/90 hover:bg-[#FF3300]/10 rounded-[12px]"
+                                            }`}
+                                        >
+                                          <span className={`text-[24px] font-host leading-[1.2] ${isSelected ? "font-bold" : "font-normal"}`}>
+                                            {dayNumber}
+                                          </span>
+                                          <span className={`text-[14px] font-host leading-[1.2] ${isSelected ? "font-normal" : "font-normal opacity-50"}`}>
+                                            {dateOption.day.toLowerCase()}
+                                          </span>
+                                        </button>
+                                      </SwiperSlide>
+                                    );
+                                  })}
+                                </Swiper>
+
+                                {/* Right navigation button */}
+                                <button
+                                  type="button"
+                                  onClick={() => swiperRef.current?.slideNext()}
+                                  className="flex items-center justify-center text-black/60 dark:text-white/60 hover:text-[#FF3300] transition-colors disabled:opacity-30 disabled:cursor-not-allowed shrink-0"
+                                  aria-label="Next dates"
+                                >
+                                  <ChevronRight className="h-[20px] w-[20px]" />
+                                </button>
+                              </div>
+
+                              {/* Month Divider Pill */}
+                              <div className="flex flex-col items-center relative w-full my-4">
+                                <div className="border-t border-[#d9d9d9] dark:border-white/10 w-full absolute top-1/2" />
+                                <div className="z-10 bg-[#211d1d] text-[#fcf3ed] px-[12px] py-[8px] rounded-[8px] font-host font-bold text-[12px] uppercase tracking-wide">
+                                  {visibleMonth && selectedDateObj
+                                    ? `${selectedDateObj.month} ${selectedDateObj.year}`
+                                    : visibleMonth
+                                      ? `${visibleMonth.month} ${visibleMonth.year}`
+                                      : "SELECT DATE"}
+                                </div>
+                              </div>
+                            </div>
+                          )}
+
+                          {/* Time Selection - Only show when date is selected */}
+                          {selectedDate && (
+                            <div className="flex flex-col gap-6">
+                              {isLoadingTimeSlots ? (
+                                <div className="flex justify-center py-8">
+                                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#FF3300]"></div>
+                                </div>
+                              ) : timeSlots.length > 0 ? (
+                                <div className="flex flex-col gap-4">
+                                  <div className="text-center font-host font-bold uppercase text-[12px] text-[#211d1d] dark:text-[#FAEADC] tracking-wide">
+                                    {appoint.timeSlotLabel || "SELECT TIME SLOT"}
+                                  </div>
+                                  <div className="flex flex-wrap justify-center gap-4">
+                                    {timeSlots.map((slot) => {
+                                      const isSelected = selectedTime === slot.time;
+                                      return (
+                                        <button
+                                          key={slot.time}
+                                          type="button"
+                                          onClick={() => handleTimeSelect(slot.time, Array.isArray(slot.available_agents) ? slot.available_agents[0] : "")}
+                                          disabled={!slot.available}
+                                          className={`flex flex-col items-center justify-center p-3 rounded-[12px] w-[110px] transition-all border ${isSelected
+                                              ? "bg-[rgba(255,51,0,0.09)] border-[#FF3300] text-[#FF3300] font-bold"
+                                              : "bg-transparent border-[#d9d9d9] text-[#211d1d] dark:text-[#FAEADC] hover:bg-[#FF3300]/10"
+                                            } ${!slot.available ? "opacity-30 cursor-not-allowed" : ""}`}
+                                        >
+                                          <span className="text-[16px] font-host font-medium">{slot.time}</span>
+                                          <span className="text-[12px] font-host opacity-60">
+                                            {slot.available ? "available" : "unavailable"}
+                                          </span>
+                                        </button>
+                                      );
+                                    })}
+                                  </div>
+                                </div>
+                              ) : (
+                                <div className="text-center py-4 dark:text-[#FAEADC] text-black">
+                                  No time slots available for this date or this is a holiday.
+                                </div>
+                              )}
+                            </div>
+                          )}
 
                           {/* Continue Button */}
-                          <Squircle cornerRadius={10}>
-                            <button
-                              type="submit"
-                              disabled={submitting || !formik.isValid}
-                              className=" text-[#FAEADC] rounded-lg px-[50px] py-[13px] gradientBG font-urbanist w-full md:w-[calc(50%-10px)] disabled:bg-[#C00034]/50"
-                            >
-                              {submitting ? "PROCESSING..." : personal?.continueBtnLabel}
-                            </button>
-                          </Squircle>
-                        </form>
+                          {selectedDate && selectedTime && (
+                            <div className="flex justify-end pt-4">
+                              <button
+                                type="button"
+                                onClick={handleContinueToPersonalDetails}
+                                className="bg-[#801b01] text-[#fcf3ed] px-[50px] py-[13px] rounded-[12px] font-host font-extrabold uppercase text-[16px] hover:opacity-90 transition-all"
+                              >
+                                {appoint.continueBtnLabel || "CONTINUE"}
+                              </button>
+                            </div>
+                          )}
+                        </div>
                       )}
                     </div>
                   </div>
-                </Squircle>
+                );
+              })}
+
+              {/* Personal Details Step */}
+              {block?.personalDetailsSection && block?.personalDetailsSection?.length > 0 && block?.personalDetailsSection?.slice(0, 1).map(personal => (
+                <div key={personal._key} className={`bg-white dark:bg-[#0A0A0A] border border-[#d9d9d9] dark:border-white/10 rounded-[40px] shadow-sm overflow-hidden transition-all duration-300 ${!verificationCompleted || !scheduleCompleted ? "opacity-70 pointer-events-none" : ""}`}>
+                  <div className="p-6 md:p-[40px]">
+                    <div className="flex justify-between items-center">
+                      <h2 className="text-[32px] font-host font-extrabold text-[#211d1d] dark:text-[#FAEADC] uppercase">
+                        {personal.appointment || "Personal details"}
+                      </h2>
+                      {isLeadIdStep && (
+                        <div className="flex items-center gap-4">
+                          <div className="flex items-center min-w-[100px] p-2 rounded-md gap-2 dark:bg-[#0C1B13] bg-white">
+                            <div className="p-0 min-w-5">
+                              <Image
+                                src="/images/verified.svg"
+                                alt="verified icon"
+                                width={20}
+                                height={20}
+                                className="mb-0"
+                              />
+                            </div>
+                            <span className="text-[#1DAF65] uppercase text-[12px]">{personal.continueBtnLabel}</span>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={handleEditPersonalDetails}
+                            className="border uppercase border-[#C00034] font-host font-bold text-[12px] rounded-lg text-[#C00034] px-4 py-1.5 hover:bg-[#C00034]/10 transition-colors"
+                          >
+                            {personal.editBtnLabel}
+                          </button>
+                        </div>
+                      )}
+                    </div>
+
+                    {activeStep === "personal" && (
+                      <form autoComplete="off" className="space-y-6 mt-6" onSubmit={formik.handleSubmit}>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                          {/* Full Name Field */}
+                          <div className={`border rounded-[20px] px-[24px] h-[90px] flex flex-col justify-center w-full transition-colors ${formik.errors.fullName && formik.touched.fullName
+                              ? "border-[#FF3300]"
+                              : "border-[#D9D9D9] dark:border-white/20"
+                            }`}>
+                            <label htmlFor="fullName" className="block font-host font-medium opacity-60 text-[12px] uppercase dark:text-[#FAEADC] text-black">
+                              {personal.fullNameLabel || "YOUR FULL NAME"}
+                            </label>
+                            <input
+                              type="text"
+                              id="fullName"
+                              name="fullName"
+                              placeholder="Mayank Sethi"
+                              value={formik.values.fullName}
+                              onChange={formik.handleChange}
+                              onBlur={formik.handleBlur}
+                              className="w-full bg-transparent font-host text-[16px] md:text-[20px] dark:text-white text-black placeholder:text-black/30 dark:placeholder:text-white/30 focus:outline-none"
+                            />
+                            {formik.touched.fullName && formik.errors.fullName && (
+                              <div className="text-red-500 text-xs mt-1">{formik.errors.fullName}</div>
+                            )}
+                          </div>
+
+                          {/* Email Field */}
+                          <div className={`border rounded-[20px] px-[24px] h-[90px] flex flex-col justify-center w-full transition-colors ${formik.errors.email && formik.touched.email
+                              ? "border-[#FF3300]"
+                              : "border-[#D9D9D9] dark:border-white/20"
+                            }`}>
+                            <label htmlFor="email" className="block font-host font-medium opacity-60 text-[12px] uppercase dark:text-[#FAEADC] text-black">
+                              {personal.emailLabel || "YOUR EMAIL ADDRESS"}
+                            </label>
+                            <input
+                              type="email"
+                              id="email"
+                              name="email"
+                              placeholder="mayank@bluup.in"
+                              value={formik.values.email}
+                              onChange={formik.handleChange}
+                              onBlur={formik.handleBlur}
+                              className="w-full bg-transparent font-host text-[16px] md:text-[20px] dark:text-white text-black placeholder:text-black/30 dark:placeholder:text-white/30 focus:outline-none"
+                            />
+                            {formik.touched.email && formik.errors.email && (
+                              <div className="text-red-500 text-xs mt-1">{formik.errors.email}</div>
+                            )}
+                          </div>
+                        </div>
+
+                        {/* Consent Checkbox */}
+                        <div className="flex items-start gap-4 mt-6 select-none">
+                          <div
+                            onClick={() => formik.setFieldValue("consentToComms", !formik.values.consentToComms)}
+                            className={`cursor-pointer border border-[#211d1d] dark:border-[#FAEADC] rounded-[4px] size-6 flex items-center justify-center flex-shrink-0 ${formik.values.consentToComms ? "bg-[#211d1d] dark:bg-[#FAEADC]" : "bg-transparent"
+                              }`}
+                          >
+                            {formik.values.consentToComms && (
+                              <Check className={`size-4 ${formik.values.consentToComms ? "text-white dark:text-[#0A0A0A]" : "text-transparent"}`} />
+                            )}
+                          </div>
+                          <label
+                            onClick={() => formik.setFieldValue("consentToComms", !formik.values.consentToComms)}
+                            className="text-[14px] leading-[1.5] opacity-60 text-[#211d1d] dark:text-[#FAEADC]/60 cursor-pointer"
+                          >
+                            {personal.declaration || "I hereby provide my consent to receive communications from Pitstop via WhatsApp, SMS, and email."}
+                          </label>
+                        </div>
+                        {formik.touched.consentToComms && formik.errors.consentToComms && (
+                          <div className="text-red-500 text-xs mt-1">{formik.errors.consentToComms}</div>
+                        )}
+
+                        {/* Continue Button */}
+                        <div className="pt-4">
+                          <button
+                            type="submit"
+                            disabled={submitting || !formik.isValid}
+                            className="bg-[#801b01] text-[#fcf3ed] px-[50px] py-[13px] rounded-[12px] font-host font-extrabold uppercase text-[16px] hover:opacity-90 transition-all w-full sm:w-[417px] disabled:opacity-50"
+                          >
+                            {submitting ? "PROCESSING..." : personal?.continueBtnLabel || "CONTINUE"}
+                          </button>
+                        </div>
+                      </form>
+                    )}
+                  </div>
+                </div>
               ))}
 
               {/* Pickup & Drop Service Step */}
@@ -1924,32 +1901,27 @@ export default function ServiceCart({ block }: serviceCartProps) {
               <div key={cart._key} className="w-full sticky top-10 self-start">
                 {/* Right side - Vehicle info */}
                 {appointmentData?.brand && (
-                  <div className="md:rounded-[40px] rounded-[30px] dark:max-md:bg-[#0A0A0A] max-md:bg-[#F9F9F9] flex -mb-4 md:mb-[53px] max-md:p-5  w-full justify-between relative items-center gap-4">
-                    <div className="flex items-center gap-4">
-                      <div className="bg-white rounded-full hidden p-2 w-16 h-16 flex items-center justify-center">
-                        <Image src="/images/bmw-logo.svg" alt="BMW Logo" width={50} height={50} />
-                      </div>
-                      <div>
-                        <h2 className="text-xl font-bold dark:text-[#FAEADC] text-black">
-                          {appointmentData?.model.toUpperCase()}, {appointmentData?.year}
-                        </h2>
-                        <p className="text-[#FAEADC]/70 hidden uppercase">
-                          {vehicleInfo.fuelType} · {vehicleInfo.mileage.toLocaleString()} KM
-                        </p>
-                      </div>
+                  <div className="rounded-[40px] bg-white dark:bg-[#0A0A0A] border border-[#d9d9d9] dark:border-white/10 p-5 md:p-6 flex w-full justify-between items-center gap-4 mb-[40px] shadow-sm">
+                    <div>
+                      <h2 className="text-[20px] font-host font-extrabold dark:text-[#FAEADC] text-black uppercase">
+                        {appointmentData?.model.toUpperCase()}, {appointmentData?.year}
+                      </h2>
+                      <p className="text-[12px] opacity-60 dark:text-[#FAEADC]/60 text-black uppercase mt-1 font-host">
+                        {vehicleInfo.fuelType} · {vehicleInfo.mileage.toLocaleString()} KM
+                      </p>
                     </div>
-                    {/* Custom button instead of importing Button component */}
                     <button
+                      type="button"
                       onClick={() => setIsModalOpen(true)}
-                      className="border text-[11.67px] font-bold font-urbanist leading-[1] gradientBG gradientBGTrans uppercase border-[#C00034] m-1 text-[#C00034] rounded-[10px] px-[26.67px] py-[13.33px] hover:bg-[#C00034]/10 transition-colors"
+                      className="gradientBG mhidden gradientBGTrans text-[#FAEADC] px-[20px] 3xl:px-[40px] py-[16px] leading-[1] rounded-[10px] transition-colors"
                     >
-                      {block.chengeLabel}
+                      {block.chengeLabel || "CHANGE"}
                     </button>
                   </div>
                 )}
 
-                <div className="dark:bg-[#0A0A0A] bg-[#F9F9F9] shadow-2xl border-[1px] border-[#FAEADC33] rounded-[33.33px] px-[24px] py-[2.1rem] h-fit">
-                  <h2 className="text-[26.6px] font-shoulders dark:text-[#FAEADC] text-black font-semibold uppercase">{cart.heading}</h2>
+                <div className="bg-[#fafafa] dark:bg-[#0A0A0A] border border-[#d9d9d9] dark:border-[#FAEADC]/10 rounded-[40px] px-[30px] py-[40px] h-fit flex flex-col gap-[30px] shadow-sm">
+                  <h2 className="text-[32px] font-host dark:text-[#FAEADC] text-[#211d1d] font-extrabold uppercase leading-[1.1]">{cart.heading || "Cart"}</h2>
                   {cartItems.length === 0 ? (
                     // Empty cart UI
                     <div className="flex flex-col items-center justify-center py-10">
@@ -1965,95 +1937,116 @@ export default function ServiceCart({ block }: serviceCartProps) {
                     </div>
                   ) : (
                     // Cart content
-                    <div className="space-y-6">
-                      <div className="space-y-4">
+                    <div className="flex flex-col gap-[40px]">
+                      <div className="flex flex-col gap-[24px]">
                         {cartItems.map((item) => (
-                          <div key={item.id} className="flex justify-between items-start border-b border-white/10 pb-4">
-                            <div className="flex-1">
-                              <div className="flex justify-between">
-                                <h3 className="font-medium dark:text-[#FAEADC]/70 text-black">{item.name}</h3>
-                                <div className="flex items-center gap-2">
-                                  <span className="font-bold hidden">AED {item.price.toLocaleString()}</span>
-                                  <button
-                                    onClick={() => handleRemoveItem(item.id)}
-                                    className="text-[#C00034] hover:text-[#C00034]/80"
-                                  >
-                                    <Image
-                                      src="/images/delete-icon.svg"
-                                      alt="delete icon"
-                                      width={25}
-                                      height={25}
-                                      className="mb-0"
-                                    />
-                                  </button>
-                                </div>
-                              </div>
-                              <p className="text-sm dark:text-[#FAEADC]/70 text-black/70">
-                                {item.hours && `${item.hours}`}
-                                {item.id === "pickup-drop" && "Add pickup & drop off address"}
+                          <div key={item.id} className="flex justify-between items-center border-b border-black/10 dark:border-white/10 pb-4">
+                            <div className="flex-1 pr-4">
+                              <h3 className="font-host font-bold text-[18px] text-[#211d1d] dark:text-[#FAEADC]">{item.name}</h3>
+                              <p className="font-host font-medium opacity-60 text-[12px] text-[#211d1d] dark:text-[#FAEADC] mt-1">
+                                {item.hours ? `${item.hours}` : item.id === "pickup-drop" ? "Add pickup & drop off address" : ""}
                               </p>
-
+                            </div>
+                            <div className="flex gap-[12px] items-center">
                               {item.type === "product" && (
-                                <div className="flex items-center gap-3 mt-2">
+                                <div className="flex items-center gap-3 bg-[#eaeaea] dark:bg-[#202020] rounded-[6px] px-2 py-1 flex-shrink-0">
                                   <button
+                                    type="button"
                                     onClick={() => handleUpdateQuantity(item.id, (item.quantity || 1) - 1)}
-                                    className="bg-black/60 rounded-full w-6 h-6 flex items-center justify-center"
+                                    className="text-[#211d1d] dark:text-white"
                                   >
-                                    <Minus size={14} />
+                                    <Minus size={12} />
                                   </button>
-                                  <span className="text-sm">{item.quantity || 1}</span>
+                                  <span className="font-host font-bold text-[12px] min-w-4 text-center text-[#211d1d] dark:text-white">
+                                    {String(item.quantity || 1).padStart(2, '0')}
+                                  </span>
                                   <button
+                                    type="button"
                                     onClick={() => handleUpdateQuantity(item.id, (item.quantity || 1) + 1)}
-                                    className="bg-black/60 rounded-full w-6 h-6 flex items-center justify-center"
+                                    className="text-[#211d1d] dark:text-white"
                                   >
-                                    <Plus size={14} />
+                                    <Plus size={12} />
                                   </button>
                                 </div>
                               )}
+                              <div className="text-right">
+                                <span className="font-host font-bold text-[18px] text-[#211d1d] dark:text-[#FAEADC]">AED {item.price.toLocaleString()}</span>
+                              </div>
+                              <button
+                                type="button"
+                                onClick={() => handleRemoveItem(item.id)}
+                                className="bg-[rgba(192,0,52,0.08)] dark:bg-[rgba(192,0,52,0.15)] hover:bg-[rgba(192,0,52,0.15)] size-[30px] rounded-[8px] flex items-center justify-center transition-colors flex-shrink-0 text-[#C00034]"
+                              >
+                                <Trash2 size={16} />
+                              </button>
                             </div>
                           </div>
                         ))}
                       </div>
 
-                      <div className="space-y-2 hidden">
-                        <div className="flex justify-between items-center">
-                          <div>
-                            <h3 className="font-bold">Estimated total*</h3>
-                            <p className="text-xs text-[#FAEADC]/70">{cartItems.length} ITEMS</p>
+                      {/* Upgrade Offer Banner */}
+                      <div className="bg-[rgba(29,175,101,0.04)] hidden border border-[#1daf65]/10 rounded-[18px] px-6 py-4 flex gap-4 items-center">
+                        <div className="bg-[#1daf65] text-white size-6 rounded-full flex items-center justify-center font-bold text-xs flex-shrink-0">
+                          %
+                        </div>
+                        <p className="font-host font-semibold text-[14px] text-[#1daf65]">
+                          Upgrade to Minor Service and save AED 150.{" "}
+                          <span className="text-[#801b01] font-bold cursor-pointer hover:underline">Click here</span>
+                        </p>
+                      </div>
+
+                      {/* Estimated Total */}
+                      <div className="flex flex-col gap-[24px]">
+                        <div className="flex justify-between items-start w-full">
+                          <div className="flex flex-col">
+                            <h3 className="font-host font-bold text-[24px] text-[#211d1d] dark:text-[#FAEADC]">Estimated total*</h3>
+                            <p className="text-[12px] opacity-60 text-[#211d1d] dark:text-[#FAEADC]/60 mt-1 max-w-[280px]">
+                              *Actual cost may vary based on vehicle assessment
+                            </p>
                           </div>
-                          <div className="text-right">
-                            <p className="font-bold text-xl hidden">AED {calculateTotal().toLocaleString()}</p>
-                            <p className="text-xs text-[#FAEADC]/70">VAT INCLUDED</p>
+                          <div className="flex flex-col items-end text-right">
+                            <span className="font-host font-bold text-[24px] text-[#211d1d] dark:text-[#FAEADC]">
+                              AED {calculateTotal().toLocaleString()}
+                            </span>
+                            <p className="text-[12px] opacity-60 text-[#211d1d] dark:text-[#FAEADC]/60 mt-1 uppercase">
+                              VAT included
+                            </p>
                           </div>
+                        </div>
+
+                        {/* Apply Promo Box */}
+                        <div className="bg-white hidden dark:bg-[#1a1a1a] border border-[#d9d9d9] dark:border-white/10 border-dashed rounded-[20px] px-6 py-5 flex items-center justify-between cursor-pointer hover:opacity-90 transition-all shadow-sm">
+                          <div className="flex items-center gap-3">
+                            <Image src="/images/delete-icon.svg" alt="promo" width={20} height={20} className="mb-0 hidden" />
+                            <span className="font-host font-medium text-[14px] text-[#211d1d] dark:text-[#FAEADC]">Apply Promo Code</span>
+                          </div>
+                          <Image src="/images/angle-left.svg" alt="arrow" width={16} height={16} className="mb-0 dark:invert rotate-180" />
                         </div>
                       </div>
 
-                      <Squircle cornerRadius={10}>
-                        <button
-                          onClick={handleConfirmAndBook}
-                          className={`${finalSubmitLoader ? "cursor-not-allowed opacity-65" : ""} w-full uppercase py-3 rounded-md font-bold ${allStepsCompleted()
-                            ? "rounded-lg px-[26px] py-[13px] gradientBG font-urbanist text-[#FAEADC]"
-                            : "bg-[#EAEAEA] text-[#000]/50"
-                            }`}
-                        >
-                          {pickupServiceAdded && !pickupAddressCompleted
-                            ? "ADD PICKUP & DROP OFF ADDRESS TO CONTINUE"
-                            : cart?.scheduleLabel}
-                          {finalSubmitLoader && (
-                            <Image
-                              src="/images/infinite-spinner.svg"
-                              alt="arrow right"
-                              width={30}
-                              height={15}
-                              className="loaderImage inline-block"
-                            />
-                          )}
-                        </button>
-                      </Squircle>
+                      {/* Schedule Button */}
+                      <button
+                        onClick={handleConfirmAndBook}
+                        disabled={finalSubmitLoader}
+                        className={`bg-[#801b01] text-[#fcf3ed] w-full py-4 rounded-[12px] font-host font-extrabold uppercase text-[16px] leading-[1.5] transition-all hover:opacity-90 ${finalSubmitLoader ? "cursor-not-allowed opacity-65" : ""
+                          }`}
+                      >
+                        {pickupServiceAdded && !pickupAddressCompleted
+                          ? "ADD PICKUP & DROP OFF ADDRESS TO CONTINUE"
+                          : cart?.scheduleLabel || "Schedule & pay at the workshop"}
+                        {finalSubmitLoader && (
+                          <Image
+                            src="/images/infinite-spinner.svg"
+                            alt="loading spinner"
+                            width={30}
+                            height={15}
+                            className="loaderImage inline-block ml-2"
+                          />
+                        )}
+                      </button>
                     </div>
                   )}
                 </div>
-
               </div>
             ))}
 
@@ -2105,37 +2098,28 @@ export default function ServiceCart({ block }: serviceCartProps) {
             <div key={cart._key} className="w-full sticky top-10 self-start">
               {/* Right side - Vehicle info */}
               {appointmentData?.brand && (
-
-                <div className={`${isMobileDevice ? 'rounded-t-[30px] mobileCart bg-black top-[20px]' : 'rounded-[40px] bg-[#0A0A0A]'} flex -mb-4 md:mb-0 max-md:p-5  w-full justify-between relative items-center gap-4`}>
-
-                  <div className="flex items-center gap-4">
-
-                    <div className="bg-white rounded-full w-10 h-10 hidden  p-2 md:w-16 md:h-16 flex items-center justify-center">
-                      <Image className="" src="/images/bmw-logo.svg" alt="BMW Logo" width={50} height={50} />
-                    </div>
-                    <div>
-                      <h2 className="text-[16px] md:text-xl font-bold">
-                        {appointmentData?.model.toUpperCase()}, {appointmentData?.year}
-                      </h2>
-                      <p className="text-[#FAEADC]/70 text-[10px] hidden uppercase">
-                        {vehicleInfo.fuelType} · {vehicleInfo.mileage.toLocaleString()} KM
-                      </p>
-                    </div>
+                <div className={`${isMobileDevice ? 'rounded-t-[30px] mobileCart bg-white dark:bg-black top-[20px]' : 'rounded-[40px] bg-white dark:bg-[#0A0A0A]'} border border-[#d9d9d9] dark:border-white/10 flex -mb-4 md:mb-0 max-md:p-5 w-full justify-between relative items-center gap-4 shadow-sm`}>
+                  <div>
+                    <h2 className="text-[16px] md:text-xl font-host font-extrabold dark:text-[#FAEADC] text-black uppercase">
+                      {appointmentData?.model.toUpperCase()}, {appointmentData?.year}
+                    </h2>
+                    <p className="text-[10px] md:text-sm opacity-60 dark:text-[#FAEADC]/60 uppercase mt-1 font-host">
+                      {vehicleInfo.fuelType} · {vehicleInfo.mileage.toLocaleString()} KM
+                    </p>
                   </div>
-                  {/* Custom button instead of importing Button component */}
                   <button
+                    type="button"
                     onClick={() => setIsModalOpen(true)}
-                    className="border border-[#C00034] gradientBG gradientBGTrans m-1 text-[#C00034] rounded-[12px] px-4 py-2 hover:bg-[#C00034]/10 transition-colors"
+                    className="border text-[12px] font-host font-bold uppercase border-[#C00034] text-[#C00034] rounded-[10px] px-4 py-2 hover:bg-[#C00034]/10 transition-colors"
                   >
-                    {block.chengeLabel}
+                    {block.chengeLabel || "CHANGE"}
                   </button>
                 </div>
-
               )}
               <div
                 className={`${isMobileDevice ? 'rounded-t-[30px]' : 'rounded-[40px]'} w-full mt-5 relative`}
               >
-                <div className={`${!isMobileDevice ? 'hidden' : ''} absolute ltr:right-[32px] rtl:left-[32px] top-[32px]`} onClick={() => dispatch(setCartPopup(false))}>
+                <div className={`${!isMobileDevice ? 'hidden' : ''} absolute ltr:right-[32px] rtl:left-[32px] top-[32px] cursor-pointer z-10`} onClick={() => dispatch(setCartPopup(false))}>
                   <Image
                     src="/images/icons/cross-icon.svg"
                     alt="cross icon"
@@ -2144,8 +2128,8 @@ export default function ServiceCart({ block }: serviceCartProps) {
                     className=""
                   />
                 </div>
-                <div className="bg-[#161616] rounded-lg px-[24px] py-[2.1rem] h-fit md:rounded-none rounded-tr-[30px] rounded-tl-[30px]">
-                  <h2 className="text-[26.6px] font-shoulders dark:text-[#FAEADC] text-black font-semibold uppercase">{cart.heading}</h2>
+                <div className="bg-[#fafafa] dark:bg-[#0A0A0A] border border-[#d9d9d9] dark:border-[#FAEADC]/10 rounded-tr-[30px] rounded-tl-[30px] px-[24px] py-[2.1rem] h-fit flex flex-col gap-[30px] shadow-lg">
+                  <h2 className="text-[26.6px] font-host dark:text-[#FAEADC] text-[#211d1d] font-extrabold uppercase leading-[1.1]">{cart.heading || "Cart"}</h2>
 
                   {cartItems.length === 0 ? (
                     // Empty cart UI
@@ -2162,84 +2146,112 @@ export default function ServiceCart({ block }: serviceCartProps) {
                     </div>
                   ) : (
                     // Cart content
-                    <div className="space-y-6">
-                      <div className="space-y-4">
+                    <div className="flex flex-col gap-[30px]">
+                      <div className="flex flex-col gap-[20px]">
                         {cartItems.map((item) => (
-                          <div key={item.id} className="flex justify-between items-start border-b border-white/10 pb-4">
-                            <div className="flex-1">
-                              <div className="flex justify-between">
-                                <div className="flex items-center gap-2">
-                                  <span className="font-bold hidden">AED {item.price.toLocaleString()}</span>
-                                  <button
-                                    onClick={() => handleRemoveItem(item.id)}
-                                    className="text-[#C00034] hover:text-[#C00034]/80"
-                                  >
-                                    <Trash2 size={16} />
-                                  </button>
-                                </div>
-                              </div>
-                              <p className="text-sm text-[#FAEADC]/70">
-                                {item.hours && `${item.hours}`}
-                                {item.id === "pickup-drop" && "Add pickup & drop off address"}
+                          <div key={item.id} className="flex justify-between items-center border-b border-black/10 dark:border-white/10 pb-4">
+                            <div className="flex-1 pr-4">
+                              <h3 className="font-host font-bold text-[16px] text-[#211d1d] dark:text-[#FAEADC]">{item.name}</h3>
+                              <p className="font-host font-medium opacity-60 text-[11px] text-[#211d1d] dark:text-[#FAEADC] mt-0.5">
+                                {item.hours ? `${item.hours}` : item.id === "pickup-drop" ? "Add pickup & drop off address" : ""}
                               </p>
-
+                            </div>
+                            <div className="flex gap-[10px] items-center">
                               {item.type === "product" && (
-                                <div className="flex items-center gap-3 mt-2">
+                                <div className="flex items-center gap-2 bg-[#eaeaea] dark:bg-[#202020] rounded-[6px] px-2 py-0.5 flex-shrink-0">
                                   <button
+                                    type="button"
                                     onClick={() => handleUpdateQuantity(item.id, (item.quantity || 1) - 1)}
-                                    className="bg-black/60 rounded-full w-6 h-6 flex items-center justify-center"
+                                    className="text-[#211d1d] dark:text-white"
                                   >
-                                    <Minus size={14} />
+                                    <Minus size={10} />
                                   </button>
-                                  <span className="text-sm">{item.quantity || 1}</span>
+                                  <span className="font-host font-bold text-[11px] min-w-4 text-center text-[#211d1d] dark:text-white">
+                                    {String(item.quantity || 1).padStart(2, '0')}
+                                  </span>
                                   <button
+                                    type="button"
                                     onClick={() => handleUpdateQuantity(item.id, (item.quantity || 1) + 1)}
-                                    className="bg-black/60 rounded-full w-6 h-6 flex items-center justify-center"
+                                    className="text-[#211d1d] dark:text-white"
                                   >
-                                    <Plus size={14} />
+                                    <Plus size={10} />
                                   </button>
                                 </div>
                               )}
+                              <div className="text-right">
+                                <span className="font-host font-bold text-[16px] text-[#211d1d] dark:text-[#FAEADC]">AED {item.price.toLocaleString()}</span>
+                              </div>
+                              <button
+                                type="button"
+                                onClick={() => handleRemoveItem(item.id)}
+                                className="bg-[rgba(192,0,52,0.08)] dark:bg-[rgba(192,0,52,0.15)] hover:bg-[rgba(192,0,52,0.15)] size-[28px] rounded-[6px] flex items-center justify-center transition-colors flex-shrink-0 text-[#C00034]"
+                              >
+                                <Trash2 size={14} />
+                              </button>
                             </div>
                           </div>
                         ))}
                       </div>
 
-                      <div className="space-y-2 hidden">
-                        <div className="flex justify-between items-center">
-                          <div>
-                            <h3 className="font-bold">Estimated total*</h3>
-                            <p className="text-xs text-[#FAEADC]/70">{cartItems.length} ITEMS</p>
+                      {/* Upgrade Offer Banner */}
+                      <div className="bg-[rgba(29,175,101,0.04)] border border-[#1daf65]/10 rounded-[14px] px-4 py-3 flex gap-3 items-center">
+                        <div className="bg-[#1daf65] text-white size-5 rounded-full flex items-center justify-center font-bold text-[10px] flex-shrink-0">
+                          %
+                        </div>
+                        <p className="font-host font-semibold text-[12px] text-[#1daf65]">
+                          Upgrade to Minor Service and save AED 150.{" "}
+                          <span className="text-[#801b01] font-bold cursor-pointer hover:underline">Click here</span>
+                        </p>
+                      </div>
+
+                      {/* Estimated Total */}
+                      <div className="flex flex-col gap-[20px]">
+                        <div className="flex justify-between items-start w-full">
+                          <div className="flex flex-col">
+                            <h3 className="font-host font-bold text-[20px] text-[#211d1d] dark:text-[#FAEADC]">Estimated total*</h3>
+                            <p className="text-[11px] opacity-60 text-[#211d1d] dark:text-[#FAEADC]/60 mt-0.5 max-w-[200px]">
+                              *Actual cost may vary based on vehicle assessment
+                            </p>
                           </div>
-                          <div className="text-right">
-                            <p className="font-bold text-xl hidden">AED {calculateTotal().toLocaleString()}</p>
-                            <p className="text-xs text-[#FAEADC]/70">VAT INCLUDED</p>
+                          <div className="flex flex-col items-end text-right">
+                            <span className="font-host font-bold text-[20px] text-[#211d1d] dark:text-[#FAEADC]">
+                              AED {calculateTotal().toLocaleString()}
+                            </span>
+                            <p className="text-[11px] opacity-60 text-[#211d1d] dark:text-[#FAEADC]/60 mt-0.5 uppercase">
+                              VAT included
+                            </p>
                           </div>
+                        </div>
+
+                        {/* Apply Promo Box */}
+                        <div className="bg-white dark:bg-[#1a1a1a] border border-[#d9d9d9] dark:border-white/10 border-dashed rounded-[16px] px-4 py-4 flex items-center justify-between cursor-pointer hover:opacity-90 transition-all shadow-sm">
+                          <div className="flex items-center gap-3">
+                            <span className="font-host font-medium text-[13px] text-[#211d1d] dark:text-[#FAEADC]">Apply Promo Code</span>
+                          </div>
+                          <Image src="/images/angle-left.svg" alt="arrow" width={14} height={14} className="mb-0 dark:invert rotate-180" />
                         </div>
                       </div>
 
-                      <Squircle cornerRadius={10}>
-                        <button
-                          onClick={handleConfirmAndBook}
-                          className={`${finalSubmitLoader ? "cursor-not-allowed opacity-65" : ""} w-full uppercase py-3 rounded-md font-medium ${allStepsCompleted()
-                            ? "rounded-lg px-[26px] py-[13px] gradientBG font-urbanist text-[#FAEADC]"
-                            : "bg-[#1B1B1B] text-[#FAEADC]/50"
-                            }`}
-                        >
-                          {pickupServiceAdded && !pickupAddressCompleted
-                            ? "ADD PICKUP & DROP OFF ADDRESS TO CONTINUE"
-                            : cart?.scheduleLabel}
-                          {finalSubmitLoader && (
-                            <Image
-                              src="/images/infinite-spinner.svg"
-                              alt="arrow right"
-                              width={30}
-                              height={15}
-                              className="loaderImage inline-block"
-                            />
-                          )}
-                        </button>
-                      </Squircle>
+                      {/* Schedule Button */}
+                      <button
+                        onClick={handleConfirmAndBook}
+                        disabled={finalSubmitLoader}
+                        className={`bg-[#801b01] text-[#fcf3ed] w-full py-3.5 rounded-[10px] font-host font-extrabold uppercase text-[15px] leading-[1.5] transition-all hover:opacity-90 ${finalSubmitLoader ? "cursor-not-allowed opacity-65" : ""
+                          }`}
+                      >
+                        {pickupServiceAdded && !pickupAddressCompleted
+                          ? "ADD PICKUP & DROP OFF ADDRESS TO CONTINUE"
+                          : cart?.scheduleLabel || "Schedule & pay at the workshop"}
+                        {finalSubmitLoader && (
+                          <Image
+                            src="/images/infinite-spinner.svg"
+                            alt="loading spinner"
+                            width={30}
+                            height={15}
+                            className="loaderImage inline-block ml-2"
+                          />
+                        )}
+                      </button>
                     </div>
                   )}
                 </div>

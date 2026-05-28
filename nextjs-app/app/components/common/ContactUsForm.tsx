@@ -18,6 +18,48 @@ const Select = dynamic(() => import("react-select"), {
     loading: () => <p>Loading...</p>,
 })
 
+const customSelectStyles = {
+    ...selectStyles,
+    menuList: (provided: any) => ({
+        ...provided,
+        maxHeight: "200px",
+        overflowY: "auto",
+    }),
+    menu: (provided: any) => ({
+        ...provided,
+        zIndex: 9999,
+    }),
+}
+
+const CustomMenuList = (props: any) => {
+    const handleWheel = (e: any) => {
+        e.stopPropagation()
+        const target = e.currentTarget as HTMLElement
+        const { scrollTop, scrollHeight, clientHeight } = target
+
+        // Only prevent default if we're not at the boundaries
+        if ((e.deltaY < 0 && scrollTop > 0) || (e.deltaY > 0 && scrollTop < scrollHeight - clientHeight)) {
+            e.preventDefault()
+        }
+    }
+
+    return (
+        <div
+            {...props}
+            onWheel={handleWheel}
+            style={{
+                ...props.style,
+                maxHeight: "200px",
+                overflowY: "auto",
+            }}
+        />
+    )
+}
+
+const components = {
+    MenuList: CustomMenuList,
+}
+
 type ContactUsProps = {
     block: ContactUsForm
     index: number
@@ -109,61 +151,71 @@ function ContactUs({ block, index }: ContactUsProps) {
 
     return (
         <div>
-            <form autoComplete="off" className="md:w-[920px] contactForm md:px-0 px-5 m-auto mt-7 space-y-10" onSubmit={contactForm.handleSubmit} action="">
+            <form autoComplete="off" className="md:w-[845px] 3xl:w-[1080px] contactForm md:px-0 px-5 m-auto mt-7 space-y-10" onSubmit={contactForm.handleSubmit} action="">
                 <h3 className="mb-4 font-urbanist font-bold text-[20px] dark:text-[#faeadc] text-black">{block?.heading}</h3>
                 <div className="md:grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div className="formLabel md:mb-0 mb-5 border dark:border-white/20  border-black/20 rounded-[15px] space-y-2">
-                        <label className="block font-fustat dark:text-[#faeadc] text-black text-xs uppercase" htmlFor="firstName">
+                    <div className={`border rounded-[20px] px-[24px] h-[90px] flex flex-col justify-center w-full transition-colors ${
+                        contactForm.errors.firstName && contactForm.touched.firstName
+                            ? "border-[#FF3300]"
+                            : "border-[#D9D9D9] dark:border-white/20"
+                    }`}>
+                        <label className="block font-fustat dark:text-[#faeadc] text-black text-[12px] uppercase opacity-60 font-medium" htmlFor="firstName">
                             {block?.firstNameLabel}
                         </label>
                         <input
                             onChange={contactForm.handleChange}
                             onBlur={contactForm.handleBlur}
                             value={contactForm.values.firstName}
-                            className="bg-transparent w-full px-4 py-3 font-fustat dark:text-white text-black placeholder:text-black/50 dark:placeholder:text-white/50 focus:outline-none"
+                            className="bg-transparent w-full font-host text-[16px] md:text-[20px] dark:text-[#faeadc] text-black placeholder:text-black/30 dark:placeholder:text-white/30 focus:outline-none"
                             type="text"
                             name="firstName"
                             id="firstName"
                             placeholder={block?.firstNamePlaceholder}
                         />
                         {contactForm.errors.firstName && contactForm.touched.firstName ? (
-                            <p className="mt-1 text-sm text-[#c00034] font-fustat">{contactForm.errors.firstName}</p>
+                            <div className="text-xs text-[#FF3300] font-host mt-1 leading-none">{contactForm.errors.firstName}</div>
                         ) : null}
                     </div>
-                    <div className="formLabel md:mb-0 mb-5 border dark:border-white/20  border-black/20 rounded-[15px] space-y-2">
-                        <label className="block font-fustat dark:text-[#faeadc] text-black text-xs uppercase" htmlFor="email">
+
+                    <div className={`border rounded-[20px] px-[24px] h-[90px] flex flex-col justify-center w-full transition-colors ${
+                        contactForm.errors.email && contactForm.touched.email
+                            ? "border-[#FF3300]"
+                            : "border-[#D9D9D9] dark:border-white/20"
+                    }`}>
+                        <label className="block font-fustat dark:text-[#faeadc] text-black text-[12px] uppercase opacity-60 font-medium" htmlFor="email">
                             {block?.emailLabel}
                         </label>
                         <input
                             onChange={contactForm.handleChange}
                             onBlur={contactForm.handleBlur}
                             value={contactForm.values.email}
-                            className="bg-transparent w-full px-4 py-3 font-fustat dark:text-white text-black placeholder:text-black/50 dark:placeholder:text-white/50 focus:outline-none"
+                            className="bg-transparent w-full font-host text-[16px] md:text-[20px] dark:text-[#faeadc] text-black placeholder:text-black/30 dark:placeholder:text-white/30 focus:outline-none"
                             type="email"
                             name="email"
                             id="email"
                             placeholder={block?.emailPlaceholder}
                         />
                         {contactForm.errors.email && contactForm.touched.email ? (
-                            <p className="mt-1 text-sm text-[#c00034] font-fustat">{contactForm.errors.email}</p>
+                            <div className="text-xs text-[#FF3300] font-host mt-1 leading-none">{contactForm.errors.email}</div>
                         ) : null}
                     </div>
 
-
-
-
-
                     <div className="flex gap-4 col-span-2 md:mb-0 mb-5">
-                        <div className="formLabel border dark:border-white/20  border-black/20 rounded-[15px] space-y-2 w-1/3">
-                            <label className="block font-fustat dark:text-[#faeadc] text-black text-xs uppercase" htmlFor="country">
+                        <div className={`border rounded-[20px] px-[24px] h-[90px] flex flex-col justify-center selectReact w-1/3 transition-colors ${
+                            contactForm.errors.country && contactForm.touched.country
+                                ? "border-[#FF3300]"
+                                : "border-[#D9D9D9] dark:border-white/20"
+                        }`}>
+                            <label className="block font-fustat dark:text-[#faeadc] text-black text-[12px] uppercase opacity-60 font-medium" htmlFor="country">
                                 {block?.countryLabel}
                             </label>
                             <Select
                                 name="country"
                                 id="country"
                                 options={countryCodes}
-                                styles={selectStyles}
+                                styles={customSelectStyles}
                                 classNames={selectClassNames}
+                                components={components}
                                 value={countryCodes.find((option) => option.value === contactForm.values.country)}
                                 onChange={(newValue: unknown) => {
                                     const option = newValue as { value: string; label: string } | null
@@ -174,47 +226,53 @@ function ContactUs({ block, index }: ContactUsProps) {
                                 isSearchable={false}
                             />
                             {contactForm.errors.country && contactForm.touched.country ? (
-                                <p className="mt-1 text-sm text-[#c00034] font-fustat">{contactForm.errors.country}</p>
+                                <div className="text-xs text-[#FF3300] font-host mt-1 leading-none">{contactForm.errors.country}</div>
                             ) : null}
                         </div>
 
-                        <div className="formLabel border dark:border-white/20  border-black/20 rounded-[15px] space-y-2 flex-1">
-                            <label className="block font-fustat dark:text-[#faeadc] text-black text-xs uppercase" htmlFor="contactNumber">
+                        <div className={`border rounded-[20px] px-[24px] h-[90px] flex flex-col justify-center flex-1 transition-colors ${
+                            contactForm.errors.contactNumber && contactForm.touched.contactNumber
+                                ? "border-[#FF3300]"
+                                : "border-[#D9D9D9] dark:border-white/20"
+                        }`}>
+                            <label className="block font-fustat dark:text-[#faeadc] text-black text-[12px] uppercase opacity-60 font-medium" htmlFor="contactNumber">
                                 {block?.contactNumberLabel}
                             </label>
                             <input
                                 onChange={contactForm.handleChange}
                                 onBlur={contactForm.handleBlur}
                                 value={contactForm.values.contactNumber}
-                                className="bg-transparent w-full px-4 py-3 font-fustat dark:text-white text-black placeholder:text-black/50 dark:placeholder:text-white/50 focus:outline-none"
+                                className="bg-transparent w-full font-host text-[16px] md:text-[20px] dark:text-[#faeadc] text-black placeholder:text-black/30 dark:placeholder:text-white/30 focus:outline-none"
                                 type="text"
                                 name="contactNumber"
                                 id="contactNumber"
                                 placeholder={block?.contactNumberPlaceholder}
                             />
                             {contactForm.errors.contactNumber && contactForm.touched.contactNumber ? (
-                                <p className="mt-1 text-sm text-[#c00034] font-fustat">{contactForm.errors.contactNumber}</p>
+                                <div className="text-xs text-[#FF3300] font-host mt-1 leading-none">{contactForm.errors.contactNumber}</div>
                             ) : null}
                         </div>
                     </div>
 
-
-
-                    <div className="formLabel border dark:border-white/20  border-black/20 rounded-[15px] space-y-2 col-span-2">
-                        <label className="block font-fustat dark:text-[#faeadc] text-black text-xs uppercase" htmlFor="message">
+                    <div className={`border rounded-[20px] px-[24px] py-[16px] min-h-[150px] flex flex-col col-span-2 transition-colors ${
+                        contactForm.errors.message && contactForm.touched.message
+                            ? "border-[#FF3300]"
+                            : "border-[#D9D9D9] dark:border-white/20"
+                    }`}>
+                        <label className="block font-fustat dark:text-[#faeadc] text-black text-[12px] uppercase opacity-60 font-medium" htmlFor="message">
                             {block?.queryBoxLabel}
                         </label>
                         <textarea
                             onChange={contactForm.handleChange}
                             onBlur={contactForm.handleBlur}
                             value={contactForm.values.message}
-                            className="bg-transparent w-full px-0 py-1 pt-0 font-fustat dark:text-white text-black placeholder:text-black/50 dark:placeholder:text-white/50 focus:outline-none min-h-[100px] resize-y"
+                            className="bg-transparent w-full mt-2 font-host text-[16px] md:text-[20px] dark:text-[#faeadc] text-black placeholder:text-black/30 dark:placeholder:text-white/30 focus:outline-none resize-none flex-1"
                             name="message"
                             id="message"
                             placeholder={block?.queryBoxPlaceholder}
                         />
                         {contactForm.errors.message && contactForm.touched.message ? (
-                            <p className="mt-1 text-sm text-[#c00034] font-fustat">{contactForm.errors.message}</p>
+                            <div className="text-xs text-[#FF3300] font-host mt-1 leading-none">{contactForm.errors.message}</div>
                         ) : null}
                     </div>
                 </div>

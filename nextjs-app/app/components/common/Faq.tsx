@@ -43,35 +43,48 @@ export default function FAQ({ block }: faqProps) {
   }
 
   return (
-    <div className=" dark:text-[#FAEADC] text-black py-16 md:pt-0 md:py-24">
-      <div className="container mx-auto px-4 md:px-140">
-        <h2 className="text-[40px] font-shoulders md:text-5xl font-normal text-center mb-12">{block?.heading}</h2>
+    <div className="w-full faqSection py-16 md:py-24 md:pt-0 dark:text-[#FAEADC] text-[#211D1D]">
+      <div className="max-w-[1080px] mx-auto px-4 md:px-6">
+        <h2 className="font-host font-extrabold text-[32px] md:text-[40px] leading-[1.1] text-[#211D1D] dark:text-[#FAEADC] opacity-80 mb-10 text-left">
+          {String(block?.heading || "FREQUENTLY ANSWERED QUESTIONS").toUpperCase()}
+        </h2>
 
-        <div className="max-w-3xl mx-auto space-y-4">
-          {faqItems.map((item) => (
-            <div key={item._id} className="dark:bg-[#18181c] bg-[#F0F0F0] rounded-lg overflow-hidden">
-              <button
-                onClick={() => toggleItem(item._id)}
-                className="w-full flex justify-between items-center p-6 text-left focus:outline-none"
-              >
-                <span className="font-medium text-black dark:text-[#FAEADC]">{String(item.question) || "No question available"}</span>
-                {openItem === item._id ? (
-                  <X size={20} className="text-[#C00034] flex-shrink-0" />
-                ) : (
-                  <Plus size={20} className="text-[#C00034] flex-shrink-0" />
-                )}
-              </button>
+        <div className="flex flex-col gap-4">
+          {faqItems.map((item) => {
+            const isOpen = openItem === item._id;
+            return (
+              <div key={item._id} className="w-full overflow-hidden transition-all duration-300">
+                <button
+                  onClick={() => toggleItem(item._id)}
+                  className={`w-full flex justify-between items-center gap-4 p-5 md:p-[30px] text-left focus:outline-none transition-all duration-300 ${
+                    isOpen
+                      ? "bg-[#eaeaea] dark:bg-[#25252b] rounded-t-[18px]"
+                      : "bg-[#fafafa] dark:bg-[#1c1c21] rounded-[18px]"
+                  }`}
+                >
+                  <span className={`font-host ${isOpen ? "font-bold" : "font-normal"} text-[16px] md:text-[18px] leading-[1.5] text-[#211D1D] dark:text-[#FAEADC]`}>
+                    {String(item.question) || "No question available"}
+                  </span>
+                  {isOpen ? (
+                    <X className="text-[#211D1D] dark:text-[#FAEADC] flex-shrink-0 size-6" />
+                  ) : (
+                    <Plus className="text-[#211D1D] dark:text-[#FAEADC] flex-shrink-0 size-6" />
+                  )}
+                </button>
 
-              {openItem === item._id && <div className="">
-                {item.answer && (
-                  <PortableText
-                    className="px-6 text-base pb-6 dark:text-[#FAEADC]/80 text-black/80 leading-relaxed"
-                    value={item.answer as unknown as PortableTextBlock[]}
-                  />
+                {isOpen && (
+                  <div className="bg-[#fafafa] dark:bg-[#1c1c21] rounded-b-[18px] px-5 py-6 md:px-[30px] md:py-[40px] transition-all duration-300">
+                    {item.answer && (
+                      <PortableText
+                        className="font-host font-normal text-[16px] md:text-[18px] leading-[1.5] text-[#211D1D] dark:text-[#FAEADC]/80"
+                        value={item.answer as unknown as PortableTextBlock[]}
+                      />
+                    )}
+                  </div>
                 )}
-              </div>}
-            </div>
-          ))}
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>

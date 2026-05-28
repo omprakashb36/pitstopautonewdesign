@@ -140,7 +140,7 @@ export default function CarServicesList({ block }: carServiceListProps) {
         {!isMobileDevice &&
           <Link
             href={`/${currentLocale}/services`}
-            className="relative hover:text-[#fff] hover:dark:bg-[#C00034] hover:bg-[#C00034] rounded-3xl overflow-hidden dark:bg-black border bg-[#F7F7F7] border-neutral-800 flex flex-col items-center justify-center p-6 md:p-8 min-h-[220px] md:min-h-[201px]"
+            className="relative hover:text-[#fff] bg-[#F7F7F7] hover:dark:bg-[#ff3300] hover:bg-[#ff3300] rounded-3xl overflow-hidden dark:bg-black border border-neutral-800 flex flex-col items-center justify-center p-6 md:p-8 min-h-[220px] md:min-h-[201px]"
           >
             <div className="text-center">
               <h3 className="text-sm dark:text-[#FAEADC] text-black md:text-[18px] font-medium font-urbanist mb-4">{block?.muchMore}</h3>

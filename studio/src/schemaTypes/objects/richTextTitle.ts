@@ -11,10 +11,17 @@ export default defineType({
             title: 'About section',
             type: 'blockContent',
         }),
+        defineField({
+            name: 'isFullWidth',
+            title: 'Full Width Rich Text',
+            type: 'boolean',
+            initialValue: false,
+        }),
     ],
     preview: {
         select: {
             blocks: 'aboutsection',
+            isFullWidth: 'isFullWidth',
         },
         prepare({ blocks }) {
             // Get the first block's first child's text, fallback if not present

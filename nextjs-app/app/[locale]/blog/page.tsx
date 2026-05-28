@@ -67,7 +67,7 @@ export default async function Page({
                         <span>/</span>
                         <span className="opacity-60">{"Blog"}</span>
                     </div>
-                    <h1 className="h1 font-semibold mb-[50px] uppercase">latest <span className="text-[#C00034]">article</span></h1>
+                    <h1 className="h1 mb-[50px] uppercase">latest <span className="text-[#C00034]">article</span></h1>
                     <Blogs blogs={blogs} />
                 </div>
                 </div>

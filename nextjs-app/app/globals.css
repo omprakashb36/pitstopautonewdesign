@@ -11,22 +11,22 @@
   }
   
   h1,.h1,.richTextTitle h1 { font-size: 36px; font-weight: 800; line-height: 1.1; }
-  @screen md { h1,.h1 { font-size: 42px; } }
-  @screen lg { h1,.h1 { font-size: 48px; } }
-  @screen xl { h1,.h1 { font-size: 54px; } }
-  @screen 3xl { h1,.h1 { font-size: 60px; } }
+  @screen md { h1,.h1,.richTextTitle h1 { font-size: 42px; } }
+  @screen lg { h1,.h1,.richTextTitle h1 { font-size: 48px; } }
+  @screen xl { h1,.h1,.richTextTitle h1 { font-size: 54px; } }
+  @screen 3xl { h1,.h1,.richTextTitle h1 { font-size: 60px; } }
   
   h2,.h2,.offersPage .richTextTitle h2 { font-size: 28px; font-weight: 800; line-height: 1.1; }
-  @screen md { h2,.h2 { font-size: 32px; } }
-  @screen lg { h2,.h2 { font-size: 36px; } }
-  @screen xl { h2,.h2 { font-size: 38px; } }
-  @screen 3xl { h2,.h2 { font-size: 40px; } }
+  @screen md { h2,.h2,.offersPage .richTextTitle h2 { font-size: 32px; } }
+  @screen lg { h2,.h2,.offersPage .richTextTitle h2 { font-size: 36px; } }
+  @screen xl { h2,.h2,.offersPage .richTextTitle h2 { font-size: 38px; } }
+  @screen 3xl { h2,.h2,.offersPage .richTextTitle h2 { font-size: 40px; } }
   
-  h3,.h3 { font-size: 24px; font-weight: 800; line-height: 1.1; }
-  @screen md { h3,.h3 { font-size: 26px; } }
-  @screen lg { h3,.h3 { font-size: 28px; } }
-  @screen xl { h3,.h3 { font-size: 30px; } }
-  @screen 3xl { h3,.h3 { font-size: 32px; } }
+  h3,.h3,.offersPage .richTextTitle h3 { font-size: 24px; font-weight: 800; line-height: 1.1; }
+  @screen md { h3,.h3,.offersPage .richTextTitle h3 { font-size: 26px; } }
+  @screen lg { h3,.h3,.offersPage .richTextTitle h3 { font-size: 28px; } }
+  @screen xl { h3,.h3,.offersPage .richTextTitle h3 { font-size: 30px; } }
+  @screen 3xl { h3,.h3,.offersPage .richTextTitle h3 { font-size: 32px; } }
   
   h4,.h4 { font-size: 22px; font-weight: 800; line-height: 1.2; }
   @screen md { h4,.h4 { font-size: 24px; } }
@@ -97,12 +97,12 @@ body{
     backdrop-filter: blur(40px)
 }
 .gradientBGTrans.gradientBG{
-    border: 0.83px solid #C00034;
-    background: transparent;color: #C00034;
+    border: 0.83px solid #801B01;
+    background: transparent;color: #801B01;
 }
 .gradientBG,.gradientBGTrans.gradientBG:hover{
-    background: radial-gradient(46.31% 100% at 48.95% 0%, #C00034 0%, #810627 100%);
-    color: #FAEADC;
+    background: #801B01;
+    color: #fff;
     font-weight: 700;
     text-transform: uppercase;
     font-size: 12px!important;
@@ -196,7 +196,7 @@ margin-top: 1px !important;
 }
 
 .richTextTitle h1{
-    @apply mb-8 md:mb-[50px] font-host font-normal dark:text-white text-black
+    @apply mb-8 md:mb-[40px] font-host font-normal dark:text-white text-black
 }
 
 .richTextTitle h1{
@@ -208,17 +208,23 @@ margin-top: 1px !important;
 }
 
 .offersPage .richTextTitle h2{
-   @apply dark:text-[#FAEADC] text-black font-host font-extrabold
+   @apply dark:text-[#FAEADC] text-black font-host font-extrabold mb-6
+}
+.offersPage .richTextTitle h2 strong{
+   @apply text-[#FF3300]
 }
 .offersPage .richTextTitle p{
-    @apply font-host font-normal dark:text-[#FAEADC] text-black opacity-80 md:text-[18px] text-[15px] leading-[150%]
+    @apply font-host font-normal dark:text-[#FAEADC] text-black md:text-[18px] text-[15px] leading-[150%]
 }
 
 .offersPage .richTextTitle li{
-    @apply font-urbanist font-normal md:text-[18px] text-[15px] dark:text-[#FAEADC] text-black opacity-80 leading-[130%] tracking-[0%] 
+    @apply font-urbanist font-normal md:text-[18px] text-[15px] dark:text-[#FAEADC] text-black leading-[130%] tracking-[0%] 
 }
 .offersPage .richTextTitle li strong{
     @apply font-bold dark:text-[#FAEADC] text-black 
+}
+.offersPage .richTextTitle li::marker{
+    @apply dark:text-[#FAEADC] text-black  
 }
 
 .offersPage .richTextTitle h3{
@@ -233,15 +239,11 @@ margin-top: 1px !important;
 }
 
 .pageBg .richTextTitle p{
-    @apply font-urbanist text-[15px] dark:text-[#FAEADC] text-black opacity-80
+    @apply font-host text-[18px] leading-[1.5] dark:text-[#FAEADC] text-black
 }
 
 .pageBg .richTextTitle p em{
     @apply text-sm dark:text-[#FAEADC] text-black opacity-80 not-italic mb-4 block
-}
-
-.pageBg .richTextTitle p br{
-    display: none;
 }
 
 input[type="number"]::-webkit-outer-spin-button,
@@ -263,12 +265,15 @@ input[type="number"]::-webkit-inner-spin-button {
   filter: grayscale(0) brightness(100);
 }
 
-.centerAlignRichText h2{
-    @apply text-[20px] dark:text-[#FAEADC] text-black font-urbanist leading-[1.3] mb-5
+.centerAlignRichText h2,.centerAlignRichText h3,.centerAlignRichText h4{
+    @apply text-[20px] md:text-[24px] dark:text-[#FAEADC] text-black font-host leading-[1.5] mb-4 mt-10
 }
 
 .centerAlignRichText li,.centerAlignRichText p{
-    @apply text-[15px] dark:text-[#FAEADC] text-black opacity-80 font-urbanist leading-[1.3] list-outside;
+    @apply text-[18px] dark:text-[#FAEADC] text-black font-host leading-[1.5] list-outside;
+}
+.centerAlignRichText li::marker{
+   @apply dark:text-[#FAEADC] text-black
 }
 .centerAlignRichText p{
 margin-bottom:15px;
@@ -300,7 +305,7 @@ margin-bottom:15px;
 .centerAlignRichText ul{
     padding: 0;
     margin: 0;
-padding-left: 14px;
+padding-left: 17px;
 }
 .testimonial-card{
     /* position: absolute;
@@ -509,9 +514,6 @@ padding: 24px;
     right: inherit;
     left: -35px;
 }
-.offerMain .richTextTitle h1 {
-        font-size: 50px;
-    }
 a.opacity-0{
   display: none;
 }
@@ -555,10 +557,10 @@ padding-bottom: 20px;
 .light .toggleButton div{
     background: #FAEADC;
 }
-.light .callBtn p.font-urbanist{
-color: #FAEADC;opacity: .5;
+.light .callBtn p.font-host{
+color: #FAEADC;
 }
-.light .callBtn p.font-shoulders{
+.light .callBtn p.font-host{
 color: #FAEADC;
 }
 .light .langbtn button{
@@ -570,10 +572,10 @@ color: #FAEADC;
 .light .innerPage .toggleButton div{
     background: #000000;
 }
-.light .innerPage .callBtn p.font-urbanist{
-    color: #000000; opacity: 0.5;
+.light .innerPage .callBtn p.font-host{
+    color: #000000;
 }
-.light .innerPage .callBtn p.font-shoulders{
+.light .innerPage .callBtn p.font-host{
 color: #000000;
 }
 .light .innerPage .langbtn button{
@@ -595,9 +597,15 @@ width: calc(100% - 100px);
 .light .homeTeslaLucid .inset-0.bg-gradient-to-r{
     display: none;
 }
-.light .gridColPopup img,.light .aboutFleetLogo,.light .brandImage{
+.light .gridColPopup img,.light .aboutFleetLogo{
     filter: brightness(0) saturate(100%);
 } 
+.light .heroBannerForm .brandImage{
+    filter: none !important;
+ }
+ .light .carModalPopup .brandImage{
+   filter: brightness(0) saturate(100%)!important; 
+ }
 .light .serviceBooked .steps ul li,.light .serviceBooked .steps ul ::marker{
     color: #000;
 }
@@ -701,6 +709,9 @@ border: solid 1px #faeadc33;
     padding-left: 0!important;
     padding-right: 0!important;
 }
+.faqSection p{
+    font-size: 18px;
+}
 @media only screen and (min-width:1023px){
     .custom-scrollbar{
         max-height: auto;
@@ -778,9 +789,6 @@ border: solid 1px #faeadc33;
 }
 .pageBg:before{
     width: 100%;
-}
-.innerPage footer{
-    margin-top: 20px;
 }
 .whitespace-scroll span{
     font-size: 70px;
@@ -945,7 +953,7 @@ padding-bottom: 40px;
 }
 .themeButton{
 right: 20px !important;
-top: 21px;
+top: 32px;
 }
 [lang="ar"] .themeButton{
 right: inherit!important;

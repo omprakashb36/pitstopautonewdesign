@@ -17,13 +17,6 @@ import Select from "react-select"
 import { getMakeModelList } from "@/app/actions/appointment/makeModelList"
 import { selectStyles, selectClassNames } from "@/app/utils/formStyles"
 
-
-
-// Import Swiper styles
-import "swiper/css"
-import "swiper/css/navigation"
-import "swiper/css/pagination"
-import "swiper/css/effect-fade"
 import Link from "next/link"
 import ImageComp from "../CustomImage"
 import CarSelectorModal from "./CarSelectorModal"
@@ -280,7 +273,7 @@ export default function HeroSlider({ block }: HeroSliderProps) {
 
     return (
       <div className="w-full">
-        <form onSubmit={carFormik.handleSubmit} className="w-full">
+        <form onSubmit={carFormik.handleSubmit} className="w-full heroBannerForm">
           <div className="backdrop-blur-[30.5px] bg-[#FF3300]/[0.08] border border-[#ff3300] rounded-[40px] p-[20px] md:p-[20px] 3xl:p-[40px] flex flex-col md:flex-row items-center gap-[16px] w-full">
 
             <div className="flex-1 bg-white/[0.04] border border-[#d9d9d9]/10 rounded-[20px] px-[24px] 3xl:py-[20px] py-[15px] w-full flex flex-col justify-center 3xl:h-[88px] h-[78px]">

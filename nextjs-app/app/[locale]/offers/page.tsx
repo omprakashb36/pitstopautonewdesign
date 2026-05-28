@@ -83,7 +83,7 @@ export default async function Page({
       <div className=" dark:text-white text-black mt-[180px] min-h-screen  pageBg relative">
         <div className="container-grid py-8 md:pb-0 md:py-12 md:pt-0">
         {/* Breadcrumb */}
-          <div className="flex items-center gap-2 text-[15px] mb-6">
+          <div className="flex items-center gap-2 text-[15px]">
             <Link href={`/${locale}`}>Home</Link>
             <span>/</span>
             <span className="opacity-60">{"Offers"}</span>

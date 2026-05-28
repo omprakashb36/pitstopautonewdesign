@@ -4,7 +4,6 @@ import { Squircle } from "corner-smoothing"
 import { useFormik } from "formik"
 import dynamic from "next/dynamic"
 import * as Yup from "yup"
-import "react-datepicker/dist/react-datepicker.css"
 import type { SingleValue } from "react-select"
 import { createFleetLead } from "@/app/actions/appointment/createFleet"
 import { useEffect, useState } from "react"
@@ -14,6 +13,7 @@ import Image from "next/image"
 import { customStyles } from "../../lib/types/types"
 import { getMakeModelList } from "@/app/actions/appointment/makeModelList"
 import { selectStyles, selectClassNames } from "@/app/utils/formStyles";
+import useDeviceDetection from "../../hooks/useDeviceDetection"
 
 const Select = dynamic(() => import("react-select"), {
     ssr: false,
@@ -26,6 +26,7 @@ type ExtendedWarrantyProps = {
 }
 
 function ExtendedWarranty({ block }: ExtendedWarrantyProps) {
+    const { isMobileDevice } = useDeviceDetection()
     const warrantyFormValidationSchema = Yup.object({
         firstName: Yup.string().required("First name is required"),
         lastName: Yup.string().required("Last name is required"),
@@ -41,6 +42,49 @@ function ExtendedWarranty({ block }: ExtendedWarrantyProps) {
     const [isLoading, setIsLoading] = useState(false)
     const [brands, setBrands] = useState<{ value: string; label: string }[]>([])
     const [models, setModels] = useState<Record<string, { value: string; label: string }[]>>({})
+
+
+    const customSelectStyles = {
+        ...selectStyles,
+        menuList: (provided: any) => ({
+            ...provided,
+            maxHeight: "200px",
+            overflowY: "auto",
+        }),
+        menu: (provided: any) => ({
+            ...provided,
+            zIndex: 9999,
+        }),
+    }
+
+    const CustomMenuList = (props: any) => {
+        const handleWheel = (e: any) => {
+            e.stopPropagation()
+            const target = e.currentTarget as HTMLElement
+            const { scrollTop, scrollHeight, clientHeight } = target
+
+            // Only prevent default if we're not at the boundaries
+            if ((e.deltaY < 0 && scrollTop > 0) || (e.deltaY > 0 && scrollTop < scrollHeight - clientHeight)) {
+                e.preventDefault()
+            }
+        }
+
+        return (
+            <div
+                {...props}
+                onWheel={handleWheel}
+                style={{
+                    ...props.style,
+                    maxHeight: "200px",
+                    overflowY: "auto",
+                }}
+            />
+        )
+    }
+
+    const components = {
+        MenuList: CustomMenuList,
+    }
 
     const [fleetFormData, setFleetFormData] = useState<FleetData>({
         sender: '',
@@ -180,91 +224,110 @@ function ExtendedWarranty({ block }: ExtendedWarrantyProps) {
 
     return (
         <div>
-            <form autoComplete="off" className="md:w-[920px] px-5 md:px-0 warrantyForm m-auto mt-10 space-y-10" onSubmit={warrantyForm.handleSubmit} action="">
+            <form autoComplete="off" className="md:w-[845px] 3xl:w-[1080px] px-5 md:px-0 warrantyForm m-auto mt-10 space-y-10" onSubmit={warrantyForm.handleSubmit} action="">
                 <div>
                     <h3 className="mb-6 font-urbanist font-bold text-[20px] text-black dark:text-[#e6d9c0]">{block.personalDetails?.heading}</h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div className="formLabel border dark:border-white/20 border-black/20 rounded-[15px] space-y-2">
-                            <label className="block font-fustat sandDrift text-xs uppercase" htmlFor="firstName">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div className={`border rounded-[20px] px-[24px] h-[90px] flex flex-col justify-center w-full transition-colors ${
+                            warrantyForm.errors.firstName && warrantyForm.touched.firstName
+                                ? "border-[#FF3300]"
+                                : "border-[#D9D9D9] dark:border-white/20"
+                        }`}>
+                            <label className="block font-fustat dark:text-[#faeadc] text-black text-[12px] uppercase opacity-60 font-medium" htmlFor="firstName">
                                 {block.personalDetails?.firstname?.label}
                             </label>
                             <input
                                 onChange={warrantyForm.handleChange}
                                 onBlur={warrantyForm.handleBlur}
                                 value={warrantyForm.values.firstName}
-                                className="bg-transparent w-full px-4 py-3 font-fustat dark:text-white text-black placeholder:text-black/50 dark:placeholder:text-white/50 focus:outline-none"
+                                className="bg-transparent w-full font-host text-[16px] md:text-[20px] dark:text-white text-black placeholder:text-black/30 dark:placeholder:text-white/30 focus:outline-none"
                                 type="text"
                                 name="firstName"
                                 id="firstName"
                                 placeholder={block.personalDetails?.firstname?.placeholder}
                             />
                             {warrantyForm.errors.firstName && warrantyForm.touched.firstName ? (
-                                <p className="mt-1 text-sm text-[#c00034] font-fustat">{warrantyForm.errors.firstName}</p>
+                                <div className="text-xs text-[#FF3300] font-host mt-1 leading-none">{warrantyForm.errors.firstName}</div>
                             ) : null}
                         </div>
-                        <div className="formLabel border dark:border-white/20  border-black/20 rounded-[15px] space-y-2">
-                            <label className="block font-fustat sandDrift text-xs uppercase" htmlFor="">
+
+                        <div className={`border rounded-[20px] px-[24px] h-[90px] flex flex-col justify-center w-full transition-colors ${
+                            warrantyForm.errors.lastName && warrantyForm.touched.lastName
+                                ? "border-[#FF3300]"
+                                : "border-[#D9D9D9] dark:border-white/20"
+                        }`}>
+                            <label className="block font-fustat dark:text-[#faeadc] text-black text-[12px] uppercase opacity-60 font-medium" htmlFor="lastName">
                                 {block.personalDetails?.lastname?.label}
                             </label>
                             <input
                                 onChange={warrantyForm.handleChange}
                                 onBlur={warrantyForm.handleBlur}
                                 value={warrantyForm.values.lastName}
-                                className="bg-transparent px-4 w-full py-3 font-fustat dark:text-white text-black placeholder:text-black/50 dark:placeholder:text-white/50 focus:outline-none"
+                                className="bg-transparent w-full font-host text-[16px] md:text-[20px] dark:text-white text-black placeholder:text-black/30 dark:placeholder:text-white/30 focus:outline-none"
                                 type="text"
                                 name="lastName"
                                 id="lastName"
                                 placeholder={block.personalDetails?.lastname?.placeholder}
                             />
                             {warrantyForm.errors.lastName && warrantyForm.touched.lastName ? (
-                                <p className="mt-1 text-sm text-[#c00034] font-fustat">{warrantyForm.errors.lastName}</p>
+                                <div className="text-xs text-[#FF3300] font-host mt-1 leading-none">{warrantyForm.errors.lastName}</div>
                             ) : null}
                         </div>
-                        <div className="formLabel border dark:border-white/20  border-black/20 rounded-[15px] space-y-2">
-                            <label className="block font-fustat sandDrift text-xs uppercase" htmlFor="emai">
+
+                        <div className={`border rounded-[20px] px-[24px] h-[90px] flex flex-col justify-center w-full transition-colors ${
+                            warrantyForm.errors.email && warrantyForm.touched.email
+                                ? "border-[#FF3300]"
+                                : "border-[#D9D9D9] dark:border-white/20"
+                        }`}>
+                            <label className="block font-fustat dark:text-[#faeadc] text-black text-[12px] uppercase opacity-60 font-medium" htmlFor="email">
                                 {block.personalDetails?.email?.label}
                             </label>
                             <input
                                 onChange={warrantyForm.handleChange}
                                 onBlur={warrantyForm.handleBlur}
                                 value={warrantyForm.values.email}
-                                className="bg-transparent px-4 py-3 w-full font-fustat dark:text-white text-black placeholder:text-black/50 dark:placeholder:text-white/50 focus:outline-none"
+                                className="bg-transparent w-full font-host text-[16px] md:text-[20px] dark:text-white text-black placeholder:text-black/30 dark:placeholder:text-white/30 focus:outline-none"
                                 type="email"
                                 name="email"
                                 id="email"
                                 placeholder={block.personalDetails?.email?.placeholder}
                             />
                             {warrantyForm.errors.email && warrantyForm.touched.email ? (
-                                <p className="mt-1 text-sm text-[#c00034] font-fustat">{warrantyForm.errors.email}</p>
+                                <div className="text-xs text-[#FF3300] font-host mt-1 leading-none">{warrantyForm.errors.email}</div>
                             ) : null}
                         </div>
-                        <div className="md:grid md:grid-cols-3 gap-4">
-                            <div className="formLabel border dark:border-white/20  border-black/20 rounded-[15px] space-y-2">
-                                <label className="block font-fustat sandDrift text-xs uppercase" htmlFor="contactNumber">
-                                    {block.personalDetails?.contact?.country?.label}
-                                </label>
-                                <Select
-                                    name="country"
-                                    id="country"
-                                    options={countryCodes}
-                                    // styles={customStyles}
-                                    styles={selectStyles}
-                                    classNames={selectClassNames}
-                                    value={countryCodes.find((option) => option.value === warrantyForm.values.country)}
-                                    onChange={(newValue, _actionMeta) => {
-                                        const option = newValue as SingleValue<{ value: string; label: string }>;
-                                        warrantyForm.setFieldValue("country", option?.value || "")
-                                    }}
-                                    onBlur={warrantyForm.handleBlur}
-                                    onFocus={() => warrantyForm.setFieldTouched("countryCode", false)}
-                                    placeholder={block.personalDetails?.contact?.country?.placeholder}
-                                />
-                                {warrantyForm.errors.country && warrantyForm.touched.country ? (
-                                    <p className="mt-1 text-sm text-[#c00034] font-fustat">{warrantyForm.errors.country}</p>
-                                ) : null}
+
+                        <div className={`border rounded-[20px] h-[90px] flex items-center w-full overflow-hidden transition-colors ${
+                            (warrantyForm.errors.phoneNumber && warrantyForm.touched.phoneNumber) || (warrantyForm.errors.country && warrantyForm.touched.country)
+                                 ? "border-[#FF3300]"
+                                 : "border-[#D9D9D9] dark:border-white/20"
+                        }`}>
+                            {/* Country Code Selection */}
+                            <div className="w-[124px] h-full flex flex-col justify-center px-[24px] pr-[15px] relative border-r border-[#D9D9D9] dark:border-white/20 selectReact no-border">
+                                <label className="block font-fustat dark:text-[#faeadc] text-black text-[12px] uppercase opacity-60 font-medium" htmlFor="country">
+                                     {block.personalDetails?.contact?.country?.label}
+                                 </label>
+                                 <Select
+                                     name="country"
+                                     id="country"
+                                     options={countryCodes}
+                                     styles={customSelectStyles}
+                                     classNames={selectClassNames}
+                                     components={components}
+                                     value={countryCodes.find((option) => option.value === warrantyForm.values.country)}
+                                     onChange={(newValue, _actionMeta) => {
+                                         const option = newValue as SingleValue<{ value: string; label: string }>;
+                                         warrantyForm.setFieldValue("country", option?.value || "")
+                                     }}
+                                     onBlur={warrantyForm.handleBlur}
+                                     placeholder={block.personalDetails?.contact?.country?.placeholder}
+                                     isSearchable={false}
+                                 />
                             </div>
-                            <div className="formLabel border col-span-2 dark:border-white/20  border-black/20 rounded-[15px]  space-y-2">
-                                <label htmlFor="phoneNumber" className="block font-fustat text-xs uppercase sandDrift">
+
+                            {/* Phone Number Input */}
+                            <div className="flex-1 h-full flex flex-col justify-center px-[24px] selectReact">
+                                <label htmlFor="phoneNumber" className="block font-fustat dark:text-[#faeadc] text-black text-[12px] uppercase opacity-60 font-medium">
                                     {block.personalDetails?.contact?.phone?.label}
                                 </label>
                                 <input
@@ -275,21 +338,25 @@ function ExtendedWarranty({ block }: ExtendedWarrantyProps) {
                                     value={warrantyForm.values.phoneNumber}
                                     onChange={warrantyForm.handleChange}
                                     onBlur={warrantyForm.handleBlur}
-                                    className="bg-transparent w-full px-4 py-3 font-fustat dark:text-white text-black placeholder:text-black/50 dark:placeholder:text-white/50 focus:outline-none"
+                                    className="bg-transparent w-full font-host text-[16px] md:text-[20px] dark:text-white text-black placeholder:text-black/30 dark:placeholder:text-white/30 focus:outline-none"
                                 />
                                 {warrantyForm.errors.phoneNumber && warrantyForm.touched.phoneNumber && (
-                                    <div className="mt-1 text-sm text-[#c00034] font-fustat ">{warrantyForm.errors.phoneNumber}</div>
+                                    <div className="text-xs text-[#FF3300] font-host mt-0.5 leading-none">{warrantyForm.errors.phoneNumber}</div>
                                 )}
                             </div>
                         </div>
                     </div>
                 </div>
+
                 <div>
                     <h3 className="mb-6 font-urbanist font-bold text-[20px] text-black dark:text-[#e6d9c0]">{block.vehicleDetails?.heading}</h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-
-                        <div className="formLabel selectReact border dark:border-white/20  border-black/20 rounded-[15px] space-y-2">
-                            <label className="block font-fustat sandDrift text-xs uppercase" htmlFor="">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div className={`border rounded-[20px] px-[24px] h-[90px] flex flex-col justify-center selectReact w-full transition-colors ${
+                            warrantyForm.errors.brand && warrantyForm.touched.brand
+                                ? "border-[#FF3300]"
+                                : "border-[#D9D9D9] dark:border-white/20"
+                        }`}>
+                            <label className="block font-fustat dark:text-[#faeadc] text-black text-[12px] uppercase opacity-60 font-medium" htmlFor="brand">
                                 {block.vehicleDetails?.brand?.labelPlaceholder?.label}
                             </label>
                             <Select
@@ -300,22 +367,28 @@ function ExtendedWarranty({ block }: ExtendedWarrantyProps) {
                                 onChange={(newValue, _actionMeta) => {
                                     const option = newValue as SingleValue<{ value: string; label: string }>;
                                     warrantyForm.setFieldValue("brand", option?.value || "")
-                                    // Reset model when brand changes
                                     warrantyForm.setFieldValue("model", "")
                                 }}
                                 onBlur={warrantyForm.handleBlur}
                                 placeholder={isLoading ? "Loading brands..." : "Select"}
                                 isDisabled={isLoading}
-                                styles={selectStyles}
+                                styles={customSelectStyles}
                                 classNames={selectClassNames}
-                                isSearchable
+                                components={components}
+                                isSearchable={!isMobileDevice}
+                                className="font-fustat text-[16px] md:text-[20px]"
                             />
                             {warrantyForm.errors.brand && warrantyForm.touched.brand && (
-                                <div className="mt-1 text-sm text-[#c00034] font-urbanist">{warrantyForm.errors.brand}</div>
+                                <div className="text-xs text-[#FF3300] font-host mt-1 leading-none">{warrantyForm.errors.brand}</div>
                             )}
                         </div>
-                        <div className="formLabel selectReact border dark:border-white/20  border-black/20 rounded-[15px] space-y-2">
-                            <label className="block font-fustat sandDrift text-xs uppercase" htmlFor="model">
+
+                        <div className={`border rounded-[20px] px-[24px] h-[90px] flex flex-col justify-center selectReact w-full transition-colors ${
+                            warrantyForm.errors.model && warrantyForm.touched.model
+                                ? "border-[#FF3300]"
+                                : "border-[#D9D9D9] dark:border-white/20"
+                        }`}>
+                            <label className="block font-fustat dark:text-[#faeadc] text-black text-[12px] uppercase opacity-60 font-medium" htmlFor="model">
                                 {block.vehicleDetails?.model?.labelPlaceholder?.label}
                             </label>
                             <Select
@@ -329,17 +402,24 @@ function ExtendedWarranty({ block }: ExtendedWarrantyProps) {
                                 }}
                                 onBlur={warrantyForm.handleBlur}
                                 placeholder={isLoading ? "Loading models..." : "Select"}
-                                styles={selectStyles}
+                                styles={customSelectStyles}
                                 classNames={selectClassNames}
+                                components={components}
                                 isDisabled={!warrantyForm.values.brand || isLoading}
-                                isSearchable
+                                isSearchable={!isMobileDevice}
+                                className="font-fustat text-[16px] md:text-[20px]"
                             />
                             {warrantyForm.errors.model && warrantyForm.touched.model && (
-                                <div className="mt-1 text-sm text-[#c00034] font-fustat">{warrantyForm.errors.model}</div>
+                                <div className="text-xs text-[#FF3300] font-host mt-1 leading-none">{warrantyForm.errors.model}</div>
                             )}
                         </div>
-                        <div className="formLabel selectReact border dark:border-white/20  border-black/20 rounded-[15px] space-y-2">
-                            <label className="block font-fustat sandDrift text-xs uppercase" htmlFor="year">
+
+                        <div className={`border rounded-[20px] px-[24px] h-[90px] flex flex-col justify-center selectReact w-full transition-colors ${
+                            warrantyForm.errors.year && warrantyForm.touched.year
+                                ? "border-[#FF3300]"
+                                : "border-[#D9D9D9] dark:border-white/20"
+                        }`}>
+                            <label className="block font-fustat dark:text-[#faeadc] text-black text-[12px] uppercase opacity-60 font-medium" htmlFor="year">
                                 {block.vehicleDetails?.year?.labelPlaceholder?.label}
                             </label>
                             <Select
@@ -347,8 +427,8 @@ function ExtendedWarranty({ block }: ExtendedWarrantyProps) {
                                 name="year"
                                 options={block?.vehicleDetails?.year?.years?.map((year) => ({ value: year.toString(), label: year.toString() }))}
                                 value={
-                                    Object.values(years)
-                                        .map((year) => ({ value: year.toString(), label: year.toString() }))
+                                    (block?.vehicleDetails?.year?.years?.map((year) => ({ value: year.toString(), label: year.toString() })) ||
+                                     Object.values(years).map((year) => ({ value: year.toString(), label: year.toString() })))
                                         .find((option) => option.value === warrantyForm.values.year) || null
                                 }
                                 onChange={(newValue, _actionMeta) => {
@@ -357,20 +437,27 @@ function ExtendedWarranty({ block }: ExtendedWarrantyProps) {
                                 }}
                                 onBlur={warrantyForm.handleBlur}
                                 placeholder={block.vehicleDetails?.year?.labelPlaceholder?.placeholder}
-                                styles={selectStyles}
+                                styles={customSelectStyles}
                                 classNames={selectClassNames}
-                                isSearchable
+                                components={components}
+                                isSearchable={false}
+                                className="font-fustat text-[16px] md:text-[20px]"
                             />
                             {warrantyForm.errors.year && warrantyForm.touched.year && (
-                                <div className="mt-1 text-sm text-[#c00034] font-fustat">{warrantyForm.errors.year}</div>
+                                <div className="text-xs text-[#FF3300] font-host mt-1 leading-none">{warrantyForm.errors.year}</div>
                             )}
                         </div>
-                        <div className="formLabel border dark:border-white/20  border-black/20 rounded-[15px] space-y-2">
-                            <label className="block font-fustat sandDrift text-xs uppercase" htmlFor="vin">
+
+                        <div className={`border rounded-[20px] px-[24px] h-[90px] flex flex-col justify-center w-full transition-colors ${
+                            warrantyForm.errors.plateNumber && warrantyForm.touched.plateNumber
+                                ? "border-[#FF3300]"
+                                : "border-[#D9D9D9] dark:border-white/20"
+                        }`}>
+                            <label className="block font-fustat dark:text-[#faeadc] text-black text-[12px] uppercase opacity-60 font-medium" htmlFor="vin">
                                 {block.vehicleDetails?.plateNumber?.label}
                             </label>
                             <input
-                                className="bg-transparent px-4 py-3 font-fustat dark:text-white text-black placeholder:text-black/50 dark:placeholder:text-white/50 focus:outline-none"
+                                className="bg-transparent w-full font-host text-[16px] md:text-[20px] dark:text-white text-black placeholder:text-black/30 dark:placeholder:text-white/30 focus:outline-none"
                                 type="text"
                                 placeholder={block.vehicleDetails?.plateNumber?.placeholder}
                                 id="plateNumber"
@@ -380,16 +467,20 @@ function ExtendedWarranty({ block }: ExtendedWarrantyProps) {
                                 onBlur={warrantyForm.handleBlur}
                             />
                             {warrantyForm.errors.plateNumber && warrantyForm.touched.plateNumber ? (
-                                <p className="mt-1 text-sm text-[#c00034] font-fustat">{warrantyForm.errors.plateNumber}</p>
+                                <div className="text-xs text-[#FF3300] font-host mt-1 leading-none">{warrantyForm.errors.plateNumber}</div>
                             ) : null}
                         </div>
 
-                        <div className="formLabel border dark:border-white/20 border-black/20 rounded-[15px] space-y-2">
-                            <label className="block font-fustat sandDrift text-xs uppercase" htmlFor="odometer">
+                        <div className={`border rounded-[20px] px-[24px] h-[90px] flex flex-col justify-center w-full transition-colors ${
+                            warrantyForm.errors.odometer && warrantyForm.touched.odometer
+                                ? "border-[#FF3300]"
+                                : "border-[#D9D9D9] dark:border-white/20"
+                        }`}>
+                            <label className="block font-fustat dark:text-[#faeadc] text-black text-[12px] uppercase opacity-60 font-medium" htmlFor="odometer">
                                 {block.vehicleDetails?.odometer?.labelPlaceholder?.label}
                             </label>
                             <input
-                                className="bg-transparent px-4 py-3 font-fustat dark:text-white text-black placeholder:text-black/50 dark:placeholder:text-white/50 focus:outline-none"
+                                className="bg-transparent w-full font-host text-[16px] md:text-[20px] dark:text-white text-black placeholder:text-black/30 dark:placeholder:text-white/30 focus:outline-none"
                                 type="number"
                                 placeholder={block.vehicleDetails?.odometer?.labelPlaceholder?.placeholder}
                                 id="odometer"
@@ -399,7 +490,7 @@ function ExtendedWarranty({ block }: ExtendedWarrantyProps) {
                                 onBlur={warrantyForm.handleBlur}
                             />
                             {warrantyForm.errors.odometer && warrantyForm.touched.odometer ? (
-                                <p className="mt-1 text-sm text-[#c00034] font-fustat">{warrantyForm.errors.odometer}</p>
+                                <div className="text-xs text-[#FF3300] font-host mt-1 leading-none">{warrantyForm.errors.odometer}</div>
                             ) : null}
                         </div>
                     </div>

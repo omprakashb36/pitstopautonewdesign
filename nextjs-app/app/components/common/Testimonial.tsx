@@ -40,7 +40,7 @@ export default function TestimonialComp({ block }: TestimonialProps) {
   }, [currentLocale]);
 
   return (
-    <div className="w-full bg-white dark:bg-black py-12 lg:py-[120px] relative overflow-hidden">
+    <div className="w-full bg-white dark:bg-black py-12 lg:py-[80px] relative overflow-hidden">
       {/* ========================================================
           PIXEL-PERFECT CSS GRID CONTAINER
           1920px screen -> 1640px container, 40px gap

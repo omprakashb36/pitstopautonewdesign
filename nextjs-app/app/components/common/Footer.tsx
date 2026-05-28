@@ -35,7 +35,7 @@ export default function Footer({ locale, fragment, siteSettingData, services }: 
   };
 
   return (
-    <footer className="bg-[#fafafa] dark:bg-[#121212] pt-24 md:pt-[120px] pb-8 md:pb-12 relative mt-[120px] md:mt-[165px]">
+    <footer className="bg-[#fafafa] dark:bg-[#121212] pt-24 md:pt-[120px] pb-8 md:pb-12 relative mt-[120px] md:mt-[165px] 3xl:mt-[235px]">
       
       {/* Background Pattern (Optional placeholder for the ellipse/image graphic) */}
       <div className="absolute right-0 top-0 w-1/3 h-[80%] opacity-20 pointer-events-none hidden lg:block mask-image-gradient">
@@ -43,7 +43,7 @@ export default function Footer({ locale, fragment, siteSettingData, services }: 
       </div>
 
       {/* Hero Car Image */}
-      <div className="absolute left-1/2 -translate-x-1/2 top-[-100px] md:top-[-180px] 3xl:top-[-165px] w-full max-w-[600px] md:max-w-[400px] 3xl:max-w-[546px] aspect-[16/9] z-20 pointer-events-none">
+      <div className="absolute left-1/2 -translate-x-1/2 top-[-100px] md:top-[-130px] 3xl:top-[-165px] w-full max-w-[600px] md:max-w-[400px] 3xl:max-w-[546px] aspect-[16/9] z-20 pointer-events-none">
         <Image
           src={urlForImage(fragment?.footer?.centerFarrari?.image)?.url() || ""}
           alt={fragment?.footer?.centerFarrari?.altText || "Pitstop Car"}
