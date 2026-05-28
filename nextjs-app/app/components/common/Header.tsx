@@ -390,7 +390,7 @@ export default function Header({ fragment, siteSettingData, services }: HeaderPr
           </Link>
         </div>
       </div>
-      <div className="md:absolute fixed bottom-0 topBtnFixed z-50 w-full ltr:md:max-w-[227px] rtl:md:max-w-[240px] h-[51px] 3xl:h-[74px] max-w-[190px] lg:bottom-auto 3xl:top-[40px] top-[47px] ltr:right-0 rtl:left-0">
+      <div className="lg:absolute fixed bottom-0 topBtnFixed z-50 w-full ltr:md:max-w-[227px] rtl:md:max-w-[240px] h-[51px] 3xl:h-[74px] max-w-[190px] lg:bottom-auto 3xl:top-[40px] lg:top-[47px] ltr:right-0 rtl:left-0">
         <Link href={`/${currentLocale}/contact-us`} className="w-full md:h-auto h-[51px] 3xl:h-[74px]">
           <div className="flex">
             <svg className="3xl:mr-[-1px] mr-[-10px] shrink h-[51px] 3xl:h-[74px] rtl:scale-x-[-1] rtl:transform text-[#801B01]" width="58" height="74" viewBox="0 0 58 74" fill="none" xmlns="http://www.w3.org/2000/svg">

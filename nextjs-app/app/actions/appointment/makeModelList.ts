@@ -15,7 +15,7 @@ export async function getMakeModelList() : Promise<CommonResponse> {
 
     try {
         const response = await axios(config);
-        console.log("Make Model List response ",JSON.stringify(response.data));        
+        /*console.log("Make Model List response ",JSON.stringify(response.data)); */       
         return {
             status: true,
             message: "Success",

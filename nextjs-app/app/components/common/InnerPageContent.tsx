@@ -53,8 +53,10 @@ export default function InnerPageContent({
             page?.layoutType === "fullWidth"
               ? "w-full"
               : page?.layoutType === "centerText"
-                ? "container-grid grid grid-cols-12 centerTextLayout"
-                : "container-grid "
+                ? "container-grid md:grid grid-cols-12 3xl:gap-10 md:gap-6 centerTextLayout"
+              : page?.layoutType === "colSpan8"
+              ? "container-grid md:grid grid-cols-12 3xl:gap-10 md:gap-6"
+              : "container-grid"
           }
         >
 
@@ -64,6 +66,8 @@ export default function InnerPageContent({
                 ? "w-full"
                 : page?.layoutType === "centerText"
                   ? "col-span-10 col-start-2"
+                  : page?.layoutType === "colSpan8"
+                  ? "col-span-8 col-start-3"
                   : "w-full"
             }
           >
@@ -72,9 +76,7 @@ export default function InnerPageContent({
               className={
                 page?.layoutType === "fullWidth"
                   ? "container-grid"
-                  : page?.layoutType === "containerGrid"
-                    ? "container-grid"
-                    : "max-w-[845px] 3xl:max-w-[1080px] mx-auto"
+                    : "w-full"
               }
             >
 

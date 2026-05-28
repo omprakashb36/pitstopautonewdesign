@@ -6959,6 +6959,10 @@
             {
               "type": "string",
               "value": "centerText"
+            },
+            {
+              "type": "string",
+              "value": "colSpan8"
             }
           ]
         },

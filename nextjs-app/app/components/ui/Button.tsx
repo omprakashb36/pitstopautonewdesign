@@ -17,7 +17,7 @@ export function Button({
 }: ButtonProps) {
   const isDisabled = disabled || variant === "disabled";
   
-  const baseClasses = "flex items-center justify-center px-[40px] py-[16px] rounded-[12px] text-[16px] font-extrabold uppercase whitespace-nowrap leading-[1.5] transition-colors rtl:font-cairo rtl:leading-[1.2] ltr:font-host font-host";
+  const baseClasses = "flex items-center justify-center px-[40px] py-[16px] rounded-[12px] text-[16px] font-extrabold uppercase leading-[1.5] transition-colors rtl:font-cairo rtl:leading-[1.2] ltr:font-host font-host";
 
   let variantClasses = "";
   if (isDisabled) {

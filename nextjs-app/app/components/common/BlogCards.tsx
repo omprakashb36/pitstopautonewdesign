@@ -36,7 +36,7 @@ export default function BlogsCards({ blog }: BlogCardProps) {
       className="border border-[#EAEAEA] dark:border-[#FAEADC20] rounded-[40px] dark:bg-[#1A1717] bg-white drop-shadow-[0px_10px_20px_rgba(0,0,0,0.08)] overflow-hidden flex flex-col h-full transition-all duration-300 hover:shadow-xl group"
     >
       {/* Image */}
-      <div className="h-[200px] md:h-[300px] w-full relative shrink-0 overflow-hidden rounded-[40px]">
+      <div className="h-auto md:h-[300px] w-full relative shrink-0 overflow-hidden rounded-[40px]">
         {blog?.thumbnailImage && (
           <ImageComp
             block={blog.thumbnailImage}

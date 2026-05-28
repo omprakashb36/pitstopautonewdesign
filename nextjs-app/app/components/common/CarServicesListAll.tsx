@@ -22,7 +22,7 @@ export default function CarServicesListAll({ services }: ServicesProps) {
   }
 
   return (
-    <div className="w-full mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-[60px] 3xl:px-[116px] dark:bg-black bg-[#fff] text-white py-8 md:py-12 md:pt-0">
+    <div className="w-full mx-auto container-grid  dark:bg-black bg-[#fff] text-white py-8 md:py-12">
       <div className="grid carServiceList grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-[40px]">
         {services.map((service) => (
           <ServiceCard

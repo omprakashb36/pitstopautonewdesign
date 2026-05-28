@@ -88,7 +88,7 @@
 
 body{
     @apply dark:bg-black bg-[#FFFFFF];
-    overflow-x: hidden;
+    overflow-x: hidden!important;
 }
 .container{
     max-width: 1358px;
@@ -279,11 +279,11 @@ input[type="number"]::-webkit-inner-spin-button {
 margin-bottom:15px;
 }
 .serviceBooked .steps h2{
-   @apply text-3xl mb-6 dark:text-[#FAEADC] text-black font-shoulders font-normal
+   @apply text-3xl mb-6 dark:text-[#FAEADC] text-black font-host font-bold
 }
 
 .serviceBooked .steps h2 strong{
-   @apply text-[#C00034] font-shoulders font-normal
+   @apply text-[#ff3300] font-host font-bold
 }
 
 .serviceBooked .steps ul{
@@ -295,11 +295,11 @@ margin-bottom:15px;
 }
 
 .serviceBooked h1{
-    @apply text-4xl md:text-5xl font-semibold dark:text-[#FAEADC] text-black font-shoulders
+    @apply dark:text-[#FAEADC] text-black font-host
 }
 
 .serviceBooked h1 strong{
-    @apply text-[#C00034] font-shoulders font-semibold
+    @apply text-[#ff3300]
 }
 
 .centerAlignRichText ul{
@@ -739,6 +739,11 @@ border: solid 1px #faeadc33;
 }
 @media only screen and (max-width:1150px){
 .carSelectorForm{
+    display: none;
+}
+}
+@media only screen and (max-width:1280px){
+.langbtn{
     display: none;
 }
 }

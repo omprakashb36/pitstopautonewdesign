@@ -424,7 +424,7 @@ export default function CarSelectorModal({ isOpen, onClose, siteSettingData, ini
     <div
       className="fixed inset-0 z-[150] flex items-center rounded-[35px] justify-center backdropBlur-40 overflow-y-auto"
     >
-      <div className={`relative max-w-[1200px] 3xl:max-w-[1360px] rounded-3xl  2xl:rounded-[60px] carModalPopup max-h-[90vh] min-h-[500px] overflow-y-auto custom-scrollbar w-full dark:bg-[#0f0f0f] bg-[#F7F7F7] p-8 md:p-[60px] 3xl:p-[80px] my-4 mx-4 transition-all duration-300`}>
+      <div className={`relative max-w-[1200px] 3xl:max-w-[1360px] rounded-3xl  2xl:rounded-[60px] carModalPopup max-h-[90vh] min-h-[500px] overflow-y-auto custom-scrollbar w-full dark:bg-[#0f0f0f] bg-[#F7F7F7] p-5 md:p-[60px] 3xl:p-[80px] my-4 mx-4 transition-all duration-300`}>
         <button
           onClick={onClose}
           className={`absolute z-10 text-white hover:text-gray-300 transition-colors
@@ -445,7 +445,7 @@ export default function CarSelectorModal({ isOpen, onClose, siteSettingData, ini
         {step === "car" && (
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
             <div className="flex flex-col gap-6 max-w-[490px]">
-              <h2 className="font-host font-extrabold mb-4">
+              <h2 className="font-host font-extrabold mb-4 ltr:pr-[50px] rtl:pl-[50px]">
                 <span className="dark:text-white text-black">{String(siteSettingData?.serviceBookForm?.stepOne?.whiteHeading) || ''}</span>{" "}
                 <span className="text-[#FF3300]">{String(siteSettingData?.serviceBookForm?.stepOne?.redHeading) || ''}</span>
               </h2>
@@ -616,7 +616,7 @@ export default function CarSelectorModal({ isOpen, onClose, siteSettingData, ini
                     className="mb-0"
                   />
                 </button>
-                <h2 className="font-host font-extrabold">
+                <h2 className="font-host font-extrabold ltr:pr-[50px] rtl:pl-[50px]">
                   <span className="dark:text-white text-black">{String(siteSettingData?.serviceBookForm?.stepTwo?.whiteHeading)}</span>{" "}
                   <span className="text-[#FF3300]">{String(siteSettingData?.serviceBookForm?.stepTwo?.redHeading)}</span>
                 </h2>
@@ -769,7 +769,7 @@ export default function CarSelectorModal({ isOpen, onClose, siteSettingData, ini
                     className="mb-0 rtl:scale-x-[-1]"
                   />
                 </button>
-                <h2 className="font-host font-extrabold">
+                <h2 className="font-host font-extrabold ltr:pr-[50px] rtl:pl-[50px]">
                   <span className="dark:text-white text-[#211D1D]">Browse</span>{" "}
                   <span className="text-[#FF3300]">Services</span>
                 </h2>

@@ -1096,7 +1096,7 @@ export default function ServiceCart({ block }: serviceCartProps) {
               <div className="flex justify-between flex-col md:flex-row md:mb-[53px]  md:items-center gap-4 md:gap-8 w-full">
                 <h1>
                   <span className="dark:text-[#FAEADC] text-black">{block?.heading}</span>{" "}
-                  <span className="text-[#C00034]">{block?.subHeading}</span>
+                  <span className="text-[#FF3300]">{block?.subHeading}</span>
                 </h1>
 
                 <button

@@ -1134,7 +1134,7 @@ export type Page = {
   _rev: string;
   title?: string;
   slug?: Slug;
-  layoutType?: "containerGrid" | "fullWidth" | "centerText";
+  layoutType?: "containerGrid" | "fullWidth" | "centerText" | "colSpan8";
   pageBuilder?: Array<{
     _key: string;
   } & CallToAction | {
@@ -1493,7 +1493,7 @@ export type GetPageQueryResult = {
   name: null;
   slug: Slug | null;
   heading: null;
-  layoutType: "centerText" | "containerGrid" | "fullWidth" | null;
+  layoutType: "centerText" | "colSpan8" | "containerGrid" | "fullWidth" | null;
   subheading: null;
   pageBuilder: Array<{
     _key: string;

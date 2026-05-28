@@ -55,6 +55,10 @@ export const page = defineType({
             title: 'Col-span-10',
             value: 'centerText',
           },
+          {
+            title: 'Col-span-8',
+            value: 'colSpan8',
+          },
         ],
 
         layout: 'radio',

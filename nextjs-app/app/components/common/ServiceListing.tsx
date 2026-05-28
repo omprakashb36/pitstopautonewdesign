@@ -380,31 +380,26 @@ export default function ServiceListing({ allServiceList, browseServiceList, site
             >
               {/* Right side - Vehicle info and Change button */}
               {appointmentData?.brand && (
-
-                <div className={`${isMobileDevice ? 'rounded-t-[30px] dark:bg-[#202020] bg-[#EFEFEF] pb-[34px] mobileCart' : 'rounded-[40px] max-md:bg-[#0A0A0A]'} flex -mb-4 md:mb-[53px] max-md:p-5  w-full justify-between relative items-center gap-4`}>
-
-                  <div className="flex items-center gap-4">
-                    <div className="bg-white rounded-full w-10 h-10 hidden p-2 md:w-16 md:h-16 flex items-center justify-center">
-                      <Image className="" src="/images/bmw-logo.svg" alt="BMW Logo" width={50} height={50} />
-                    </div>
-                    <div>
-                      <h2 className="text-[16px] md:text-xl font-bold dark:text-[#FAEADC] text-[#000000]">
-                        {appointmentData?.model.toUpperCase()}, {appointmentData?.year}
-                      </h2>
-                      <p className="text-[#FAEADC]/70 text-[10px] hidden uppercase">
-                        {vehicleInfo.fuelType} · {vehicleInfo.mileage.toLocaleString()} KM
-                      </p>
-                    </div>
+                <div className={`${isMobileDevice ? 'rounded-t-[30px] mobileCart bg-white dark:bg-black top-[20px]' : 'rounded-[40px] bg-white dark:bg-[#0A0A0A]'} border border-[#d9d9d9] dark:border-white/10 p-5 md:p-6 flex w-full justify-between items-center gap-4 ${isMobileDevice ? '-mb-4 md:mb-0 max-md:p-5 shadow-sm' : 'mb-[40px] shadow-sm'}`}>
+                  <div>
+                    <h2 className="text-[16px] md:text-xl font-host font-extrabold dark:text-[#FAEADC] text-black uppercase leading-tight">
+                      {appointmentData?.model.toUpperCase()}, {appointmentData?.year}
+                    </h2>
+                    <p className="text-[10px] md:text-sm opacity-60 dark:text-[#FAEADC]/60 uppercase mt-1 font-host text-black dark:text-[#FAEADC]">
+                      {vehicleInfo.fuelType} · {vehicleInfo.mileage.toLocaleString()} KM
+                    </p>
                   </div>
-                  {/* Custom button instead of importing Button component */}
                   <button
+                    type="button"
                     onClick={() => setIsModalOpen(true)}
-                    className="gradientBG gradientBGTrans text-[#FAEADC] px-[26px] py-[13px] rounded-[10px] transition-colors"
+                    className={isMobileDevice 
+                      ? "border text-[12px] font-host font-bold uppercase border-[#C00034] text-[#C00034] rounded-[10px] px-4 py-2 hover:bg-[#C00034]/10 transition-colors"
+                      : "gradientBG mhidden gradientBGTrans text-[#FAEADC] px-[20px] 3xl:px-[40px] py-[16px] leading-[1] rounded-[10px] transition-colors"
+                    }
                   >
                     {allServiceList?.changeCtaLabel || "CHANGE"}
                   </button>
                 </div>
-
               )}
               {!appointmentData?.brand && !isMobileDevice && (
                 <div className="flex p-4 px-[30px] gap-[10px] -z-10 top-[-55px] pb-14 pt-6 items-center absolute w-full left-0 bg-[#801b01] rounded-t-[40px] shadow-lg">
@@ -419,9 +414,9 @@ export default function ServiceListing({ allServiceList, browseServiceList, site
 
               <div className={cartItems.length === 0
                 ? "md:mt-5 h-fit relative w-full"
-                : `${isMobileDevice ? 'rounded-t-[30px] mt-3' : 'rounded-[40px]'} bg-[#F9F9F9] dark:bg-[#161616] md:border-[1px] border-[#FAEADC33] md:p-8 pb-6 md:pb-0 md:mt-5 ltr:md:pl-0 rtl:md:pr-0 h-fit relative`
+                : `${isMobileDevice ? 'rounded-t-[30px] mt-3 bg-[#fafafa] dark:bg-[#0A0A0A]' : 'rounded-[40px] bg-[#fafafa] dark:bg-[#0A0A0A]'} border border-[#d9d9d9] dark:border-[#FAEADC]/10 h-fit flex flex-col shadow-lg md:mt-5 w-full relative`
               }>
-                <div className={`${!isMobileDevice ? 'hidden' : ''} absolute ltr:right-[32px] rtl:left-[32px] top-[32px]`} onClick={() => dispatch(setCartPopup(false))}>
+                <div className={`${!isMobileDevice ? 'hidden' : ''} absolute ltr:right-[32px] rtl:left-[32px] top-[32px] cursor-pointer z-10`} onClick={() => dispatch(setCartPopup(false))}>
                   <Image
                     src={`${theme === 'dark' ? '/images/icons/cross-icon.svg' : '/images/lightThemeClose.svg'}`}
                     alt="cross icon"
@@ -512,88 +507,88 @@ export default function ServiceListing({ allServiceList, browseServiceList, site
                     </div>
                   )
                 ) : (
-                  <div className="space-y-6 md:pb-8 p-6 pt-[70px] md:pt-[24px]">
+                  <div className={`${isMobileDevice ? 'px-[24px] py-[2.1rem]' : 'px-[30px] py-[40px]'} flex flex-col gap-[30px] md:gap-[40px] w-full`}>
+                    <h2 className={`${isMobileDevice ? 'text-[26.6px]' : 'text-[32px]'} font-host dark:text-[#FAEADC] text-[#211d1d] font-extrabold uppercase leading-[1.1] ${isMobileDevice ? '' : 'hidden md:block'}`}>Cart</h2>
+                    
                     {/* Cart Items */}
-                    <div className="space-y-4">
-                      {cartItemData.map((item) => (
-                        <div key={item.id} className="flex justify-between items-start border-b border-white/10 pb-4">
-                          <div className="flex-1">
-                            <div className="flex justify-between">
-                              <h3 className="font-medium dark:text-[#FAEADC]/70 text-black/70">{item.name}</h3>
-                              <div className="flex items-center gap-2">
-                                <span className="font-bold hidden">AED {item.price.toLocaleString()}</span>
-                                {item.type === "service" && (
-                                  <button
-                                    onClick={() => handleRemoveItem(item.serviceCode || item.id)}
-                                    className="text-[#C00034] hover:text-[#C00034]/80"
-                                  >
-                                    <Image
-                                      src="/images/delete-icon.svg"
-                                      alt="delete icon"
-                                      width={25}
-                                      height={25}
-                                      className="mb-0"
-                                    />
-
-                                  </button>
-                                )}
-                              </div>
-                            </div>
-                            <p className="text-sm text-black/70 dark:text-[#FAEADC]/70">{item.hours}</p>
-
-                            {/* Quantity controls for products */}
+                    <div className="flex flex-col gap-[20px] md:gap-[24px]">
+                      {cartItems.map((item) => (
+                        <div key={item.id} className="flex justify-between items-center border-b border-black/10 dark:border-white/10 pb-4 w-full">
+                          <div className="flex-1 pr-4">
+                            <h3 className="font-host font-bold text-[16px] md:text-[18px] text-[#211d1d] dark:text-[#FAEADC]">{item.name}</h3>
+                            <p className="font-host font-medium opacity-60 text-[11px] md:text-[12px] text-[#211d1d] dark:text-[#FAEADC] mt-0.5 md:mt-1">
+                              {item.hours ? `${item.hours}` : ""}
+                            </p>
+                          </div>
+                          <div className="flex gap-[10px] md:gap-[12px] items-center">
                             {item.type === "product" && item.quantity && (
-                              <div className="flex items-center gap-3 mt-2">
+                              <div className="flex items-center gap-2 md:gap-3 bg-[#eaeaea] dark:bg-[#202020] rounded-[6px] px-2 py-0.5 md:py-1 flex-shrink-0">
                                 <button
+                                  type="button"
                                   onClick={() => handleUpdateQuantity(item.id, (item.quantity || 1) - 1)}
-                                  className="bg-black/60 rounded-full w-6 h-6 flex items-center justify-center"
+                                  className="text-[#211d1d] dark:text-white"
                                 >
-                                  <Minus size={14} />
+                                  <Minus className="w-[10px] h-[10px] md:w-[12px] md:h-[12px]" />
                                 </button>
-                                <span className="text-sm">{item.quantity}</span>
+                                <span className="font-host font-bold text-[11px] md:text-[12px] min-w-4 text-center text-[#211d1d] dark:text-white">
+                                  {String(item.quantity || 1).padStart(2, '0')}
+                                </span>
                                 <button
+                                  type="button"
                                   onClick={() => handleUpdateQuantity(item.id, (item.quantity || 1) + 1)}
-                                  className="bg-black/60 rounded-full w-6 h-6 flex items-center justify-center"
+                                  className="text-[#211d1d] dark:text-white"
                                 >
-                                  <Plus size={14} />
-                                </button>
-                                <button
-                                  onClick={() => handleRemoveItem(item.serviceCode || item.id)}
-                                  className="text-[#C00034] hover:text-[#C00034]/80 ml-auto"
-                                >
-                                  <Trash2 size={16} />
+                                  <Plus className="w-[10px] h-[10px] md:w-[12px] md:h-[12px]" />
                                 </button>
                               </div>
                             )}
+                            <div className="text-right">
+                              <span className="font-host font-bold text-[16px] md:text-[18px] text-[#211d1d] dark:text-[#FAEADC]">AED {item.price.toLocaleString()}</span>
+                            </div>
+                            <button
+                              type="button"
+                              onClick={() => handleRemoveItem(item.serviceCode || item.id)}
+                              className="bg-[rgba(192,0,52,0.08)] dark:bg-[rgba(192,0,52,0.15)] hover:bg-[rgba(192,0,52,0.15)] size-[28px] md:size-[30px] rounded-[6px] md:rounded-[8px] flex items-center justify-center transition-colors flex-shrink-0 text-[#C00034]"
+                            >
+                              <Trash2 className="w-[14px] h-[14px] md:w-[16px] md:h-[16px]" />
+                            </button>
                           </div>
                         </div>
                       ))}
                     </div>
 
-                    {/* Total */}
-                    <div className="space-y-2 hidden">
-                      <div className="flex justify-between items-center">
-                        <div>
-                          <h3 className="font-bold">{allServiceList?.estimatedTotalLabel || "Estimated total*"}</h3>
-                          <p className="text-xs text-[#FAEADC]/70">{cartItems.length} ITEMS</p>
+                    {/* Total Section */}
+                    <div className="flex flex-col gap-[20px] md:gap-[24px]">
+                      <div className="flex justify-between items-start w-full">
+                        <div className="flex flex-col">
+                          <h3 className="font-host font-bold text-[20px] md:text-[24px] text-[#211d1d] dark:text-[#FAEADC]">
+                            {allServiceList?.estimatedTotalLabel || "Estimated total*"}
+                          </h3>
+                          <p className="text-[11px] md:text-[12px] opacity-60 text-[#211d1d] dark:text-[#FAEADC]/60 mt-0.5 md:mt-1 max-w-[200px] md:max-w-[280px]">
+                            *Actual cost may vary based on vehicle assessment
+                          </p>
                         </div>
-                        <div className="text-right">
-                          <p className="font-bold text-xl hidden">AED {calculateTotal().toLocaleString()}</p>
-                          <p className="text-xs text-[#FAEADC]/70">{allServiceList?.taxLabel || "VAT INCLUDED"}</p>
+                        <div className="flex flex-col items-end text-right">
+                          <span className="font-host font-bold text-[20px] md:text-[24px] text-[#211d1d] dark:text-[#FAEADC]">
+                            AED {calculateTotal().toLocaleString()}
+                          </span>
+                          <p className="text-[11px] md:text-[12px] opacity-60 text-[#211d1d] dark:text-[#FAEADC]/60 mt-0.5 md:mt-1 uppercase">
+                            {allServiceList?.taxLabel || "VAT INCLUDED"}
+                          </p>
                         </div>
                       </div>
                     </div>
 
                     {/* Checkout Button */}
-                    <Squircle cornerRadius={10}>
-                      <button
-                        onClick={handleAppointment}
-                        disabled={appointmentData?.brand ? false : true}
-                        className={`${!appointmentData?.brand ? 'cursor-not-allowed bg-[#EAEAEA] text-[#000]' : 'bg-[#C00034] text-[#FAEADC]'} w-full gradientBG py-[13px] rounded-md font-medium`}
-                      >
-                        {allServiceList?.submitCtaLabel || "confirm and next"}
-                      </button>
-                    </Squircle>
+                    <button
+                      onClick={handleAppointment}
+                      disabled={appointmentData?.brand ? false : true}
+                      className={`bg-[#801b01] text-[#fcf3ed] w-full py-3.5 md:py-4 rounded-[10px] md:rounded-[12px] font-host font-extrabold uppercase text-[15px] md:text-[16px] leading-[1.5] transition-all hover:opacity-90 ${
+                        !appointmentData?.brand ? "cursor-not-allowed opacity-65 bg-[#eaeaea] text-[#898989]" : ""
+                      }`}
+                    >
+                      {allServiceList?.submitCtaLabel || "confirm and next"}
+                    </button>
                   </div>
                 )}
               </div>
